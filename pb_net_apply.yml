@@ -157,6 +157,7 @@
         selectattr('vrf', 'equalto', item.name ) |
         map(attribute='name') |
         list }}"
+      state: present
     loop: "{{ vrfs }}"
     tags:
     - interface
