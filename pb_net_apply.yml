@@ -56,7 +56,7 @@
     cisco.ios.ios_config:
       commands:
       - no switchport
-      parent: "inteface {{ item.name }}"
+      parent: "interface {{ item.name }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
     tags:
     - switchports
