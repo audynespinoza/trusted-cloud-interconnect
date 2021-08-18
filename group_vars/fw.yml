@@ -6,6 +6,7 @@ l3_interfaces:
     vrf: CORE
     description: alncore1
     enabled: yes
+    overlay: no
     ospf: no
     bgp: no
     bgp_type: no
@@ -15,6 +16,7 @@ l3_interfaces:
     vrf: CORE
     description: alncore2
     enabled: yes
+    overlay: no
     ospf: no
     bgp: no
     bgp_type: no
@@ -24,6 +26,7 @@ l3_interfaces:
     vrf: CORE
     description: alnfab1
     enabled: yes
+    overlay: no
     ospf: no 
     bgp: no
     bgp_type: no
@@ -33,6 +36,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alnfab1
     enabled: yes
+    overlay: no
     ospf: no
     bgp: no
     bgp_type: no
@@ -42,6 +46,7 @@ l3_interfaces:
     vrf: CORE
     description: alnfab2
     enabled: yes
+    overlay: no
     ospf: no
     bgp: no
     bgp_type: no
@@ -51,6 +56,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alnfab2
     enabled: yes
+    overlay: no
     ospf: no 
     bgp: no
     bgp_type: no

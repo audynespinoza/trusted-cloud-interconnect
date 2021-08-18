@@ -6,6 +6,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alnfab1
     enabled: yes
+    overlay: no
     ospf: no
     bgp: yes
     bgp_type: external
@@ -15,6 +16,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alnfab2
     enabled: yes
+    overlay: no
     ospf: no
     bgp: yes
     bgp_type: external

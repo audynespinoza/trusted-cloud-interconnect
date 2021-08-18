@@ -6,6 +6,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alncore1
     enabled: yes
+    overlay: no
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -15,6 +16,7 @@ l3_interfaces:
     vrf: CORE
     description: alnfw1
     enabled: yes
+    overlay: no
     ospf: no
     bgp: no
     bgp_type: no
@@ -24,6 +26,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alnfw1
     enabled: yes
+    overlay: no
     ospf: no 
     bgp: no
     bgp_type: no
@@ -33,6 +36,7 @@ l3_interfaces:
     vrf: CORE
     description: alnfab2
     enabled: yes
+    overlay: no
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -42,6 +46,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alnfab2
     enabled: yes
+    overlay: no
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -51,6 +56,7 @@ l3_interfaces:
     vrf: CORE
     description: alnnontrust
     enabled: yes
+    overlay: no
     ospf: no 
     bgp: yes
     bgp_type: external
@@ -60,6 +66,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alntrust
     enabled: yes
+    overlay: no
     ospf: no 
     bgp: yes
     bgp_type: external
@@ -70,6 +77,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alncore2
     enabled: yes
+    overlay: no
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -79,6 +87,7 @@ l3_interfaces:
     vrf: CORE
     description: alnfw1
     enabled: yes
+    overlay: no
     ospf: no
     bgp: no
     bgp_type: no
@@ -88,6 +97,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alnfw1
     enabled: yes
+    overlay: no
     ospf: no 
     bgp: no
     bgp_type: no
@@ -97,6 +107,7 @@ l3_interfaces:
     vrf: CORE
     description: alnfab1
     enabled: yes
+    overlay: no
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -106,6 +117,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alnfab1
     enabled: yes
+    overlay: no
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -115,6 +127,7 @@ l3_interfaces:
     vrf: CORE
     description: alnnontrust
     enabled: yes
+    overlay: no
     ospf: no 
     bgp: yes
     bgp_type: external
@@ -124,6 +137,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alntrust
     enabled: yes
+    overlay: no
     ospf: no 
     bgp: yes
     bgp_type: external
