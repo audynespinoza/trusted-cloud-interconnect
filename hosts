@@ -98,7 +98,7 @@ ash_nontrust
 [aln:children]
 aln_wan
 aln_core
-aln_cld
+aln_fab
 aln_fw
 aln_trust
 aln_nontrust
