@@ -12,7 +12,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet3/0
     cidr: 10.224.11.14/31 
-    host_ip: "14"
+    host_ip: '0'
     vrf: CORE
     description: alnfw1
     enabled: yes

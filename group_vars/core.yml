@@ -81,8 +81,8 @@ l3_interfaces:
     bgp: yes
     bgp_type: internal
   - name: GigabitEthernet3/1
-    cidr: 10.224.21.8/32 
-    host_ip: 9
+    cidr: 10.224.21.10/31 
+    host_ip: "10"
     vrf: CORE
     description: alnfab1
     enabled: yes
@@ -93,7 +93,7 @@ l3_interfaces:
   alncore2:
   - name: GigabitEthernet0/1
     cidr: 10.224.11.2/31
-    host_ip: "3"
+    host_ip: '1'
     vrf: CORE
     description: alnwan1
     enabled: yes
@@ -103,7 +103,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet1/1
     cidr: 10.224.21.2/31
-    host_ip: "3"
+    host_ip: '1'
     vrf: TRUSTED
     description: alnwan1
     enabled: yes
@@ -113,7 +113,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet0/2
     cidr: 10.224.21.6/31
-    host_ip: "7"
+    host_ip: '1'
     vrf: CORE
     description: alnwan2
     enabled: yes
