@@ -27,7 +27,7 @@
     cisco.ios.ios_command:
       commands:
       - sh run
-      register: running_config
+    register: running_config
   
   - name: Get Current List if NTP Servers
     set_fact: ntp_servers="{{ running_config.stdout[0] | regex_findall('^ntp server (\S+)'), multiline=True }}"
@@ -40,7 +40,7 @@
     loop: "{{ ntp_servers }}"
     tags: ntp
     notify: save_cfg
-    
+
   handlers:
   - name: save_cfg
     ios_command:
