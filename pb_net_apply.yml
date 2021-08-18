@@ -26,14 +26,16 @@
     tags: basic
   
   - name: Get Current List if DNS Servers
-    set_fact: dns_servers_in_cfg="{{ running_config.stdout[0] | regex_findall('^ip name-server (\S+)', multiline=True) }}"
+    set_fact: dns_servers_in_cfg="{{ 
+      running_config.stdout[0] |
+      regex_findall('^ip name-server (\S+)', multiline=True) }}"
     tags: basic
   
   - name: Remove Old DNS Servers
     cisco.ios.ios_config:
       lines:
       - "no ip name-server {{ item }}"
-    when: item != dns_server
+    when: item not in dns_servers
     loop: "{{ dns_servers_in_cfg }}"
     tags: basic
     notify: save_cfg
@@ -60,7 +62,9 @@
     tags: basic
   
   - name: Get Current List if NTP Servers
-    set_fact: ntp_servers_in_cfg="{{ running_config.stdout[0] | regex_findall('^ntp server (\S+)', multiline=True) }}"
+    set_fact: ntp_servers_in_cfg="{{
+      running_config.stdout[0] |
+      regex_findall('^ntp server (\S+)', multiline=True) }}"
     tags: basic
   
   - name: Remove Old NTP Servers
@@ -117,7 +121,10 @@
     tags:
     - interfaces
     - underlay
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'equalto', 'yes') | list }}"
+    loop: "{{ 
+      l3_interfaces[inventory_hostname] |
+      selectattr('underlay', 'equalto', 'yes') |
+      list }}"
     notify: save_cfg
 
   - name: Configure Physical Interfaces
@@ -130,7 +137,10 @@
     tags:
     - interfaces
     - physical
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'equal', 'no') | list }}"
+    loop: "{{ 
+      l3_interfaces[inventory_hostname] |
+      selectattr('underlay', 'equal', 'no') |
+      list }}"
     notify: save_cfg
 
   - name: Configure Tunnel Interfaces
@@ -142,7 +152,10 @@
     tags:
     - interfaces
     - tunnel
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('name', 'search', 'Tunnel') | list }}"
+    loop: "{{
+      l3_interfaces[inventory_hostname] |
+      selectattr('name', 'search', 'Tunnel') |
+      list }}"
     notify: save_cfg
 
 
@@ -152,7 +165,11 @@
       description: "{{ item.description }}"
       rd: "{{ item.rd }}"
       route_both: "{{ item.route_both }}"
-      interfaces: "{{ l3_interfaces[inventory_hostname] | selectattr('vrf', 'equalto', item.name ) | map(attribute='name') | list }}"
+      interfaces: "{{
+        l3_interfaces[inventory_hostname] |
+        selectattr('vrf', 'equalto', item.name ) |
+        map(attribute='name') |
+        list }}"
     loop: "{{ vrfs }}"
     tags:
     - interface
