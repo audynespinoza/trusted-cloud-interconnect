@@ -82,7 +82,7 @@
       state: merged
     tags:
     - interfaces
-    - tunnel
+    - underlay
     loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'equalto', 'yes') | list }}"
     notify: save_cfg
 
@@ -96,8 +96,23 @@
     tags:
     - interfaces
     - physical
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'equalto', 'no') | list }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'equal', 'no') | list }}"
     notify: save_cfg
+
+  - name: Configure Tunnel Interfaces
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        mtu: "{{ phys_intf_mtu }}"
+        description: "{{ item.description }}"
+      state: merged
+    tags:
+    - interfaces
+    - tunnel
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'bla', 'no') | list }}"
+    when: "Tunnel not in "
+    notify: save_cfg
+
 
   - name: Create VRFs and Associate to Interfaces
     cisco.ios.ios_vrf:
