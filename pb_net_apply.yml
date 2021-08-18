@@ -86,6 +86,9 @@
       route_both: "{{ item.route_both }}"
       interfaces: "{{ l3_interfaces[inventory_hostname] | selectattr('vrf', 'equalto', {{ item.vrf }}) | map(attribute='name') | list }}"
     loop: "{{ vrfs }}"
+    tags:
+    - interface
+    - vrf
     notify: save_ios
 
   - name: Assign IPv4 Address to Interfaces
