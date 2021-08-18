@@ -215,15 +215,15 @@
           - area_id: '0'
             default_cost: 5
           network:
-            address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
-            wildcard_bits: 0.0.0.255
+          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            wildcard_bits: 0.0.0.0
             area: '0'
           passive_interfaces:
             default: true
             interface:
-              set_interface: False
+              set_interface: false
               name:
-                - "{{ item.name }}"
+              - "{{ item.name }}"
         - process_id: 2
           vrf: TRUSTED
           max_metric:
@@ -234,8 +234,8 @@
           - area_id: '0'
             default_cost: 5
           network:
-            address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
-            wildcard_bits: 0.0.0.255
+          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            wildcard_bits: 0.0.0.0
             area: '0'
           passive_interfaces:
             default: true
