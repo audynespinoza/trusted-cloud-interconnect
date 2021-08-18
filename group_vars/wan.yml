@@ -21,8 +21,8 @@ l3_interfaces:
     bgp: yes
     bgp_type: internal
   - name: GigabitEthernet0/2
-    cidr: 10.224.11.2/31
-    host_ip: "1"
+    cidr: 10.224.98.0/23
+    host_ip: "257"
     vrf: CORE
     description: alncore2
     enabled: yes
