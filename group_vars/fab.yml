@@ -90,7 +90,7 @@ l3_interfaces:
     bgp: yes
     bgp_type: internal
   - name: GigabitEthernet3/0
-    cidr: 10.224.11.18/31
+    cidr: 10.224.11.16/31
     host_ip_index: 0
     vrf: CORE
     description: alnfw1
@@ -101,7 +101,7 @@ l3_interfaces:
     bgp: no
     bgp_type: no
   - name: GigabitEthernet3/1
-    cidr: 10.224.21.18/31
+    cidr: 10.224.21.16/31
     host_ip_index: 0
     vrf: TRUSTED
     description: alnfw1

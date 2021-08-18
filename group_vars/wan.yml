@@ -50,7 +50,7 @@ l3_interfaces:
     vrf: EDGE
     description: ashwan2
     enabled: yes
-    underlay: 'yes'
+    underlay: yes
     physical: yes
     ospf: no
     bgp: no
@@ -106,7 +106,7 @@ l3_interfaces:
     vrf: EDGE
     description: ashwan4
     enabled: yes
-    underlay: 'yes'
+    underlay: yes
     physical: yes
     ospf: no
     bgp: no
