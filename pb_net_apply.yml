@@ -244,7 +244,7 @@
               name:
                 - "{{ item.name }}"
       state: merged
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('ospf_active', 'equalto', true) }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('ospf_active', 'equalto', true) | list }}"
     tags:
     - ospf
     notify: save_cfg
