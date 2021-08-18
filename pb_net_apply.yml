@@ -127,7 +127,7 @@
     - physical
     loop: "{{ 
       l3_interfaces[inventory_hostname] |
-      selectattr('underlay', 'equal', 'no') |
+      selectattr('underlay', 'equalto', 'no') |
       list }}"
     notify: save_cfg
 
