@@ -95,7 +95,7 @@
 # Play - Configure Physical & Tunnel Interfaces On All Devices
 # ------------------------------------------------------------
 - name: Configure Device Interfaces
-  hosts: aln
+  hosts: aln_wan
   tags: configure_l3_interfaces
   gather_facts: no
   tasks:
