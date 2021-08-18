@@ -10,7 +10,7 @@
       lookup_enabled: no
       name_servers: "{{ dns_servers }}"
     tags: basic
-    notify: save_ios
+    notify: save_cfg
   
   - name: Configure NTP
     cisco.ios.ios_ntp:
@@ -21,7 +21,7 @@
       auth_key: 15435A030726242723273C21181319000A
       auth: true
     tags: ntp
-    notify: save_ios
+    notify: save_cfg
   
   - name: Get Running Config
     cisco.ios.ios_command:
@@ -39,7 +39,7 @@
     when: item != ntp_server
     loop: "{{ ntp_servers }}"
     tags: ntp
-    notify: save_ios
+    notify: save_cfg
 
 - name: Configure Device Interfaces
   hosts: aln
@@ -56,7 +56,7 @@
     - interfaces
     - tunnel
     loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'yes') | list }}"
-    notify: save_ios
+    notify: save_cfg
 
   - name: Configure Physical Interfaces
     cisco.ios.ios_interfaces:
@@ -69,7 +69,7 @@
     - interfaces
     - physical
     loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'no') | list }}"
-    notify: save_ios
+    notify: save_cfg
 
 
 
@@ -83,17 +83,17 @@
     tags:
     - ip_address
     - interface
-    notify: save_ios
+    notify: save_cfg
 
   - name: Interface Admin State
     cisco.ios.ios_interface:
       config:
       - enabled: "{{ item.enabled }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
-    notify: save_ios
+    notify: save_cfg
 
   handlers:
-  - name: save_ios
+  - name: save_cfg
     ios_command:
       commands:
       - write mem
