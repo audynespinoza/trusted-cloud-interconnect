@@ -71,9 +71,9 @@
     loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'no') | list }}"
     notify: save_ios
 
-  - name: CREATE VRFs and Associate to Interfaces
+  - name: Create VRFs and Associate to Interfaces
     cisco.ios_ios_vrf:
-      name: "{{ item.name }}"
+    - name: "{{ item.name }}"
       description: "{{ item.description }}"
       rd: "{{ item.rd }}"
       route_both: "{{ item.route_both }}"
