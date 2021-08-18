@@ -198,7 +198,7 @@
 # Play - Change Switchports to Routed Ports Before Configuring L3 Interfaces
 # --------------------------------------------------------------------------
 - name: Configure OSPFv3 on All Devices
-  hosts: aln
+  hosts: aln_wan
   gather_facts: no
   tasks:
   - name: Configure
