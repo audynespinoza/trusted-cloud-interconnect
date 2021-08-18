@@ -48,6 +48,19 @@
       - write mem
     when: not ansible_check_mode
 
+- name: Change Switchports to Routed Ports
+  hosts: core:fab:cld:fw
+  gather_facts: no
+  tasks:
+  - name: Execute No Switchport Command on Switch Ports
+    cisco.ios.ios_config:
+      commands:
+      - no 
+      parent: "{{ l3_interfaces[inventory_hostname] | map(attribute='name') }}"
+  tags:
+  - switchports
+  notify: save_cfg
+
 - name: Configure Device Interfaces
   hosts: aln_wan
   gather_facts: no
@@ -89,7 +102,7 @@
     tags:
     - interface
     - vrf
-    notify: save_ios
+    notify: save_cfg
 
   - name: Assign IPv4 Address to Interfaces
     cisco.ios.ios_l3_interfaces:
