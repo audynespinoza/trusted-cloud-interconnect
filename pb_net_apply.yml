@@ -4,6 +4,7 @@
 # -------------------------------------------------------------------
 - name: Configure Device Basic Information
   hosts: aln
+  tags: basic_info
   gather_facts: no
   tasks:
   - name: Configure Hostname / Domain-name
@@ -70,7 +71,7 @@
 # --------------------------------------------------------------------------
 - name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
   hosts: aln_core:aln_fab:aln_fw
-  tags: wow
+  tags: routed_switchports
   gather_facts: no
   tasks:
   - name: Execute No Switchport Command on Switch Ports
@@ -95,7 +96,7 @@
 # ------------------------------------------------------------
 - name: Configure Device Interfaces
   hosts: aln
-  tags: dood
+  tags: configure_l3_interfaces
   gather_facts: no
   tasks:
   - name: Configure Underlay Interfaces with Lower MTU
@@ -153,7 +154,7 @@
       route_both: "{{ item.route_both }}"
       interfaces: "{{
         l3_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.name ) |
+        selectattr('vrf', 'equalto', {{item.name}} ) |
         map(attribute='name') |
         list }}"
     loop: "{{ vrfs }}"
