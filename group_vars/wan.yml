@@ -111,3 +111,5 @@ l3_interfaces:
     ospf: no
     bgp: yes
     bgp_type: external
+
+interpreter_python: ~/git/trusted-cloud-interconnect/venv/bin/python
