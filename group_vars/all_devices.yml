@@ -6,7 +6,7 @@ ansible_become: yes
 ansible_become_password: cisco
 ansible_become_method: enable
 
-interpreter_python: ~/git/trusted-cloud-interconnect/venv/bin/python
+interpreter_python: root/git/trusted-cloud-interconnect/venv/bin/python
 
 tun_intf_mtu: 1460
 phys_intf_mtu: 1500

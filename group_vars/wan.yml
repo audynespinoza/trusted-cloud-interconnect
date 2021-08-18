@@ -83,7 +83,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet0/3
     cidr: 10.224.11.6/31
-    host_ip: "6"
+    host_ip: "7"
     vrf: CORE
     description: alncore2
     enabled: yes
