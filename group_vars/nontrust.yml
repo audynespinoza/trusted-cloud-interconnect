@@ -1,7 +1,7 @@
 l3_interfaces:
   alnnontrust1:
   - name: GigabitEthernet0/0
-    ipv4: 10.224.11.20/31
+    cidr: 10.224.11.20/31
     host_ip: 21 
     vrf: CORE
     description: alnfab1
@@ -11,7 +11,7 @@ l3_interfaces:
     bgp: yes
     bgp_type: external
   - name: GigabitEthernet0/1
-    ipv4: 10.224.11.22/31
+    cidr: 10.224.11.22/31
     host_ip: 23 
     vrf: CORE
     description: alnfab2
