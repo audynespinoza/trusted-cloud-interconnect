@@ -6,9 +6,6 @@
   hosts: aln
   gather_facts: no
   tasks:
-  # ----------------------------------------------------------
-  # Updates Hostname, Domain-Name, DNS Lookup, and DNS servers
-  # ----------------------------------------------------------
   - name: Configure Hostname / Domain-name
     cisco.ios.ios_system:
       hostname: "{{ inventory_hostname }}"
@@ -20,9 +17,6 @@
     - dns
     notify: save_cfg
 
-  # ---------------------------------------------------------------------------
-  # Adds the desired NTP server to the configuration and also removes undesired
-  # ---------------------------------------------------------------------------
   - name: Configure NTP
     cisco.ios.ios_ntp:
       server: "{{ ntp_server }}"
@@ -71,11 +65,11 @@
       - write mem
     when: not ansible_check_mode
 
-# -----------------------
-# Configure L3 Interfaces
-# -----------------------
+# --------------------------------------------------------------------------
+# Play - Change Switchports to Routed Ports Before Configuring L3 Interfaces
+# --------------------------------------------------------------------------
 - name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
-  hosts: aln_core
+  hosts: aln_core:aln_fab:aln_fw
   gather_facts: no
   tasks:
   - name: Execute No Switchport Command on Switch Ports
@@ -95,6 +89,9 @@
       - write mem
     when: not ansible_check_mode
 
+# ------------------------------------------------------------
+# Play - Configure Physical & Tunnel Interfaces On All Devices
+# ------------------------------------------------------------
 - name: Configure Device Interfaces
   hosts: aln
   gather_facts: no
@@ -145,7 +142,6 @@
       selectattr('physical', 'equalto', 'no') |
       list }}"
     notify: save_cfg
-
 
   - name: Create VRFs and Associate to Interfaces
     cisco.ios.ios_vrf:
