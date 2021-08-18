@@ -221,7 +221,7 @@
               - area_id: 0
           - afi: ipv4
             unicast: true
-            vrf: CORE
+            vrf: TRUSTED
             adjacency:
               min_adjacency: 50
               max_adjacency: 50
