@@ -79,7 +79,7 @@
     notify: save_cfg
 
   - name: Create VRFs and Associate to Interfaces
-    cisco.ios_ios_vrf:
+    cisco.ios.ios_vrf:
     - name: "{{ item.name }}"
       description: "{{ item.description }}"
       rd: "{{ item.rd }}"
@@ -87,7 +87,7 @@
       interfaces: "{{ l3_interfaces[inventory_hostname] | selectattr('vrf', 'equalto', {{ item.vrf }}) | map(attribute='name') | list }}"
     loop: "{{ vrfs }}"
     notify: save_ios
-    
+
   - name: Assign IPv4 Address to Interfaces
     cisco.ios.ios_l3_interfaces:
       config: 
