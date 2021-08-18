@@ -111,7 +111,7 @@
     - underlay
     loop: "{{ 
       l3_interfaces[inventory_hostname] |
-      selectattr('underlay', 'equalto', 'yes') |
+      selectattr('underlay', 'equalto', yes) |
       list }}"
     notify: save_cfg
 
