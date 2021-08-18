@@ -111,7 +111,7 @@
     - underlay
     loop: "{{ 
       l3_interfaces[inventory_hostname] |
-      selectattr('underlay', 'equalto', True) |
+      selectattr('underlay', 'equalto', 'yes') |
       list }}"
     notify: save_cfg
 
@@ -127,7 +127,7 @@
     - physical
     loop: "{{ 
       l3_interfaces[inventory_hostname] |
-      selectattr('physical', 'equalto', True) |
+      selectattr('physical', 'equalto', 'yes') |
       list }}"
     notify: save_cfg
 
@@ -142,7 +142,7 @@
     - tunnel
     loop: "{{
       l3_interfaces[inventory_hostname] |
-      selectattr('physical', 'equalto', False) |
+      selectattr('physical', 'equalto', 'no') |
       list }}"
     notify: save_cfg
 
