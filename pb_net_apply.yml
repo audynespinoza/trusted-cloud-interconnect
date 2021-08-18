@@ -93,7 +93,7 @@
     notify: save_ios
 
   handlers:
-  - name: save ios
+  - name: save_ios
     ios_command:
       commands:
       - write mem
