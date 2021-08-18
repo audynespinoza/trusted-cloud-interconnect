@@ -5,77 +5,77 @@ l3_interfaces:
     host_ip_index: 0
     vrf: CORE
     description: alncore1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet0/3
     cidr: 10.224.21.0/31
     host_ip_index: 0
     vrf: TRUSTED
     description: alncore1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet0/2
     cidr: 10.224.11.2/31
     host_ip_index: 0
     vrf: CORE
     description: alncore2
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet0/4
     cidr: 10.224.21.2/31
     host_ip_index: 0
     vrf: TRUSTED
     description: alncore2
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet0/5
     cidr: 10.224.253.0/31
     host_ip_index: 0
     vrf: EDGE
     description: ashwan2
-    enabled: yes
-    underlay: yes
-    physical: yes
-    ospf: no
-    bgp: no
-    bgp_type: no
+    enabled: True
+    underlay: True
+    physical: True
+    ospf: False
+    bgp: False
+    bgp_type: False
   - name: Tunnel1
     cidr: 10.224.254.0/31
     host_ip_index: 0
     vrf: CORE
     description: ashwan2
-    enabled: yes
-    underlay: no
-    physical: no
-    ospf: no
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: False
+    ospf: False
+    bgp: True
     bgp_type: external
   - name: Tunnel2
     cidr: 10.224.255.0/31 
     host_ip_index: 0
     vrf: TRUSTED
     description: ashwan2
-    enabled: yes
-    underlay: no
-    physical: no
-    ospf: no
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: False
+    ospf: False
+    bgp: True
     bgp_type: external
   alnwan2:
   - name: GigabitEthernet0/1
@@ -83,42 +83,42 @@ l3_interfaces:
     host_ip_index: 0
     vrf: CORE
     description: alncore1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet0/2
     cidr: 10.224.11.6/31
     host_ip_index: 0
     vrf: CORE
     description: alncore2
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet0/3
     cidr: 10.224.253.2/31
     host_ip_index: 0
     vrf: EDGE
     description: ashwan4
-    enabled: yes
-    underlay: yes
-    physical: yes
-    ospf: no
-    bgp: no
-    bgp_type: no
+    enabled: True
+    underlay: True
+    physical: True
+    ospf: False
+    bgp: False
+    bgp_type: False
   - name: Tunnel1
     cidr: 10.224.254.2/31
     host_ip_index: 0
     vrf: CORE
     description: ashwan4
-    enabled: yes
-    underlay: no
-    physical: no
-    ospf: no
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: False
+    ospf: False
+    bgp: True
     bgp_type: external

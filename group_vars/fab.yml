@@ -5,77 +5,77 @@ l3_interfaces:
     host_ip_index: 1
     vrf: TRUSTED
     description: alncore1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet3/0
     cidr: 10.224.11.14/31 
     host_ip_index: 0
     vrf: CORE
     description: alnfw1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no
-    bgp: no
-    bgp_type: no
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False
+    bgp: False
+    bgp_type: False
   - name: GigabitEthernet3/1
     cidr: 10.224.21.14/31
     host_ip_index: 0
     vrf: TRUSTED
     description: alnfw1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no 
-    bgp: no
-    bgp_type: no
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False 
+    bgp: False
+    bgp_type: False
   - name: GigabitEthernet1/0
     cidr: 10.224.11.18/31
     host_ip_index: 0
     vrf: CORE
     description: alnfab2
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet2/0
     cidr: 10.224.21.18/31 
     host_ip_index: 0
     vrf: TRUSTED
     description: alnfab2
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet3/2
     cidr: 10.224.11.20/31
     host_ip_index: 0
     vrf: CORE
     description: alnnontrust
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no 
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False 
+    bgp: True
     bgp_type: external
   - name: GigabitEthernet3/3
     cidr: 10.224.21.20/31
     host_ip_index: 0
     vrf: TRUSTED
     description: alntrust
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no 
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False 
+    bgp: True
     bgp_type: external
   alnfab2:
   - name: GigabitEthernet2/1
@@ -83,75 +83,75 @@ l3_interfaces:
     host_ip_index: 0
     vrf: TRUSTED
     description: alncore2
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet3/0
     cidr: 10.224.11.16/31
     host_ip_index: 0
     vrf: CORE
     description: alnfw1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no
-    bgp: no
-    bgp_type: no
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False
+    bgp: False
+    bgp_type: False
   - name: GigabitEthernet3/1
     cidr: 10.224.21.16/31
     host_ip_index: 0
     vrf: TRUSTED
     description: alnfw1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no 
-    bgp: no
-    bgp_type: no
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False 
+    bgp: False
+    bgp_type: False
   - name: GigabitEthernet1/0
     cidr: 10.224.11.18/31
     host_ip_index: 1
     vrf: CORE
     description: alnfab1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet2/0
     cidr: 10.224.21.18/31
     host_ip_index: 1
     vrf: TRUSTED
     description: alnfab1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: yes
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: True
+    bgp: True
     bgp_type: internal
   - name: GigabitEthernet3/2
     cidr: 10.224.11.22/31
     host_ip_index: 0
     vrf: CORE
     description: alnnontrust
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no 
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False 
+    bgp: True
     bgp_type: external
   - name: GigabitEthernet3/3
     cidr: 10.224.21.22/31
     host_ip_index: 0
     vrf: TRUSTED
     description: alntrust
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no 
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False 
+    bgp: True
     bgp_type: external

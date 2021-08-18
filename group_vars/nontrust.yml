@@ -5,20 +5,20 @@ l3_interfaces:
     host_ip_index: 1
     vrf: CORE
     description: alnfab1
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False
+    bgp: True
     bgp_type: external
   - name: GigabitEthernet0/1
     cidr: 10.224.11.22/31
     host_ip_index: 1
     vrf: CORE
     description: alnfab2
-    enabled: yes
-    underlay: no
-    physical: yes
-    ospf: no
-    bgp: yes
+    enabled: True
+    underlay: False
+    physical: True
+    ospf: False
+    bgp: True
     bgp_type: external
