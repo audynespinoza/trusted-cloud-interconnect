@@ -80,7 +80,7 @@
 
   - name: Create VRFs and Associate to Interfaces
     cisco.ios.ios_vrf:
-    - name: "{{ item.name }}"
+      name: "{{ item.name }}"
       description: "{{ item.description }}"
       rd: "{{ item.rd }}"
       route_both: "{{ item.route_both }}"
