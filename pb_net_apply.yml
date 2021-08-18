@@ -30,7 +30,7 @@
     register: running_config
   
   - name: Get Current List if NTP Servers
-    set_fact: ntp_servers_in_cfg="{{ running_config.stdout[0] | regex_findall('^ntp server (\S+)', multiline=True) }}"
+    set_fact: ntp_servers_in_cfg="{{ running_config.stdout[0] | regex_findall('^ntp server (\S+)'), multiline=True) }}"
   
   - name: Remove Old NTP Servers
     cisco.ios.ios_config:
@@ -62,7 +62,7 @@
     tags:
     - interfaces
     - tunnel
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', yes) | list }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', True) | list }}"
     notify: save_cfg
 
   - name: Configure Physical Interfaces
@@ -75,7 +75,7 @@
     tags:
     - interfaces
     - physical
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', no) | list }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', False) | list }}"
     notify: save_cfg
 
 
