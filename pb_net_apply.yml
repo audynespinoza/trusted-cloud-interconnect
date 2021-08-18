@@ -91,3 +91,10 @@
       - enabled: "{{ item.enabled }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
     notify: save_ios
+
+  handlers:
+  - name: save ios
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
