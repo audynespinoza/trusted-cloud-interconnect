@@ -109,7 +109,7 @@
     tags:
     - interfaces
     - tunnel
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'bla', 'no') | list }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('name', 'search', 'Tunnel') | list }}"
     when: "Tunnel not in "
     notify: save_cfg
 
