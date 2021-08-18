@@ -83,7 +83,7 @@
       config: 
       - name: "{{ item.name }}"
         ipv4:
-        - address: "{{ item.cidr | ipv4(item.ip_host) }}" 
+        - address: "{{ item.cidr | ipv4(item.host_ip) }}" 
     loop: "{{ l3_interfaces[inventory_hostname] }}"
     tags:
     - ip_address
