@@ -1,8 +1,14 @@
 ---
+# -------------------------------------------------------------------
+# Play - Basic Info such as Hostname, Domain, SNMP, logging, NTP info
+# -------------------------------------------------------------------
 - name: Configure Device Basic Information
   hosts: aln
   gather_facts: no
   tasks:
+  # ----------------------------------------------------------
+  # Updates Hostname, Domain-Name, DNS Lookup, and DNS servers
+  # ----------------------------------------------------------
   - name: Configure Hostname / Domain-name
     cisco.ios.ios_system:
       hostname: "{{ inventory_hostname }}"
@@ -11,7 +17,30 @@
       name_servers: "{{ dns_servers }}"
     tags: basic
     notify: save_cfg
+
+  - name: Get Running Config
+    cisco.ios.ios_command:
+      commands:
+      - sh run
+    register: running_config
+    tags: basic
   
+  - name: Get Current List if DNS Servers
+    set_fact: dns_servers_in_cfg="{{ running_config.stdout[0] | regex_findall('^ip name-server (\S+)', multiline=True) }}"
+    tags: basic
+  
+  - name: Remove Old DNS Servers
+    cisco.ios.ios_config:
+      lines:
+      - "no ip name-server {{ item }}"
+    when: item != dns_server
+    loop: "{{ dns_servers_in_cfg }}"
+    tags: basic
+    notify: save_cfg
+  
+  # ---------------------------------------------------------------------------
+  # Adds the desired NTP server to the configuration and also removes undesired
+  # ---------------------------------------------------------------------------
   - name: Configure NTP
     cisco.ios.ios_ntp:
       server: "{{ ntp_server }}"
@@ -28,9 +57,11 @@
       commands:
       - sh run
     register: running_config
+    tags: basic
   
   - name: Get Current List if NTP Servers
     set_fact: ntp_servers_in_cfg="{{ running_config.stdout[0] | regex_findall('^ntp server (\S+)', multiline=True) }}"
+    tags: basic
   
   - name: Remove Old NTP Servers
     cisco.ios.ios_config:
@@ -48,7 +79,10 @@
       - write mem
     when: not ansible_check_mode
 
-- name: Change Switchports to Routed Ports
+# -----------------------
+# Configure L3 Interfaces
+# -----------------------
+- name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
   hosts: aln_core
   gather_facts: no
   tasks:
