@@ -242,9 +242,16 @@
             interface:
               set_interface: False
               name:
-                - "{{ item.name }}"
+              - "{{ item.name }}"
       state: merged
     loop: "{{ l3_interfaces[inventory_hostname] | selectattr('ospf_active', 'equalto', true) | list }}"
     tags:
     - ospf
     notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem`
+    when: not ansible_check_mode
