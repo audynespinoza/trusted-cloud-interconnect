@@ -81,8 +81,8 @@ l3_interfaces:
     bgp: yes
     bgp_type: internal
   - name: GigabitEthernet3/1
-    cidr: 10.224.21.10/31 
-    host_ip: "10"
+    cidr: 10.224.21.8/32 
+    host_ip: 9
     vrf: CORE
     description: alnfab1
     enabled: yes
