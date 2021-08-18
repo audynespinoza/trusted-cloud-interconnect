@@ -1,6 +1,6 @@
 ---
 - name: Configure Device Basic Information
-  hosts: all_devices
+  hosts: aln
   gather_facts: no
   tasks:
   - name: Configure Hostname / Domain-name
