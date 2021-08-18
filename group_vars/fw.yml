@@ -7,6 +7,7 @@ l3_interfaces:
     description: alncore1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no
     bgp: no
     bgp_type: no
@@ -17,6 +18,7 @@ l3_interfaces:
     description: alncore2
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no
     bgp: no
     bgp_type: no
@@ -27,6 +29,7 @@ l3_interfaces:
     description: alnfab1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no 
     bgp: no
     bgp_type: no
@@ -37,6 +40,7 @@ l3_interfaces:
     description: alnfab1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no
     bgp: no
     bgp_type: no
@@ -47,6 +51,7 @@ l3_interfaces:
     description: alnfab2
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no
     bgp: no
     bgp_type: no
@@ -57,6 +62,7 @@ l3_interfaces:
     description: alnfab2
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no 
     bgp: no
     bgp_type: no

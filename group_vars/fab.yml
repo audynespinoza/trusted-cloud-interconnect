@@ -7,6 +7,7 @@ l3_interfaces:
     description: alncore1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -17,6 +18,7 @@ l3_interfaces:
     description: alnfw1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no
     bgp: no
     bgp_type: no
@@ -27,6 +29,7 @@ l3_interfaces:
     description: alnfw1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no 
     bgp: no
     bgp_type: no
@@ -37,6 +40,7 @@ l3_interfaces:
     description: alnfab2
     enabled: yes
     underlay: no
+    physical: yes
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -47,6 +51,7 @@ l3_interfaces:
     description: alnfab2
     enabled: yes
     underlay: no
+    physical: yes
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -57,6 +62,7 @@ l3_interfaces:
     description: alnnontrust
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no 
     bgp: yes
     bgp_type: external
@@ -67,6 +73,7 @@ l3_interfaces:
     description: alntrust
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no 
     bgp: yes
     bgp_type: external
@@ -78,6 +85,7 @@ l3_interfaces:
     description: alncore2
     enabled: yes
     underlay: no
+    physical: yes
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -88,6 +96,7 @@ l3_interfaces:
     description: alnfw1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no
     bgp: no
     bgp_type: no
@@ -98,6 +107,7 @@ l3_interfaces:
     description: alnfw1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no 
     bgp: no
     bgp_type: no
@@ -108,6 +118,7 @@ l3_interfaces:
     description: alnfab1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -118,6 +129,7 @@ l3_interfaces:
     description: alnfab1
     enabled: yes
     underlay: no
+    physical: yes
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -128,6 +140,7 @@ l3_interfaces:
     description: alnnontrust
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no 
     bgp: yes
     bgp_type: external
@@ -138,6 +151,7 @@ l3_interfaces:
     description: alntrust
     enabled: yes
     underlay: no
+    physical: yes
     ospf: no 
     bgp: yes
     bgp_type: external
