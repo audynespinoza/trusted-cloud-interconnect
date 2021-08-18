@@ -1,0 +1,127 @@
+[aln_wan]
+alnwan1 ansible_host=192.168.122.11
+alnwan2 ansible_host=192.168.122.12
+
+[mck_wan]
+mckwan1 ansible_host=192.168.122.13
+mckwan2 ansible_host=192.168.122.14
+
+[ash_wan]
+ashwan1 ansible_host=192.168.122.15
+ashwan2 ansible_host=192.168.122.16
+ashwan3 ansible_host=192.168.122.17
+ashwan4 ansible_host=192.168.122.18
+
+[aln_core]
+alncore1 ansible_host=192.168.122.19
+alncore2 ansible_host=192.168.122.20
+
+[mck_core]
+mckcore1 ansible_host=192.168.122.21
+mckcore2 ansible_host=192.168.122.22
+
+[ash_core]
+ashcore1 ansible_host=192.168.122.23
+ashcore2 ansible_host=192.168.122.24
+
+[aln_fab]
+alnfab1 ansible_host=192.168.122.25
+alnfab2 ansible_host=192.168.122.26
+
+[mck_fab]
+mckfab1 ansible_host=192.168.122.27
+mckfab2 ansible_host=192.168.122.28
+
+[ash_cld]
+ashcld1 ansible_host=192.168.122.29
+ashcld2 ansible_host=192.168.122.30
+
+[aln_fw]
+alnfw1 ansible_host=192.168.122.31
+
+[mck_fw]
+mckfw1 ansible_host=192.168.122.32
+
+[ash_fw]
+ashfw1 ansible_host=192.168.122.33
+
+[aln_trust]
+alntrust1 ansible_host=192.168.122.34
+
+[mck_trust]
+mcktrust1 ansible_host=192.168.122.35
+
+[ash_trust]
+ashtrust1 ansible_host=192.168.122.36
+
+[aln_nontrust]
+alnnontrust1 ansible_host=192.168.122.37
+
+[mck_nontrust]
+mcknontrust1 ansible_host=192.168.122.38
+
+[ash_nontrust]
+ashnontrust1 ansible_host=192.168.122.39
+
+[wan:children]
+aln_wan
+mck_wan
+ash_wan
+
+[core:children]
+aln_core
+mck_core
+ash_core
+
+[fab:children]
+aln_fab
+mck_fab
+
+[cld:children]
+ash_cld
+
+[fw:children]
+aln_fw
+mck_fw
+ash_fw
+
+[trust:children]
+aln_trust
+mck_trust
+ash_trust
+
+[nontrust:children]
+aln_nontrust
+mck_nontrust
+ash_nontrust
+
+[aln:children]
+aln_wan
+aln_core
+aln_cld
+aln_fw
+aln_trust
+aln_nontrust
+
+[mck:children]
+mck_wan
+mck_core
+mck_fab
+mck_fw
+mck_trust
+mck_nontrust
+
+[ash:children]
+ash_wan
+ash_core
+ash_cld
+ash_fw
+ash_trust
+ash_nontrust
+
+[all_devices:children]
+aln
+mck
+ash
+
+

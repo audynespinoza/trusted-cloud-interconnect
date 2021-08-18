@@ -1,0 +1,38 @@
+ansible_network_os: ios
+ansible_connection: network_cli
+ansible_user: lab
+ansible_password: cisco
+ansible_become: yes
+ansible_become_password: cisco
+ansible_become_method: enable
+
+tun_intf_mtu: 1460
+phys_intf_mtu: 1500
+
+domain_name: devnet.io
+
+ntp_server: 172.20.1.18
+
+dns_servers:
+- 172.20.1.250
+- 172.20.1.251
+
+vrfs:
+- name: CORE
+  description: "Internal Routing via Firewalls"
+  rd: 1:100
+  route_both:
+  - 1:100
+- name: TRUSTED
+  description: "Internal Routing Bypassing Firewalls"
+  rd: 2:100
+  route_both:
+  - 2:100
+- name: EDGE
+  description: "Tunnel Underlay"
+  rd: 3:100
+  route_both:
+  - 3:100
+
+
+

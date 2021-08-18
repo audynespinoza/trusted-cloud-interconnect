@@ -1,0 +1,20 @@
+l3_interfaces:
+  alntrust1:
+  - name: GigabitEthernet0/0
+    cidr: 10.224.21.20/31
+    host_ip: 21
+    vrf: TRUSTED
+    description: alnfab1
+    enabled: yes
+    ospf: no
+    bgp: yes
+    bgp_type: external
+  - name: GigabitEthernet0/1
+    cidr: 10.224.21.22/31
+    host_ip: 23
+    vrf: TRUSTED
+    description: alnfab2
+    enabled: yes
+    ospf: no
+    bgp: yes
+    bgp_type: external

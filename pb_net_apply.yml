@@ -1,0 +1,101 @@
+---
+- name: Configure Device Basic Information
+  hosts: all_devices
+  gather_facts: no
+  tasks:
+  - name: Configure Hostname / Domain-name
+    cisco.ios.ios_system:
+      hostname: "{{ inventory_hostname }}"
+      domain_name: "{{ domain_name }}"
+      lookup_enabled: no
+      name_servers: "{{ dns_servers }}"
+    tags: basic
+    notify: save_ios
+  
+  - name: Configure NTP
+    cisco.ios.ios_ntp:
+      server: "{{ ntp_server }}"
+      logging: true
+      state: present
+      key_id: "10"
+      auth_key: 15435A030726242723273C21181319000A
+      auth: true
+    tags: ntp
+    notify: save_ios
+  
+  - name: Get Running Config
+    cisco.ios.ios_command:
+      commands:
+      - sh run
+      register: running_config
+  
+  - name: Get Current List if NTP Servers
+    set_fact: ntp_servers="{{ running_config.stdout[0] | regex_findall('^ntp server (\S+)'), multiline=True }}"
+  
+  - name: Remove Old NTP Servers
+    cisco.ios.ios_config:
+      lines:
+      - "no ntp server {{ item }}"
+    when: item != ntp_server
+    loop: "{{ ntp_servers }}"
+    tags: ntp
+    notify: save_ios
+
+- name: Configure Device Interfaces
+  hosts: aln
+  gather_facts: no
+  tasks:
+  - name: Configure Tunnel Interfaces
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        mtu: "{{ tun_intf_mtu }}"
+        description: "{{ item.description }}"
+      state: merged
+    tags:
+    - interfaces
+    - tunnel
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'yes') | list }}"
+    notify: save_ios
+
+  - name: Configure Physical Interfaces
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        mtu: "{{ phys_intf_mtu }}"
+        description: "{{ item.description }}"
+      state: merged
+    tags:
+    - interfaces
+    - physical
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'no') | list }}"
+    notify: save_ios
+
+  - name: CREATE VRFs and Associate to Interfaces
+    cisco.ios_ios_vrf:
+      name: "{{ item.name }}"
+      description: "{{ item.description }}"
+      rd: "{{ item.rd }}"
+      route_both: "{{ item.route_both }}"
+      interfaces: "{{ l3_interfaces[inventory_hostname] | selectattr('vrf', 'equalto', {{ item.vrf }}) | map(attribute='name') | list }}"
+    loop: "{{ vrfs }}"
+    notify: save_ios
+
+  - name: Assign IPv4 Address to Interfaces
+    cisco.ios.ios_l3_interfaces:
+      config: 
+      - name: "{{ item.name }}"
+        ipv4:
+        - address: "{{ item.cidr | ipv4(item.host_ip) | ipaddr('address') }}" 
+    loop: "{{ l3_interfaces[inventory_hostname] }}"
+    tags:
+    - ip_address
+    - interface
+    notify: save_ios
+
+  - name: Interface Admin State
+    cisco.ios.ios_interface:
+      config:
+      - enabled: "{{ item.enabled }}"
+    loop: "{{ l3_interfaces[inventory_hostname] }}"
+    notify: save_ios
