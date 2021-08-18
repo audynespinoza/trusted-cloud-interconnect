@@ -57,9 +57,9 @@
       commands:
       - no 
       parent: "{{ l3_interfaces[inventory_hostname] | map(attribute='name') }}"
-  tags:
-  - switchports
-  notify: save_cfg
+    tags:
+    - switchports
+    notify: save_cfg
 
 - name: Configure Device Interfaces
   hosts: aln_wan
