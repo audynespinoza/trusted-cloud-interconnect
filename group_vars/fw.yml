@@ -6,63 +6,63 @@ l3_interfaces:
     vrf: CORE
     description: alncore1
     enabled: true
-    underlay: 'no'
-    physical: 'yes'
-    ospf_active: 'no'
-    bgp: 'no'
-    bgp_type: 'no'
+    underlay: false
+    physical: true
+    ospf_active: false
+    bgp: false
+    bgp_type: false
   - name: GigabitEthernet0/2
     cidr: 10.224.11.12/31
     host_ip_index: 1
     vrf: CORE
     description: alncore2
     enabled: true
-    underlay: 'no'
-    physical: 'yes'
-    ospf_active: 'no'
-    bgp: 'no'
-    bgp_type: 'no'
+    underlay: false
+    physical: true
+    ospf_active: false
+    bgp: false
+    bgp_type: false
   - name: GigabitEthernet1/1
     cidr: 10.224.11.14/31
     host_ip_index: 1
     vrf: CORE
     description: alnfab1
     enabled: true
-    underlay: 'no'
-    physical: 'yes'
-    ospf_active: 'no' 
-    bgp: 'no'
-    bgp_type: 'no'
+    underlay: false
+    physical: true
+    ospf_active: false 
+    bgp: false
+    bgp_type: false
   - name: GigabitEthernet2/1
     cidr: 10.224.21.14/31
     host_ip_index: 1
     vrf: TRUSTED
     description: alnfab1
     enabled: true
-    underlay: 'no'
-    physical: 'yes'
-    ospf_active: 'no'
-    bgp: 'no'
-    bgp_type: 'no'
+    underlay: false
+    physical: true
+    ospf_active: false
+    bgp: false
+    bgp_type: false
   - name: GigabitEthernet1/2
     cidr: 10.224.11.16/31
     host_ip_index: 1
     vrf: CORE
     description: alnfab2
     enabled: true
-    underlay: 'no'
-    physical: 'yes'
-    ospf_active: 'no'
-    bgp: 'no'
-    bgp_type: 'no'
+    underlay: false
+    physical: true
+    ospf_active: false
+    bgp: false
+    bgp_type: false
   - name: GigabitEthernet2/2
     cidr: 10.224.21.16/31
     host_ip_index: 1
     vrf: TRUSTED
     description: alnfab2
     enabled: true
-    underlay: 'no'
-    physical: 'yes'
-    ospf_active: 'no' 
-    bgp: 'no'
-    bgp_type: 'no'
+    underlay: false
+    physical: true
+    ospf_active: false 
+    bgp: false
+    bgp_type: false
