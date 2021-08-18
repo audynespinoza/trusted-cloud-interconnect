@@ -103,9 +103,6 @@
         mtu: "{{ underlay_mtu }}"
         description: "{{ item.description }}"
       state: merged
-    tags:
-    - interfaces
-    - underlay
     loop: "{{ 
       l3_interfaces[inventory_hostname] |
       selectattr('underlay', 'equalto', 'yes') |
@@ -119,9 +116,6 @@
         mtu: "{{ phys_intf_mtu }}"
         description: "{{ item.description }}"
       state: merged
-    tags:
-    - interfaces
-    - physical
     loop: "{{ 
       l3_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', 'yes') |
@@ -134,9 +128,6 @@
       - name: "{{ item.name }}"
         description: "{{ item.description }}"
       state: merged
-    tags:
-    - interfaces
-    - tunnel
     loop: "{{
       l3_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', 'no') |
@@ -156,9 +147,6 @@
         list }}"
       state: present
     loop: "{{ vrfs }}"
-    tags:
-    - interface
-    - vrf
     notify: save_cfg
 
   - name: Assign IPv4 Address to Interfaces
@@ -168,9 +156,6 @@
         ipv4:
         - address: "{{ item.cidr | ipv4(item.host_ip_index) }}" 
     loop: "{{ l3_interfaces[inventory_hostname] }}"
-    tags:
-    - ip_address
-    - interface
     notify: save_cfg
 
   - name: Interface Admin State
