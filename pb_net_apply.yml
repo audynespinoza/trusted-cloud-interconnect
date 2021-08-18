@@ -179,7 +179,6 @@
       - enabled: "{{ item.enabled }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
     tags:
-    - interface
     - admin_state
     notify: save_cfg
 
