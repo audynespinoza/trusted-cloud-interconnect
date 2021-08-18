@@ -152,7 +152,7 @@
       description: "{{ item.description }}"
       rd: "{{ item.rd }}"
       route_both: "{{ item.route_both }}"
-      interfaces: "{{
+      associated_interfaces: "{{
         l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         map(attribute='name') |
