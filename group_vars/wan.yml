@@ -2,7 +2,7 @@ l3_interfaces:
   alnwan1:
   - name: GigabitEthernet0/1
     cidr: 10.224.11.0/31
-    host_ip: "0"
+    host_ip: "1"
     vrf: CORE
     description: alncore1
     enabled: yes
@@ -81,9 +81,9 @@ l3_interfaces:
     ospf: yes
     bgp: yes
     bgp_type: internal
-  - name: GigabitEthernet0/3
+  - name: GigabitEthernet0/2
     cidr: 10.224.11.6/31
-    host_ip: "7"
+    host_ip: "6"
     vrf: CORE
     description: alncore2
     enabled: yes
