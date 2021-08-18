@@ -123,6 +123,3 @@ ash_nontrust
 aln
 mck
 ash
-
-[all:vars]
-ansible_python_interpreter= ~/git/trusted-cloud-interconnect/venv/bin/python
