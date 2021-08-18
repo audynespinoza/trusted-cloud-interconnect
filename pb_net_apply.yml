@@ -55,7 +55,7 @@
   - name: Execute No Switchport Command on Switch Ports
     cisco.ios.ios_config:
       commands:
-      - no 
+      - no switchport
       parent: "inteface {{ item.name }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
     tags:
