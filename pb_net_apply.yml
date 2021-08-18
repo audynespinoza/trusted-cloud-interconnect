@@ -30,7 +30,7 @@
     register: running_config
   
   - name: Get Current List if NTP Servers
-    set_fact: ntp_servers_in_cfg="{{ running_config.stdout[0] | regex_findall('^ntp server (\S+)'), multiline=True }}"
+    set_fact: ntp_servers_in_cfg="{{ running_config.stdout[0] | regex_findall('^ntp server (\S+)', multiline=True) }}"
   
   - name: Remove Old NTP Servers
     cisco.ios.ios_config:
