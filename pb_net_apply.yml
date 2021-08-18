@@ -95,6 +95,7 @@
 # ------------------------------------------------------------
 - name: Configure Device Interfaces
   hosts: aln
+  tags: dood
   gather_facts: no
   tasks:
   - name: Configure Underlay Interfaces with Lower MTU
