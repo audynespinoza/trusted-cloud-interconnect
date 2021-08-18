@@ -79,3 +79,16 @@ for i in hosts:
         print('{}={}'.format(split_line[0], new_ip))
     else:
         print(i)
+
+# ansible-playbook pb_net_apply.yml
+
+
+  - name: Create VRFs and Associate to Interfaces
+    cisco.ios_ios_vrf:
+    - name: "{{ item.name }}"
+      description: "{{ item.description }}"
+      rd: "{{ item.rd }}"
+      route_both: "{{ item.route_both }}"
+      interfaces: "{{ l3_interfaces[inventory_hostname] | selectattr('vrf', 'equalto', {{ item.vrf }}) | map(attribute='name') | list }}"
+    loop: "{{ vrfs }}"
+    notify: save_ios
