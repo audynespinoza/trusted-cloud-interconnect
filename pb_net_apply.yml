@@ -20,34 +20,6 @@
     - dns
     notify: save_cfg
 
-  - name: Get Running Config
-    cisco.ios.ios_command:
-      commands:
-      - sh run
-    register: running_config
-    tags:
-    - basic
-    - dns
-  
-  - name: Get Current List if DNS Servers
-    set_fact: dns_servers_in_cfg="{{ 
-      running_config.stdout[0] |
-      regex_findall('^ip name-server (\S+)', multiline=True) }}"
-    tags:
-    - basic
-    - dns
-  
-  - name: Remove Old DNS Servers
-    cisco.ios.ios_config:
-      lines:
-      - "no ip name-server {{ item }}"
-    when: item not in dns_servers
-    loop: "{{ dns_servers_in_cfg }}"
-    tags:
-    - basic
-    - dns
-    notify: save_cfg
-  
   # ---------------------------------------------------------------------------
   # Adds the desired NTP server to the configuration and also removes undesired
   # ---------------------------------------------------------------------------
