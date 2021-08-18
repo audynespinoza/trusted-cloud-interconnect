@@ -5,10 +5,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: TRUSTED
     description: alnfab1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'no'
+    ospf_active: 'no'
     bgp: 'yes'
     bgp_type: external
   - name: GigabitEthernet0/1
@@ -16,9 +16,9 @@ l3_interfaces:
     host_ip_index: 1
     vrf: TRUSTED
     description: alnfab2
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'no'
+    ospf_active: 'no'
     bgp: 'yes'
     bgp_type: external

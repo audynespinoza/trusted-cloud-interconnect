@@ -5,10 +5,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: CORE
     description: alnwan1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet1/1
@@ -16,10 +16,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: TRUSTED
     description: alnwan1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet0/2
@@ -27,10 +27,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: CORE
     description: alnwan2
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet1/0
@@ -38,10 +38,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: CORE
     description: alncore2
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet2/0
@@ -49,10 +49,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: TRUSTED
     description: alncore2
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet3/2
@@ -60,10 +60,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: CORE
     description: mckcore1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet3/3
@@ -71,10 +71,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: TRUSTED
     description: mckcore1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet2/1
@@ -82,10 +82,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: TRUSTED
     description: alnfw1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet3/1
@@ -93,10 +93,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: CORE
     description: alnfab1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'no'
+    ospf_active: 'no'
     bgp: 'no'
     bgp_type: 'no'
   alncore2:
@@ -105,10 +105,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: CORE
     description: alnwan1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet1/1
@@ -116,10 +116,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: TRUSTED
     description: alnwan1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet0/2
@@ -127,10 +127,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: CORE
     description: alnwan2
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet1/0
@@ -138,10 +138,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: CORE
     description: alncore1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet2/0
@@ -149,10 +149,10 @@ l3_interfaces:
     host_ip_index: 1
     vrf: TRUSTED
     description: alncore1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet3/2
@@ -160,10 +160,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: CORE
     description: mckcore2
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet3/3
@@ -171,10 +171,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: TRUSTED
     description: mckcore2
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet2/1
@@ -182,10 +182,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: TRUSTED
     description: alnfw1
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'yes'
+    ospf_active: 'yes'
     bgp: 'yes'
     bgp_type: internal
   - name: GigabitEthernet3/1
@@ -193,10 +193,10 @@ l3_interfaces:
     host_ip_index: 0
     vrf: CORE
     description: alnfab2
-    enabled: 'yes'
+    enabled: true
     underlay: 'no'
     physical: 'yes'
-    ospf: 'no'
+    ospf_active: 'no'
     bgp: 'no'
     bgp_type: 'no'
  
