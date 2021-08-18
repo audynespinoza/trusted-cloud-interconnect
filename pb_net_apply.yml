@@ -1,9 +1,10 @@
 ---
 # -------------------------------------------------------------------
-# Play - Basic Info such as Hostname, Domain, SNMP, logging, NTP info
+# Play - Basic Config such as Hostname, Domain, SNMP, logging, NTP info
 # -------------------------------------------------------------------
 - name: Configure Device Basic Information
   hosts: aln
+  tags: basic_config
   gather_facts: no
   tasks:
   - name: Configure Hostname / Domain-name
@@ -70,6 +71,7 @@
 # --------------------------------------------------------------------------
 - name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
   hosts: aln_core:aln_fab:aln_fw
+  tags: routed_switchports
   gather_facts: no
   tasks:
   - name: Execute No Switchport Command on Switch Ports
