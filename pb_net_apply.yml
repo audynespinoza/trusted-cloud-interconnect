@@ -103,7 +103,6 @@
     cisco.ios.ios_interfaces:
       config:
       - name: "{{ item.name }}"
-        mtu: "{{ phys_intf_mtu }}"
         description: "{{ item.description }}"
       state: merged
     tags:
