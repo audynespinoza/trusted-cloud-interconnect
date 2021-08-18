@@ -177,7 +177,8 @@
   - name: Interface Admin State
     cisco.ios.ios_interfaces:
       config:
-      - enabled: "{{ item.enabled }}"
+      - name: "{{ item.name }}"
+        enabled: "{{ item.enabled }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
     tags:
     - interface
