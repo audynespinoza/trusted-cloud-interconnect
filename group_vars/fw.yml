@@ -2,7 +2,7 @@ l3_interfaces:
   alnfw1:
   - name: GigabitEthernet0/1
     cidr: 10.224.21.10/31
-    host_ip: 11
+    host_ip: "11"
     vrf: CORE
     description: alncore1
     enabled: yes
@@ -12,7 +12,7 @@ l3_interfaces:
     bgp_type: no
   - name: GigabitEthernet0/2
     cidr: 10.224.11.12/31
-    host_ip: 13
+    host_ip: "13"
     vrf: CORE
     description: alncore2
     enabled: yes
@@ -22,7 +22,7 @@ l3_interfaces:
     bgp_type: no
   - name: GigabitEthernet1/1
     cidr: 10.224.11.14/31
-    host_ip: 15
+    host_ip: "15"
     vrf: CORE
     description: alnfab1
     enabled: yes
@@ -32,7 +32,7 @@ l3_interfaces:
     bgp_type: no
   - name: GigabitEthernet2/1
     cidr: 10.224.21.14/31
-    host_ip: 15
+    host_ip: "15"
     vrf: TRUSTED
     description: alnfab1
     enabled: yes
@@ -42,7 +42,7 @@ l3_interfaces:
     bgp_type: no
   - name: GigabitEthernet1/2
     cidr: 10.224.11.16/31
-    host_ip: 17
+    host_ip: "17"
     vrf: CORE
     description: alnfab2
     enabled: yes
@@ -52,7 +52,7 @@ l3_interfaces:
     bgp_type: no
   - name: GigabitEthernet2/2
     cidr: 10.224.21.16/31
-    host_ip: 17
+    host_ip: "17"
     vrf: TRUSTED
     description: alnfab2
     enabled: yes

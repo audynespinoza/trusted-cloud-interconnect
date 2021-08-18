@@ -2,7 +2,7 @@ l3_interfaces:
   alnwan1:
   - name: GigabitEthernet0/1
     cidr: 10.224.11.0/31
-    host_ip: 0
+    host_ip: "0"
     vrf: CORE
     description: alncore1
     enabled: yes
@@ -12,7 +12,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet0/3
     cidr: 10.224.21.0/31
-    host_ip: 0
+    host_ip: "0"
     vrf: TRUSTED
     description: alncore1
     enabled: yes
@@ -22,7 +22,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet0/2
     cidr: 10.224.11.2/31
-    host_ip: 2
+    host_ip: "2"
     vrf: CORE
     description: alncore2
     enabled: yes
@@ -32,7 +32,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet0/4
     cidr: 10.224.21.2/31
-    host_ip: 2
+    host_ip: "2"
     vrf: TRUSTED
     description: alncore2
     enabled: yes
@@ -42,7 +42,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet0/5
     cidr: 10.224.253.0/31
-    host_ip: 0
+    host_ip: "0"
     vrf: EDGE
     description: ashwan2
     enabled: yes
@@ -52,7 +52,7 @@ l3_interfaces:
     bgp_type: no
   - name: Tunnel1
     cidr: 10.224.254.0/31
-    host_ip: 0
+    host_ip: "0"
     vrf: CORE
     description: ashwan2
     enabled: yes
@@ -62,7 +62,7 @@ l3_interfaces:
     bgp_type: external
   - name: Tunnel2
     cidr: 10.224.255.0/31 
-    host_ip: 0
+    host_ip: "0"
     vrf: TRUSTED
     description: ashwan2
     enabled: yes
@@ -73,7 +73,7 @@ l3_interfaces:
   alnwan2:
   - name: GigabitEthernet0/1
     cidr: 10.224.11.4/31
-    host_ip: 4
+    host_ip: "4"
     vrf: CORE
     description: alncore1
     enabled: yes
@@ -83,7 +83,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet0/3
     cidr: 10.224.11.6/31
-    host_ip: 6
+    host_ip: "6"
     vrf: CORE
     description: alncore2
     enabled: yes
@@ -93,7 +93,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet0/3
     cidr: 10.224.253.2/31
-    host_ip: 2
+    host_ip: "2"
     vrf: EDGE
     description: ashwan4
     enabled: yes
@@ -103,7 +103,7 @@ l3_interfaces:
     bgp_type: no
   - name: Tunnel1
     cidr: 10.224.254.2/31
-    host_ip: 2
+    host_ip: "2"
     vrf: CORE
     description: ashwan4
     enabled: yes
