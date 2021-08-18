@@ -70,6 +70,7 @@
 # --------------------------------------------------------------------------
 - name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
   hosts: aln_core:aln_fab:aln_fw
+  tags: wow
   gather_facts: no
   tasks:
   - name: Execute No Switchport Command on Switch Ports
@@ -173,10 +174,13 @@
     notify: save_cfg
 
   - name: Interface Admin State
-    cisco.ios.ios_interface:
+    cisco.ios.ios_interfaces:
       config:
       - enabled: "{{ item.enabled }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
+    tags:
+    - interface
+    - admin_state
     notify: save_cfg
 
   handlers:

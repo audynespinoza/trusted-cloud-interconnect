@@ -157,7 +157,7 @@ l3_interfaces:
     bgp_type: internal
   - name: GigabitEthernet3/2
     cidr: 10.224.100.2/31
-    host_ip_index: "2"
+    host_ip_index: 0
     vrf: CORE
     description: mckcore2
     enabled: yes
