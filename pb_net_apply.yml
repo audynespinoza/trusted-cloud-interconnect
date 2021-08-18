@@ -15,7 +15,9 @@
       domain_name: "{{ domain_name }}"
       lookup_enabled: no
       name_servers: "{{ dns_servers }}"
-    tags: basic
+    tags:
+    - basic
+    - dns
     notify: save_cfg
 
   - name: Get Running Config
@@ -23,13 +25,17 @@
       commands:
       - sh run
     register: running_config
-    tags: basic
+    tags:
+    - basic
+    - dns
   
   - name: Get Current List if DNS Servers
     set_fact: dns_servers_in_cfg="{{ 
       running_config.stdout[0] |
       regex_findall('^ip name-server (\S+)', multiline=True) }}"
-    tags: basic
+    tags:
+    - basic
+    - dns
   
   - name: Remove Old DNS Servers
     cisco.ios.ios_config:
@@ -37,7 +43,9 @@
       - "no ip name-server {{ item }}"
     when: item not in dns_servers
     loop: "{{ dns_servers_in_cfg }}"
-    tags: basic
+    tags:
+    - basic
+    - dns
     notify: save_cfg
   
   # ---------------------------------------------------------------------------
@@ -51,7 +59,9 @@
       key_id: "10"
       auth_key: 15435A030726242723273C21181319000A
       auth: true
-    tags: ntp
+    tags:
+    - basic
+    - ntp
     notify: save_cfg
   
   - name: Get Running Config
@@ -59,13 +69,17 @@
       commands:
       - sh run
     register: running_config
-    tags: basic
+    tags:
+    - basic
+    - ntp
   
   - name: Get Current List if NTP Servers
     set_fact: ntp_servers_in_cfg="{{
       running_config.stdout[0] |
       regex_findall('^ntp server (\S+)', multiline=True) }}"
-    tags: basic
+    tags:
+    - basic
+    - ntp
   
   - name: Remove Old NTP Servers
     cisco.ios.ios_config:
@@ -73,7 +87,9 @@
       - "no ntp server {{ item }}"
     when: item != ntp_server
     loop: "{{ ntp_servers_in_cfg }}"
-    tags: ntp
+    tags:
+    - basic
+    - ntp
     notify: save_cfg
 
   handlers:
