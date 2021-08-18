@@ -6,7 +6,7 @@ l3_interfaces:
     vrf: CORE
     description: alncore1
     enabled: yes
-    overlay: no
+    overlay: 'no'
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -16,7 +16,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alncore1
     enabled: yes
-    overlay: no
+    overlay: 'no'
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -26,7 +26,7 @@ l3_interfaces:
     vrf: CORE
     description: alncore2
     enabled: yes
-    overlay: no
+    overlay: 'no'
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -36,7 +36,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: alncore2
     enabled: yes
-    overlay: no
+    overlay: 'no'
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -46,7 +46,7 @@ l3_interfaces:
     vrf: EDGE
     description: ashwan2
     enabled: yes
-    overlay: no
+    overlay: 'no'
     ospf: no
     bgp: no
     bgp_type: no
@@ -56,7 +56,7 @@ l3_interfaces:
     vrf: CORE
     description: ashwan2
     enabled: yes
-    overlay: yes
+    overlay: 'yes'
     ospf: no
     bgp: yes
     bgp_type: external
@@ -66,7 +66,7 @@ l3_interfaces:
     vrf: TRUSTED
     description: ashwan2
     enabled: yes
-    overlay: yes
+    overlay: 'yes'
     ospf: no
     bgp: yes
     bgp_type: external
@@ -77,7 +77,7 @@ l3_interfaces:
     vrf: CORE
     description: alncore1
     enabled: yes
-    overlay: no
+    overlay: 'no'
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -87,7 +87,7 @@ l3_interfaces:
     vrf: CORE
     description: alncore2
     enabled: yes
-    overlay: no
+    overlay: 'no'
     ospf: yes
     bgp: yes
     bgp_type: internal
@@ -97,7 +97,7 @@ l3_interfaces:
     vrf: EDGE
     description: ashwan4
     enabled: yes
-    overlay: no
+    overlay: 'no'
     ospf: no
     bgp: no
     bgp_type: no
@@ -107,7 +107,7 @@ l3_interfaces:
     vrf: CORE
     description: ashwan4
     enabled: yes
-    overlay: yes
+    overlay: 'yes'
     ospf: no
     bgp: yes
     bgp_type: external

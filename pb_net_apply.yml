@@ -62,7 +62,7 @@
     tags:
     - interfaces
     - tunnel
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', True) | list }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'yes') | list }}"
     notify: save_cfg
 
   - name: Configure Physical Interfaces
@@ -75,17 +75,15 @@
     tags:
     - interfaces
     - physical
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', False) | list }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'no') | list }}"
     notify: save_cfg
-
-
 
   - name: Assign IPv4 Address to Interfaces
     cisco.ios.ios_l3_interfaces:
       config: 
       - name: "{{ item.name }}"
         ipv4:
-        - address: "{{ item.cidr }}" 
+        - address: "{{ item.cidr | ipv4(item.ip_host) }}" 
     loop: "{{ l3_interfaces[inventory_hostname] }}"
     tags:
     - ip_address
