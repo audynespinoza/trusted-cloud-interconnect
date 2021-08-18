@@ -191,5 +191,52 @@
   - name: save_cfg
     ios_command:
       commands:
-      - write mem
+      - write mem`
     when: not ansible_check_mode
+
+# --------------------------------------------------------------------------
+# Play - Change Switchports to Routed Ports Before Configuring L3 Interfaces
+# --------------------------------------------------------------------------
+- name: Configure OSPFv3 on All Devices
+  hosts: aln
+  gather_facts: no
+  tasks:
+  - name: Configure
+  - name: Merge provided OSPFV3 configuration
+    cisco.ios.ios_ospfv3:
+      config:
+        processes:
+        - process_id: 1
+          max_metric:
+            router_lsa: true
+            on_startup:
+              time: 110
+          address_family:
+          - afi: ipv4
+            unicast: true
+            vrf: CORE
+            adjacency:
+              min_adjacency: 50
+              max_adjacency: 50
+            areas:
+              - area_id: 0
+          - afi: ipv4
+            unicast: true
+            vrf: CORE
+            adjacency:
+              min_adjacency: 50
+              max_adjacency: 50
+            areas:
+              - area_id: "0"
+          areas:
+            - area_id: "0"
+          timers:
+            throttle:
+              lsa:
+                first_delay: 12
+                min_delay: 14
+                max_delay: 16
+      state: merged
+    tags: 
+    - ospf
+    notify: save_cfg    
