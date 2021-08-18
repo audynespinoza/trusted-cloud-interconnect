@@ -154,7 +154,7 @@
       route_both: "{{ item.route_both }}"
       interfaces: "{{
         l3_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', 'CORE' ) |
+        selectattr('vrf', 'equalto', "{{ item.name }}" ) |
         map(attribute='name') |
         list }}"
     loop: "{{ vrfs }}"
