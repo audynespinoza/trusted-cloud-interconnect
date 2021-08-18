@@ -83,7 +83,7 @@
     tags:
     - interfaces
     - tunnel
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'yes') | list }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'equalto', 'yes') | list }}"
     notify: save_cfg
 
   - name: Configure Physical Interfaces
@@ -96,7 +96,7 @@
     tags:
     - interfaces
     - physical
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('overlay', 'equalto', 'no') | list }}"
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('underlay', 'equalto', 'no') | list }}"
     notify: save_cfg
 
   - name: Create VRFs and Associate to Interfaces
