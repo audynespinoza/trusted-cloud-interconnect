@@ -49,7 +49,7 @@
     when: not ansible_check_mode
 
 - name: Configure Device Interfaces
-  hosts: aln
+  hosts: aln_wan
   gather_facts: no
   tasks:
   - name: Configure Tunnel Interfaces
