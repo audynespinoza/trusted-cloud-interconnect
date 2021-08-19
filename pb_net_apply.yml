@@ -208,11 +208,7 @@
       config:
         processes:
         - process_id: "{{ item.ospf_process }}"
-          router_id: "{{ 
-            l3_interfaces[inventory_hostname] |
-            selectattr('description', 'equal', 'loopback') |
-            selectattr('vrf', 'equalto', item.vrf) |
-            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') }}"
+
           vrf: "{{ item.vrf }}"
           max_metric:
             router_lsa: true
