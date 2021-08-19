@@ -200,6 +200,7 @@
 # ----------------------------------------------------------------------------
 - name: Configure OSPFv3 on All Devices
   hosts: aln_wan:aln_core:aln_fab:aln_trust:aln_nontrust
+  tags: ospf
   gather_facts: no
   tasks:
   - name: Global OSPF configuration
