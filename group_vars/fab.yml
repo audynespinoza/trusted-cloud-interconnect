@@ -101,6 +101,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: true
     bgp_type: external
+    
   - name: GigabitEthernet3/3
     cidr: 10.224.21.20/31
     host_ip_index: 0
@@ -113,7 +114,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: true
     bgp_type: external
-    
+
   alnfab2:
   - name: Loopback1
     cidr: 10.224.111.6/32
@@ -141,9 +142,9 @@ l3_interfaces:
     bgp: false
     bgp_type: false
 
-  - name: GigabitEthernet2/1
-    cidr: 10.224.21.14/31
-    host_ip_index: 0
+  - name: GigabitEthernet2/2
+    cidr: 10.224.21.12/31
+    host_ip_index: 1
     vrf: TRUSTED
     description: alncore2
     enabled: true
