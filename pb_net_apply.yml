@@ -234,10 +234,6 @@
     - ospf
     notify: save_cfg
 
-- name: Configure OSPFv3 on All Devices
-  hosts: aln_wan:aln_core:aln_fab:aln_trust:aln_nontrust
-  gather_facts: no
-  tasks:
   - name: Global OSPF configuration for VRF TRUSTED
     cisco.ios.ios_ospfv2:
       config:
