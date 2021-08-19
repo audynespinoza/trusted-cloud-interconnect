@@ -9,6 +9,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: true
+    ospf_process: '1'
     bgp: true
     bgp_type: internal
   - name: GigabitEthernet0/3
@@ -20,6 +21,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: true
+    ospf_process: '2'
     bgp: true
     bgp_type: internal
   - name: GigabitEthernet0/2
@@ -31,6 +33,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: true
+    ospf_process: '1'
     bgp: true
     bgp_type: internal
   - name: GigabitEthernet0/4
@@ -42,6 +45,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: true
+    ospf_process: '2'
     bgp: true
     bgp_type: internal
   - name: GigabitEthernet0/5
@@ -53,6 +57,7 @@ l3_interfaces:
     underlay: true
     physical: true
     ospf_active: false
+    ospf_process: '0'
     bgp: false
     bgp_type: false
   - name: Tunnel1
@@ -64,6 +69,7 @@ l3_interfaces:
     underlay: false
     physical: false
     ospf_active: false
+    ospf_process: '1'
     bgp: true
     bgp_type: external
   - name: Tunnel2
@@ -75,6 +81,7 @@ l3_interfaces:
     underlay: false
     physical: false
     ospf_active: false
+    ospf_process: '2'
     bgp: true
     bgp_type: external
   alnwan2:
@@ -87,6 +94,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: true
+    ospf_process: '1'
     bgp: true
     bgp_type: internal
   - name: GigabitEthernet0/2
@@ -98,6 +106,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: true
+    ospf_process: '1'
     bgp: true
     bgp_type: internal
   - name: GigabitEthernet0/3
@@ -109,6 +118,7 @@ l3_interfaces:
     underlay: true
     physical: true
     ospf_active: false
+    ospf_process: '0'
     bgp: false
     bgp_type: false
   - name: Tunnel1
@@ -120,5 +130,6 @@ l3_interfaces:
     underlay: false
     physical: false
     ospf_active: false
+    ospf_process: '1'
     bgp: true
     bgp_type: external

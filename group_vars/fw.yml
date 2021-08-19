@@ -9,6 +9,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: false
+    ospf_process: '0'
     bgp: false
     bgp_type: false
   - name: GigabitEthernet0/2
@@ -20,6 +21,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: false
+    ospf_process: '0'
     bgp: false
     bgp_type: false
   - name: GigabitEthernet1/1
@@ -31,6 +33,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: false 
+    ospf_process: '0'
     bgp: false
     bgp_type: false
   - name: GigabitEthernet2/1
@@ -42,6 +45,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: false
+    ospf_process: '0'
     bgp: false
     bgp_type: false
   - name: GigabitEthernet1/2
@@ -53,6 +57,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: false
+    ospf_process: '0'
     bgp: false
     bgp_type: false
   - name: GigabitEthernet2/2
@@ -64,5 +69,6 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: false 
+    ospf_process: '0'
     bgp: false
     bgp_type: false
