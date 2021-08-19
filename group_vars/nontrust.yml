@@ -7,7 +7,7 @@ l3_interfaces:
     description: loopback
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: true
     ospf_process: '1'
     bgp: false
@@ -20,7 +20,7 @@ l3_interfaces:
     description: loopback
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: true
     ospf_process: '2'
     bgp: false

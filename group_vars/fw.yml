@@ -12,6 +12,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: false
     bgp_type: false
+
   - name: GigabitEthernet0/2
     cidr: 10.224.11.12/31
     host_ip_index: 1
@@ -24,6 +25,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: false
     bgp_type: false
+
   - name: GigabitEthernet1/1
     cidr: 10.224.11.14/31
     host_ip_index: 1
@@ -36,6 +38,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: false
     bgp_type: false
+
   - name: GigabitEthernet2/1
     cidr: 10.224.21.14/31
     host_ip_index: 1
@@ -48,6 +51,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: false
     bgp_type: false
+
   - name: GigabitEthernet1/2
     cidr: 10.224.11.16/31
     host_ip_index: 1
@@ -60,6 +64,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: false
     bgp_type: false
+
   - name: GigabitEthernet2/2
     cidr: 10.224.21.16/31
     host_ip_index: 1

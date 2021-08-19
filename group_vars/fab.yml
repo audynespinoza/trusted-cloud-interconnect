@@ -113,6 +113,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: true
     bgp_type: external
+    
   alnfab2:
   - name: Loopback1
     cidr: 10.224.111.6/32

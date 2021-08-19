@@ -81,7 +81,7 @@
       parents: "interface {{ item.name }}"
     loop: "{{ l3_interfaces[inventory_hostname] | selectattr('physical','equalto', true) }}"
     tags:
-    - switchports
+    - switchport
     notify: save_cfg
 
   handlers:
