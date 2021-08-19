@@ -91,9 +91,9 @@
       - write mem
     when: not ansible_check_mode
 
-# ------------------------------------------------------------
-# Play - Configure Physical & Tunnel Interfaces On All Devices
-# ------------------------------------------------------------
+# -----------------------------------------------------------------------
+# Play - Configure Physical & Tunnel & Loopback Interfaces On All Devices
+# -----------------------------------------------------------------------
 - name: Configure Device Interfaces
   hosts: aln
   tags: configure_l3_interfaces
@@ -131,7 +131,7 @@
       list }}"
     notify: save_cfg
 
-  - name: Configure Tunnel Interfaces
+  - name: Configure Tunnel & Loopback Interfaces
     cisco.ios.ios_interfaces:
       config:
       - name: "{{ item.name }}"
@@ -194,9 +194,9 @@
       - write mem`
     when: not ansible_check_mode
 
-# --------------------------------------------------------------------------
-# Play - Change Switchports to Routed Ports Before Configuring L3 Interfaces
-# --------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Play - Global and Interface OSPF Configuration for BGP Next-Hop Reachability
+# ----------------------------------------------------------------------------
 - name: Configure OSPFv3 on All Devices
   hosts: aln_wan:aln_core:aln_fab:aln_trust:aln_nontrust
   gather_facts: no
@@ -206,6 +206,11 @@
       config:
         processes:
         - process_id: "{{ item.ospf_process }}"
+          router_id: "{{ 
+            l3_interfaces[inventory_hostname] |
+            selectattr('description', 'equal', 'loopback') |
+            selectattr('vrf', 'equalto', item.vrf) |
+            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') }}"
           vrf: "{{ item.vrf }}"
           max_metric:
             router_lsa: true
@@ -254,7 +259,6 @@
     tags:
     - ospf_interface
     notify: save_cfg
-
 
   handlers:
   - name: save_cfg
