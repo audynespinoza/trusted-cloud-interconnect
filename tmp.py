@@ -106,3 +106,39 @@ for i in hosts:
     tags:
     - ospf
     notify: save_cfg
+
+
+
+
+      - name: Global OSPF configuration for VRF TRUSTED
+    cisco.ios.ios_ospfv2:
+      config:
+        processes:
+        - process_id: "{{ item.ospf_process }}"
+          vrf: "{{ item.vrf }}"
+          max_metric:
+            router_lsa: true
+            on_startup:
+              time: 110
+          areas:
+          - area_id: '0'
+            default_cost: 5
+          network:
+          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            wildcard_bits: 0.0.0.0
+            area: '0'
+          passive_interfaces:
+            default: true
+            interface:
+              set_interface: false
+              name:
+              - "{{ item.name }}"
+      state: merged
+    loop: "{{
+      l3_interfaces[inventory_hostname] |
+      selectattr('ospf_active', 'equalto', true) |
+      selectattr('ospf_process', 'equalto', '2') |
+      list }}"
+    tags:
+    - ospf
+    notify: save_cfg
