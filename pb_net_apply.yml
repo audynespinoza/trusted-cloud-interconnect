@@ -206,7 +206,7 @@
       config:
         processes:
         - process_id: "{{ item.ospf_process }}"
-          vrf: CORE
+          vrf: "{{ item.vrf }}"
           max_metric:
             router_lsa: true
             on_startup:
