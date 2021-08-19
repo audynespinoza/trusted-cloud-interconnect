@@ -270,7 +270,7 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: false
-    ospf_process: '2'
+    ospf_process: '0'
     bgp: true
     bgp_type: internal
   
@@ -283,6 +283,6 @@ l3_interfaces:
     underlay: false
     physical: true
     ospf_active: true
-    ospf_process: '0'
+    ospf_process: '2'
     bgp: false
     bgp_type: false
