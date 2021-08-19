@@ -212,7 +212,7 @@
             l3_interfaces[inventory_hostname] |
             selectattr('description', 'equal', 'loopback') |
             selectattr('vrf', 'equalto', item.vrf) |
-            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address')  }}"[0]
+            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('')  }}"
           vrf: "{{ item.vrf }}"
           max_metric:
             router_lsa: true
