@@ -71,7 +71,7 @@
 # --------------------------------------------------------------------------
 - name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
   hosts: aln_core:aln_fab:aln_fw
-  tags: routed_switchports
+  tags: routed_switchport
   gather_facts: no
   tasks:
   - name: Execute No Switchport Command on Switch Ports
@@ -96,7 +96,7 @@
 # -----------------------------------------------------------------------
 - name: Configure Device Interfaces
   hosts: aln
-  tags: configure_l3_interfaces
+  tags: l3_interface
   gather_facts: no
   tasks:
   - name: Configure Underlay Interfaces with Lower MTU
@@ -107,7 +107,6 @@
         description: "{{ item.description }}"
       state: merged
     tags:
-    - interfaces
     - underlay
     loop: "{{ 
       l3_interfaces[inventory_hostname] |
@@ -123,7 +122,7 @@
         description: "{{ item.description }}"
       state: merged
     tags:
-    - interfaces
+    - interface
     - physical
     loop: "{{ 
       l3_interfaces[inventory_hostname] |
@@ -138,7 +137,6 @@
         description: "{{ item.description }}"
       state: merged
     tags:
-    - interfaces
     - tunnel
     - loopback
     loop: "{{
@@ -161,7 +159,6 @@
       state: present
     loop: "{{ vrfs }}"
     tags:
-    - interface
     - vrf
     notify: save_cfg
 
@@ -184,7 +181,6 @@
         enabled: "{{ item.enabled }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
     tags:
-    - interface
     - admin_state
     notify: save_cfg
 
