@@ -83,12 +83,26 @@ for i in hosts:
 # ansible-playbook pb_net_apply.yml
 
 
-  - name: Create VRFs and Associate to Interfaces
-    cisco.ios_ios_vrf:
-    - name: "{{ item.name }}"
-      description: "{{ item.description }}"
-      rd: "{{ item.rd }}"
-      route_both: "{{ item.route_both }}"
-      interfaces: "{{ l3_interfaces[inventory_hostname] | selectattr('vrf', 'equalto', {{ item.vrf }}) | map(attribute='name') | list }}"
-    loop: "{{ vrfs }}"
-    notify: save_ios
+  - name: Inteface OSPF Configuration
+    cisco.ios.ios_ospf_interfaces:
+      config:
+        - name: "{{ item.name }}"
+          address_family:
+            - afi: ipv4
+              process:
+                id: "{{ item.ospf_process }}"
+                area_id: 0
+              adjacency: true
+              bfd: true
+              cost:
+                interface_cost: 5
+              hello_interval: 1
+              dead_interval:
+                time: 5
+              network:
+                point_to_point: true
+              
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('ospf_active', 'equalto', true) | list }}"
+    tags:
+    - ospf
+    notify: save_cfg
