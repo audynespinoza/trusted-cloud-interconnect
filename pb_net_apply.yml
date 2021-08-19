@@ -257,7 +257,11 @@
                 time: 5
               network:
                 point_to_point: true
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('ospf_active', 'equalto', true) | list }}"
+    loop: "{{
+      l3_interfaces[inventory_hostname] |
+      selectattr('ospf_active', 'equalto', true) |
+      selectattr('physical', 'equalto', true) |
+      list }}"
     tags:
     - ospf_phys_interface
     notify: save_cfg
@@ -273,9 +277,11 @@
                 area_id: 0
               cost:
                 interface_cost: 5
-              network:
-                point_to_point: true
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('ospf_active', 'equalto', true) | list }}"
+    loop: "{{ 
+      l3_interfaces[inventory_hostname] |
+      selectattr('ospf_active', 'equalto', true) |
+      selectattr('physical', 'equalto', false) |
+      list }}"
     tags:
     - ospf_loopback_interface
     notify: save_cfg
