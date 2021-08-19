@@ -240,7 +240,7 @@
     - ospf_global
     notify: save_cfg
 
-  - name: Inteface OSPF Configuration
+  - name: Inteface OSPF Configuration on Transits
     cisco.ios.ios_ospf_interfaces:
       config:
         - name: "{{ item.name }}"
@@ -259,8 +259,27 @@
                 point_to_point: true
     loop: "{{ l3_interfaces[inventory_hostname] | selectattr('ospf_active', 'equalto', true) | list }}"
     tags:
-    - ospf_interface
+    - ospf_phys_interface
     notify: save_cfg
+
+  - name: Inteface OSPF Configuration on Loopbacks
+    cisco.ios.ios_ospf_interfaces:
+      config:
+        - name: "{{ item.name }}"
+          address_family:
+            - afi: ipv4
+              process:
+                id: "{{ item.ospf_process }}"
+                area_id: 0
+              cost:
+                interface_cost: 5
+              network:
+                point_to_point: true
+    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('ospf_active', 'equalto', true) | list }}"
+    tags:
+    - ospf_phys_interface
+    notify: save_cfg
+
 
   handlers:
   - name: save_cfg
