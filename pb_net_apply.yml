@@ -242,7 +242,6 @@
               process:
                 id: "{{ item.ospf_process }}"
                 area_id: 0
-              adjacency: true
               bfd: true
               cost:
                 interface_cost: 5
