@@ -319,3 +319,11 @@
       list }}"
     tags:
     - ibgp
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
