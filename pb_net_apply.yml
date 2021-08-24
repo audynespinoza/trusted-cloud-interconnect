@@ -301,18 +301,18 @@
     cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
-        router_id: "{{ 
-            l3_interfaces[inventory_hostname] |
-            selectattr('description', 'equalto', 'loopback') |
-            selectattr('vrf', 'equalto', item.vrf) |
-            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
         address_family:
           - afi: ipv4
             safi: unicast
+            router_id: "{{ 
+              l3_interfaces[inventory_hostname] |
+              selectattr('description', 'equalto', 'loopback') |
+              selectattr('vrf', 'equalto', item.vrf) |
+              map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
             vrf: "{{ item.vrf }}"
             neighbor:
               - activate: true
-                address: "{{ item.cidr | ipv4(not item.host_ip_index|bool) | ipaddr('address') }}" 
+                address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
                 remote_as: "{{ bgp.local_asn }}"
                 route_reflector_client: "{{ item.bgp_route_reflect }}"
                 next_hop_self: "{{ item.bgp_next_hop_self }}"
