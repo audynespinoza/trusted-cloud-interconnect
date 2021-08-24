@@ -324,7 +324,7 @@
   gather_facts: no
   tasks:
   - name: Configure iBGP Neighbors
-    cisco.ios.ios_bgp_address_family:
+    cisco.ios.ios_bgp_global:
       config:
         as_number: "{{ bgp.local_asn }}"
         address_family:
