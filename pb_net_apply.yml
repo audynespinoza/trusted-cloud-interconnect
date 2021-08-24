@@ -307,7 +307,7 @@
     tags:
     - bgp_router_id
     notify: save_cfg
-    
+
   handlers:
   - name: save_cfg
     ios_command:
@@ -324,7 +324,7 @@
   gather_facts: no
   tasks:
   - name: Configure iBGP Neighbors
-    cisco.ios.ios_bgp_global:
+    cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
         address_family:
