@@ -315,10 +315,10 @@
               timers:
                 holdtime: "{{ bgp_holdtime }}"
                 interval: "{{ bgp_keepalive_interval }}"
-              route_map:
-                - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
-                  out: true
+              route_maps:
                 - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+                  out: true
+                - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
                   in: true
           redistribute:
             - connected:
