@@ -300,21 +300,21 @@
   - name: Configure iBGP Neighbors
     cisco.ios.ios_bgp_address_family:
       config:
-        as_number: "{{ bgp.local_asn }}"
+        as_number: "{{ bgp_local_asn }}"
         address_family:
         - afi: ipv4
           safi: unicast
           vrf: "{{ item.vrf }}"
           neighbor:
             - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
-              remote_as: "{{ bgp.local_asn }}"
+              remote_as: "{{ bgp_local_asn }}"
               route_reflector_client: "{{ item.bgp_route_reflect }}"
               next_hop_self: "{{ item.bgp_next_hop_self }}"
               send_community: 
                 standard: true
               timers:
-                holdtime: "{{ bgp.holdtime }}"
-                interval: "{{ bgp.keepalive_interval }}"
+                holdtime: "{{ bgp_holdtime }}"
+                interval: "{{ bgp_keepalive_interval }}"
               route_map:
                 - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
                   out: true
