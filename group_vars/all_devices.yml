@@ -36,8 +36,9 @@ vrfs:
   route_both:
   - 3:100
 
-bgp_log_neighbor_changes: true
-bgp_keepalive_interval: 4
-bgp_holdtime: 12
-bgp_neighbor_pwd: cisco
+bgp:
+  log_neighbor_changes: true
+  keepalive_interval: 4
+  holdtime: 12
+  neighbor_pwd: cisco
 

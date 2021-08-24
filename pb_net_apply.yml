@@ -307,14 +307,14 @@
           vrf: "{{ item.vrf }}"
           bgp:
             timers:
-              holdtime: "{{ bgp_holdtime }}"
-              interval: "{{ bgp_keepalive_interval }}"
+              holdtime: "{{ bgp.holdtime }}"
+              interval: "{{ bgp.keepalive_interval }}"
           neighbor:
             - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
               remote_as: "{{ local_asn }}"
               route_reflector_client: "{{ item.bgp_route_reflect }}"
               next_hop_self: "{{ item.bgp_next_hop_self }}"
-              password: "{{ bgp_neighbor_pwd }}"
+              password: "{{ bgp.neighbor_pwd }}"
               send_community: 
                 standard: true
               route_map:
