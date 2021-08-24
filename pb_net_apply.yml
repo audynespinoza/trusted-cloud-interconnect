@@ -297,43 +297,37 @@
   tags: bgp
   gather_facts: no
   tasks:
-  - name: Configure iBGP neighbors
-    cisco.ios.ios_bgp_global:
-      config:
-        as_number: "{{ bgp.local_asn }}"
+  - name: Merge provided configuration with device configuration
+  cisco.ios.ios_bgp_address_family:
+    config:
+      as_number: "{{ local_asn }}"
+      address_family:
+      - afi: ipv4
+        safi: unicast
+        vrf: "{{ item.vrf }}"
         bgp:
-          router_id:
-            address: "{{ 
-              l3_interfaces[inventory_hostname] |
-              selectattr('description', 'equalto', 'loopback') |
-              selectattr('vrf', 'equalto', item.vrf) |
-              map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
-            vrf: true
-          log_neighbor_changes: "{{ bgp_log_neighbor_changes }}"
+          timers:
+            holdtime: "{{ bgp_holdtime }}"
+            interval: "{{ bgp_keepalive_interval }}"
         neighbor:
-          - activate: true
-            address: "{{ item.cidr | ipv4(not item.host_ip_index|bool) | ipaddr('address') }}" 
-            remote_as: "{{ bgp.local_asn }}"
+          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            remote_as: "{{ local_asn }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
-            next_hop_self:
-              set: "{{ item.bgp_next_hop_self }}"
-            
+            next_hop_self: "{{ item.bgp_next_hop_self }}"
             password: "{{ bgp_neighbor_pwd }}"
-            send_community:
-              set: true
-            shutdown:
-              set: "{{ not item.bgp_enabled|bool }}"
+            send_community: 
+              standard: true
+            route_map:
+              - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+                out: true
+              - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+                in: true
         redistribute:
           - connected:
               route_map: "CONN_BGP_{{ item.vrf }}"
           - static:
               route_map: "STATIC_BGP_{{ item.vrf }}"
-          - vrf:
-              name: "{{ item.vrf }}"
-        timers:
-          keepalive: "{{ bgp_keepalive_interval }}"
-          holdtime: "{{ bgp_holdtime }}"
-      state: merged
+    state: merged
     loop: "{{
       l3_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
