@@ -319,9 +319,11 @@
             log_neighbor_changes:
               set: "{{ bgp_log_neighbor_changes }}"
             password: "{{ bgp_neighbor_pwd }}"
-            route_map:
-              in: "{{ item.description|upper }}_IN_{{ item.vrf }}"
-              out: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+            route_maps:
+              - in: true
+                name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+              - out: true
+                name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
             send_community:
               set: true
             shutdown:
