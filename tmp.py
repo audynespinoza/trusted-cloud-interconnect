@@ -107,7 +107,23 @@ for i in hosts:
     - ospf
     notify: save_cfg
 
-
+  - name: Configure BGP parameters and iBGP neighbors
+    cisco.ios.ios_bgp_address_family:
+      config:
+        as_number: "{{ local_asn }}"
+        address_family:
+          - afi: ipv4
+            safi: unicast
+            vrf: "{{ item.vrf }}"
+            neighbor:
+              - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+                remote_as: "{{ local_asn }}"
+                route_map:
+                  - name: test-route-out
+                    out: true
+                  - name: test-route-in
+                    in: true
+                route_server_client: true
 
 
       - name: Global OSPF configuration for VRF TRUSTED

@@ -8,11 +8,14 @@ l3_interfaces:
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
-    ospf_process: '1'
+    ospf_active: false
+    ospf_process: '0'
     bgp: false
     bgp_type: false
-
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+    
   - name: Loopback2
     cidr: 10.224.121.7/32
     host_ip_index: 0
@@ -21,11 +24,14 @@ l3_interfaces:
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
-    ospf_process: '2'
+    ospf_active: false
+    ospf_process: '0'
     bgp: false
     bgp_type: false
-
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+    
   - name: GigabitEthernet0/0
     cidr: 10.224.21.20/31
     host_ip_index: 1
@@ -38,7 +44,10 @@ l3_interfaces:
     ospf_process: '0'
     bgp: true
     bgp_type: external
-
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+    
   - name: GigabitEthernet0/1
     cidr: 10.224.21.22/31
     host_ip_index: 1
@@ -51,3 +60,7 @@ l3_interfaces:
     ospf_process: '0'
     bgp: true
     bgp_type: external
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+    

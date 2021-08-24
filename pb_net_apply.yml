@@ -95,7 +95,7 @@
 # Play - Configure Physical & Tunnel & Loopback Interfaces On All Devices
 # -----------------------------------------------------------------------
 - name: Configure Device Interfaces
-  hosts: aln_fab
+  hosts: aln
   tags: l3_interface
   gather_facts: no
   tasks:
@@ -195,7 +195,7 @@
 # Play - Global and Interface OSPF Configuration for BGP Next-Hop Reachability
 # ----------------------------------------------------------------------------
 - name: Configure OSPFv3 on All Devices
-  hosts: aln_wan:aln_core:aln_fab:aln_trust:aln_nontrust
+  hosts: aln_wan:aln_core:aln_fab
   tags: ospf
   gather_facts: no
   tasks:
@@ -288,3 +288,34 @@
       commands:
       - write mem
     when: not ansible_check_mode
+
+# ------------------------
+# Play - BGP Configuration
+# ------------------------
+- name: Configure iBGP on All Devices
+  hosts: aln_wan:aln_core:aln_fab
+  tags: bgp
+  gather_facts: no
+  tasks:
+  - name: Configure iBGP neighbors
+    cisco.ios.ios_bgp_address_family:
+      config:
+        as_number: "{{ local_asn }}"
+        address_family:
+          - afi: ipv4
+            safi: unicast
+            vrf: "{{ item.vrf }}"
+            neighbor:
+              - activate: true
+                address: "{{ item.cidr | not ipv4(item.host_ip_index) | ipaddr('address') }}" 
+                remote_as: "{{ local_asn }}"
+                route_reflector_client: "{{ item.bgp_route_reflect }}"
+                next_hop_self: "{{ item.bgp_next_hop_self }}"
+      state: merged
+    loop: "{{
+      l3_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      selectattr('bgp_type', 'equalto', true) |
+      list }}"
+    tags:
+    - ibgp
