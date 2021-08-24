@@ -300,7 +300,7 @@
   - name: Configure iBGP Neighbors
     cisco.ios.ios_bgp_address_family:
       config:
-        as_number: "{{ local_asn }}"
+        as_number: "{{ bgp.local_asn }}"
         address_family:
         - afi: ipv4
           safi: unicast
@@ -311,7 +311,7 @@
               interval: "{{ bgp.keepalive_interval }}"
           neighbor:
             - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
-              remote_as: "{{ local_asn }}"
+              remote_as: "{{ bgp.local_asn }}"
               route_reflector_client: "{{ item.bgp_route_reflect }}"
               next_hop_self: "{{ item.bgp_next_hop_self }}"
               password: "{{ bgp.neighbor_pwd }}"

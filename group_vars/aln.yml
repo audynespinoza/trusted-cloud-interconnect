@@ -1,5 +1,2 @@
 bgp:
   local_asn: 64551
-  timers:
-    keepalive: 3
-    holdtime: 12
