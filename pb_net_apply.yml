@@ -313,6 +313,7 @@
             timers:
               holdtime: "{{ bgp_holdtime }}"
               interval: "{{ bgp_keepalive_interval }}"
+            password: "{{bgp_neighbor_pwd}}"
             route_maps:
               - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
                 out: true

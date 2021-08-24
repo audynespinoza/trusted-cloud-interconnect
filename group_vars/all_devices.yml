@@ -40,5 +40,5 @@ vrfs:
 bgp_log_neighbor_changes: true
 bgp_keepalive_interval: 4
 bgp_holdtime: 12
-bgp_bgp_neighbor_pwd: cisco
+bgp_neighbor_pwd: cisco
 
