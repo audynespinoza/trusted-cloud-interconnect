@@ -316,7 +316,6 @@
             password: "{{bgp_neighbor_pwd}}"
             send_community:
               standard: true
-              set: true
             route_maps:
               - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
                 out: true
