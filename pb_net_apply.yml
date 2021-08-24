@@ -304,11 +304,12 @@
         address_family:
           - afi: ipv4
             safi: unicast
-            router_id: "{{ 
-              l3_interfaces[inventory_hostname] |
-              selectattr('description', 'equalto', 'loopback') |
-              selectattr('vrf', 'equalto', item.vrf) |
-              map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
+            bgp:
+              router_id: "{{ 
+                l3_interfaces[inventory_hostname] |
+                selectattr('description', 'equalto', 'loopback') |
+                selectattr('vrf', 'equalto', item.vrf) |
+                map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
             vrf: "{{ item.vrf }}"
             neighbor:
               - activate: true
