@@ -70,7 +70,7 @@
 # Play - Change Switchports to Routed Ports Before Configuring L3 Interfaces
 # --------------------------------------------------------------------------
 - name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
-  hosts: aln_core:aln_fab:aln_fw
+  hosts: aln_fab
   tags: routed_switchport
   gather_facts: no
   tasks:
