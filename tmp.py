@@ -158,3 +158,50 @@ for i in hosts:
     tags:
     - ospf
     notify: save_cfg
+
+
+  - name: Configure iBGP neighbors
+    cisco.ios.ios_bgp_global:
+      config:
+        as_number: "{{ bgp.local_asn }}"
+        bgp:
+          router_id:
+            address: "{{ 
+              l3_interfaces[inventory_hostname] |
+              selectattr('description', 'equalto', 'loopback') |
+              selectattr('vrf', 'equalto', item.vrf) |
+              map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
+            vrf: true
+          log_neighbor_changes: "{{ bgp_log_neighbor_changes }}"
+        neighbor:
+          - activate: true
+            address: "{{ item.cidr | ipv4(not item.host_ip_index|bool) | ipaddr('address') }}" 
+            remote_as: "{{ bgp.local_asn }}"
+            route_reflector_client: "{{ item.bgp_route_reflect }}"
+            next_hop_self: "{{ item.bgp_next_hop_self }}"
+            
+            password: "{{ bgp_neighbor_pwd }}"
+            send_community: 
+              standard: true
+            shutdown:
+              set: "{{ not item.bgp_enabled|bool }}"
+        redistribute:
+          - connected:
+              route_map: "CONN_BGP_{{ item.vrf }}"
+          - static:
+              route_map: "STATIC_BGP_{{ item.vrf }}"
+          - vrf:
+              name: "{{ item.vrf }}"
+        timers:
+          keepalive: "{{ bgp_keepalive_interval }}"
+          holdtime: "{{ bgp_holdtime }}"
+      state: merged
+    loop: "{{
+      l3_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      selectattr('bgp_type', 'equalto', 'internal') |
+      list }}"
+    tags:
+    - ibgp
+    notify: save_cfg
+
