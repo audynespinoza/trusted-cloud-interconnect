@@ -309,6 +309,7 @@
               selectattr('vrf', 'equalto', item.vrf) |
               map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
             vrf: true
+          log_neighbor_changes: "{{ bgp_log_neighbor_changes }}"
         neighbor:
           - activate: true
             address: "{{ item.cidr | ipv4(not item.host_ip_index|bool) | ipaddr('address') }}" 
@@ -316,8 +317,7 @@
             route_reflector_client: "{{ item.bgp_route_reflect }}"
             next_hop_self:
               set: "{{ item.bgp_next_hop_self }}"
-            log_neighbor_changes:
-              set: "{{ bgp_log_neighbor_changes }}"
+            
             password: "{{ bgp_neighbor_pwd }}"
             send_community:
               set: true
