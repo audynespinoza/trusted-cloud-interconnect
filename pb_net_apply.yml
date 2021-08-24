@@ -298,7 +298,7 @@
   gather_facts: no
   tasks:
   - name: Configure iBGP neighbors
-    cisco.ios.ios_bgp_address_family:
+    cisco.ios.ios_bgp_global:
       config:
         as_number: "{{ bgp.local_asn }}"
         address_family:
@@ -310,7 +310,8 @@
                 selectattr('description', 'equalto', 'loopback') |
                 selectattr('vrf', 'equalto', item.vrf) |
                 map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
-            vrf: "{{ item.vrf }}"
+            vrf:
+              name: "{{ item.vrf }}"
             neighbor:
               - activate: true
                 address: "{{ item.cidr | ipv4(not item.host_ip_index|bool) | ipaddr('address') }}" 
