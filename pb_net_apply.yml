@@ -328,6 +328,8 @@
               route_map: "CONN_BGP_{{ item.vrf }}"
           - static:
               route_map: "STATIC_BGP_{{ item.vrf }}"
+          - vrf:
+              name: "{{ item.vrf }}"
         timers:
           keepalive: "{{ bgp_keepalive_interval }}"
           holdtime: "{{ bgp_holdtime }}"
