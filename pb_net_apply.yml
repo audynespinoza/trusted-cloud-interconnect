@@ -298,7 +298,7 @@
   gather_facts: no
   tasks:
   - name: Configure iBGP Neighbors
-    cisco.ios.ios_bgp:
+    cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
         address_family:
@@ -306,18 +306,18 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           neighbor:
-            - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
-              remote_as: "{{ bgp.local_asn }}"
-              route_reflector_client: "{{ item.bgp_route_reflect }}"
-              next_hop_self: "{{ item.bgp_next_hop_self }}"
-              timers:
-                holdtime: "{{ bgp_holdtime }}"
-                interval: "{{ bgp_keepalive_interval }}"
-              route_maps:
-                - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
-                  out: true
-                - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
-                  in: true
+          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            remote_as: "{{ bgp.local_asn }}"
+            route_reflector_client: "{{ item.bgp_route_reflect }}"
+            next_hop_self: "{{ item.bgp_next_hop_self }}"
+            timers:
+              holdtime: "{{ bgp_holdtime }}"
+              interval: "{{ bgp_keepalive_interval }}"
+            route_maps:
+              - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+                out: true
+              - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+                in: true
           redistribute:
             - connected:
                 route_map: "CONN_BGP_{{ item.vrf }}"
