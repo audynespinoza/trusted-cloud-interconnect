@@ -294,13 +294,54 @@
 # ------------------------
 - name: Configure iBGP on All Devices
   hosts: aln_wan:aln_core:aln_fab
+  tags: bgp_router_id
+  gather_facts: no
+  tasks:
+  - name: Configure Router-ID VRF Auto-Assign
+    cisco.ios.ios_bgp_global:
+      config:
+        bgp:
+          router_id:
+            vrf: true
+    tags:
+    - bgp_router_id
+    notify: save_cfg
+
+# ------------------------
+# Play - BGP Configuration
+# ------------------------
+- name: Configure iBGP on All Devices
+  hosts: aln_wan:aln_core:aln_fab
   tags: bgp
   gather_facts: no
   tasks:
   - name: Configure iBGP Neighbors
-    cisco.ios.ios_bgp_address_family:
+    cisco.ios.ios_bgp_global:
       config:
         as_number: "{{ bgp.local_asn }}"
+        address_family:
+        - afi: ipv4
+          safi: unicast
+          vrf: "{{ item.vrf }}"
+          neighbor:
+          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            remote_as: "{{ bgp.local_asn }}"
+            route_reflector_client: "{{ item.bgp_route_reflect }}"
+            next_hop_self: "{{ item.bgp_next_hop_self }}"
+            timers:
+              holdtime: "{{ bgp_holdtime }}"
+              interval: "{{ bgp_keepalive_interval }}"
+            password: "{{bgp_neighbor_pwd}}"
+            route_maps:
+              - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+                out: true
+              - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+                in: true
+          redistribute:
+            - connected:
+                route_map: "CONN_BGP_{{ item.vrf }}"
+            - static:
+                route_map: "STATIC_BGP_{{ item.vrf }}"
       state: merged
     loop: "{{
       l3_interfaces[inventory_hostname] |
