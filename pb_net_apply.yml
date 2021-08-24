@@ -305,10 +305,6 @@
         - afi: ipv4
           safi: unicast
           vrf: "{{ item.vrf }}"
-          bgp:
-            timers:
-              holdtime: "{{ bgp.holdtime }}"
-              interval: "{{ bgp.keepalive_interval }}"
           neighbor:
             - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
               remote_as: "{{ bgp.local_asn }}"
@@ -317,6 +313,9 @@
               password: "{{ bgp.neighbor_pwd }}"
               send_community: 
                 standard: true
+              timers:
+                holdtime: "{{ bgp.holdtime }}"
+                interval: "{{ bgp.keepalive_interval }}"
               route_map:
                 - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
                   out: true
