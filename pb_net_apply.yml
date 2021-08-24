@@ -297,7 +297,7 @@
   tags: bgp
   gather_facts: no
   tasks:
-  - name: Merge provided configuration with device configuration
+  - name: Configure iBGP Neighbors
   cisco.ios.ios_bgp_address_family:
     config:
       as_number: "{{ local_asn }}"
