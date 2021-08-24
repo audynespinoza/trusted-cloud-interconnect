@@ -156,7 +156,7 @@
         selectattr('vrf', 'equalto', item.name ) |
         map(attribute='name') |
         list }}"
-      state: present
+      state: absent
     loop: "{{ vrfs }}"
     tags:
     - vrf
