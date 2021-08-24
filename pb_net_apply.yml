@@ -300,6 +300,7 @@
   - name: Configure Router-ID VRF Auto-Assign
     cisco.ios.ios_bgp_global:
       config:
+        as_number: "{{ bgp.local_asn }}"
         bgp:
           router_id:
             vrf: true
