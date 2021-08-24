@@ -36,5 +36,7 @@ vrfs:
   route_both:
   - 3:100
 
+  bgp_log_neighbor_changes: true
+
 
 

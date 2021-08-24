@@ -305,19 +305,38 @@
           - afi: ipv4
             safi: unicast
             bgp:
-              router_id: "{{ 
-                l3_interfaces[inventory_hostname] |
-                selectattr('description', 'equalto', 'loopback') |
-                selectattr('vrf', 'equalto', item.vrf) |
-                map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
-            vrf:
-              name: "{{ item.vrf }}"
+              router_id:
+                address: "{{ 
+                  l3_interfaces[inventory_hostname] |
+                  selectattr('description', 'equalto', 'loopback') |
+                  selectattr('vrf', 'equalto', item.vrf) |
+                  map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
+                vrf: "{{ item.vrf }}"
             neighbor:
               - activate: true
                 address: "{{ item.cidr | ipv4(not item.host_ip_index|bool) | ipaddr('address') }}" 
                 remote_as: "{{ bgp.local_asn }}"
                 route_reflector_client: "{{ item.bgp_route_reflect }}"
-                next_hop_self: "{{ item.bgp_next_hop_self }}"
+                next_hop_self:
+                  set: "{{ item.bgp_next_hop_self }}"
+                log_neighbor_changes:
+                  set: "{{ bgp_log_neighbor_changes }}"
+                password: "{{ bgp_neighbor_pwd }}"
+                route_map:
+                  in: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+                  out: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+                send_community:
+                  set: true
+                shutdown:
+                  set: "{{ not item.bgp_enabled|bool }}"
+                redistribute:
+                  connected:
+                    route_map: "CONN_BGP_{{ item.vrf }}"
+                  static:
+                    route_map: "STATIC_BGP_{{ item.vrf }}"
+                timers:
+                  keepalive: "{{ bgp_keepalive_interval }}"
+                  holdtime: "{{ bgp_holdtime }}"
       state: merged
     loop: "{{
       l3_interfaces[inventory_hostname] |
