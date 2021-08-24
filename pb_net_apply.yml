@@ -95,7 +95,7 @@
 # Play - Configure Physical & Tunnel & Loopback Interfaces On All Devices
 # -----------------------------------------------------------------------
 - name: Configure Device Interfaces
-  hosts: aln
+  hosts: aln_fab
   tags: l3_interface
   gather_facts: no
   tasks:
