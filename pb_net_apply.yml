@@ -308,7 +308,7 @@
               selectattr('description', 'equalto', 'loopback') |
               selectattr('vrf', 'equalto', item.vrf) |
               map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
-            vrf: "{{ item.vrf }}"
+            vrf: true
         neighbor:
           - activate: true
             address: "{{ item.cidr | ipv4(not item.host_ip_index|bool) | ipaddr('address') }}" 
