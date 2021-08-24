@@ -305,22 +305,7 @@
         - afi: ipv4
           safi: unicast
           vrf: "{{ item.vrf }}"
-          neighbor:
-          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
-            remote_as: "{{ bgp.local_asn }}"
-            route_reflector_client: "{{ item.bgp_route_reflect }}"
-            next_hop_self: "{{ item.bgp_next_hop_self }}"
-            timers:
-              holdtime: "{{ bgp_holdtime }}"
-              interval: "{{ bgp_keepalive_interval }}"
-            password: "{{bgp_neighbor_pwd}}"
-            send_community:
-              standard: true
-            route_maps:
-              - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
-                out: true
-              - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
-                in: true
+ 
           redistribute:
             - connected:
                 route_map: "CONN_BGP_{{ item.vrf }}"
