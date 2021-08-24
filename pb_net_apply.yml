@@ -301,15 +301,6 @@
     cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
-        address_family:
-        - afi: ipv4
-          safi: unicast
-          vrf: "{{ item.vrf }}"
-          redistribute:
-            - connected:
-                route_map: "CONN_BGP_{{ item.vrf }}"
-            - static:
-                route_map: "STATIC_BGP_{{ item.vrf }}"
       state: merged
     loop: "{{
       l3_interfaces[inventory_hostname] |
