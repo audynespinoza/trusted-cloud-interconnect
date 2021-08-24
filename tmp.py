@@ -181,8 +181,6 @@ for i in hosts:
             next_hop_self: "{{ item.bgp_next_hop_self }}"
             
             password: "{{ bgp_neighbor_pwd }}"
-            send_community: 
-              standard: true
             shutdown:
               set: "{{ not item.bgp_enabled|bool }}"
         redistribute:
