@@ -324,10 +324,10 @@
             shutdown:
               set: "{{ not item.bgp_enabled|bool }}"
         redistribute:
-          connected:
-            route_map: "CONN_BGP_{{ item.vrf }}"
-          static:
-            route_map: "STATIC_BGP_{{ item.vrf }}"
+          - connected:
+              route_map: "CONN_BGP_{{ item.vrf }}"
+          - static:
+              route_map: "STATIC_BGP_{{ item.vrf }}"
         timers:
           interval: "{{ bgp_keepalive_interval }}"
           holdtime: "{{ bgp_holdtime }}"
