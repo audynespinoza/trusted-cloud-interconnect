@@ -315,7 +315,7 @@
     loop: "{{
       l3_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
-      selectattr('bgp_type', 'equalto', true) |
+      selectattr('bgp_type', 'equalto', 'internal') |
       list }}"
     tags:
     - ibgp
