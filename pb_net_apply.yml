@@ -315,7 +315,7 @@
               interval: "{{ bgp_keepalive_interval }}"
             password: "{{bgp_neighbor_pwd}}"
             send_community:
-              standard: false
+              standard: true
             route_maps:
               - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
                 out: true
