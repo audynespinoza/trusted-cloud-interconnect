@@ -27,7 +27,7 @@ l3_interfaces:
     bgp_type: false
 
   - name: GigabitEthernet2/1
-    cidr: 10.224.21.10/31 
+    cidr: 10.224.21.10/31
     host_ip_index: 1
     vrf: TRUSTED
     description: alncore1

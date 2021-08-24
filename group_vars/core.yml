@@ -118,20 +118,7 @@ l3_interfaces:
     bgp_type: internal
   
   - name: GigabitEthernet3/1
-    cidr: 10.224.21.10/31
-    host_ip_index: 0
-    vrf: TRUSTED
-    description: alnfab1
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: true
-    ospf_process: '2'
-    bgp: true
-    bgp_type: internal
-  
-  - name: GigabitEthernet2/1
-    cidr: 10.224.11.10/31 
+    cidr: 10.224.11.10/31
     host_ip_index: 0
     vrf: CORE
     description: alnfw1
@@ -142,6 +129,19 @@ l3_interfaces:
     ospf_process: '0'
     bgp: false
     bgp_type: false
+  
+  - name: GigabitEthernet2/1
+    cidr: 10.224.21.10/31 
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: alnfab1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_type: internal
   
   alncore2:
   - name: Loopback1
@@ -271,8 +271,8 @@ l3_interfaces:
     physical: true
     ospf_active: false
     ospf_process: '0'
-    bgp: true
-    bgp_type: internal
+    bgp: false
+    bgp_type: false
   
   - name: GigabitEthernet2/2
     cidr: 10.224.21.12/31
@@ -284,5 +284,5 @@ l3_interfaces:
     physical: true
     ospf_active: true
     ospf_process: '2'
-    bgp: false
-    bgp_type: false
+    bgp: true
+    bgp_type: internal

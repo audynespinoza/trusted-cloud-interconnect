@@ -282,7 +282,6 @@
     - ospf_loopback_interface
     notify: save_cfg
 
-
   handlers:
   - name: save_cfg
     ios_command:
