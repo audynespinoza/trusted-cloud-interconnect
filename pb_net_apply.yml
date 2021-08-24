@@ -311,7 +311,7 @@
               route_reflector_client: "{{ item.bgp_route_reflect }}"
               next_hop_self: "{{ item.bgp_next_hop_self }}"
               send_community: 
-                standard: true
+                both: true
               timers:
                 holdtime: "{{ bgp_holdtime }}"
                 interval: "{{ bgp_keepalive_interval }}"
