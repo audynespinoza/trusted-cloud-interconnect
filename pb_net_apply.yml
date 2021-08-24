@@ -329,7 +329,7 @@
               static:
                 route_map: "STATIC_BGP_{{ item.vrf }}"
             timers:
-              keepalive: "{{ bgp_keepalive_interval }}"
+              interval: "{{ bgp_keepalive_interval }}"
               holdtime: "{{ bgp_holdtime }}"
       state: merged
     loop: "{{
