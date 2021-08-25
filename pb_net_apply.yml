@@ -309,8 +309,8 @@
             l3_interfaces[inventory_hostname] |
             selectattr('description', 'equalto', 'loopback') |
             selectattr('vrf', 'equalto', item.name) |
-            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}" 
-      parents: "router bgp {{ local_asn }}"
+            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
+      parents: "router bgp {{ bgp.local_asn }}"
     loop: "{{ vrfs }}"
     tags:
     - bgp_router_id
