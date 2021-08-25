@@ -364,7 +364,26 @@
     tags:
     - ibgp
     notify: save_cfg
-    register: awesome
+
+  - name: Get BGP Neighbor status
+    cisco.ios.ios_command:
+      commands:
+      - "sh ip bgp vpnv4 vrf {{ item.name }} sum"
+    when: item.name in l3_interfaces[inventory_hostname] |
+        selectattr('vrf', 'equalto', item.name ) |
+        selectattr('description', 'equalto', 'main_loopback') |
+        map(attribute='vrf') |
+        list
+    loop: "{{ vrfs }}"
+    tags:
+    - show_bgp_neighbors
+    register: bgp_neighbor_status
+
+  - name: Display BGP Neighbor status
+    debug:
+      msg: bgp_neighbor_status
+    tags:
+    - show_bgp_neighbors
 
   handlers:
   - name: save_cfg
@@ -372,3 +391,16 @@
       commands:
       - write mem
     when: not ansible_check_mode
+
+# ------------------------
+# Play - BGP Configuration
+# ------------------------
+- name: Configure BGP
+  hosts: aln_wan:aln_core:aln_fab
+  tags: bgp
+  gather_facts: no
+  tasks:
+
+    sh ip bgp vpnv4 vrf CORE sum
+    sh ip bgp vpnv4 vrf EDGE sum
+    sh ip ospf neigh
