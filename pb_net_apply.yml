@@ -376,7 +376,6 @@
         list
     loop: "{{ vrfs }}"
     register: bgp_neighbor_status
-    set_fact
     tags:
     - show_bgp_neighbors
     
