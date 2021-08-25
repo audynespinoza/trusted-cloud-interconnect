@@ -372,7 +372,13 @@
     register: bgp_neighbor_status
     tags:
     - show_bgp_neighbors
-    
+
+  - name: Get Running Config
+    cisco.ios.ios_command:
+      commands:
+      - sh run
+    register: running_config
+    tags: wow
 
   - name: Display BGP Neighbor status
     debug:
