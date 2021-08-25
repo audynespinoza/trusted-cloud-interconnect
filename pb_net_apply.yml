@@ -302,7 +302,7 @@
   gather_facts: no
   tasks:
   - name: Configure Router-ID for each VRF
-    cisco.ios.ios.ios_config:
+    cisco.ios.ios_config:
       lines:
       - "address family ipv4 {{ item.name }}"
       - "bgp router-id {{ 
