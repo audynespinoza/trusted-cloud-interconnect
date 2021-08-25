@@ -160,7 +160,7 @@
     loop: "{{ vrfs }}"
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
-        map(attribute='name') |
+        map(attribute='vrf') |
         list
     tags:
     - vrf
@@ -313,7 +313,7 @@
       parents: "router bgp {{ bgp.local_asn }}"
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
-        map(attribute='name') |
+        map(attribute='vrf') |
         list
     loop: "{{ vrfs }}"
     tags:
