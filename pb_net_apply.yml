@@ -368,7 +368,7 @@
   - name: Get BGP Neighbor status
     cisco.ios.ios_command:
       commands:
-      - "sh ip bgp vpnv4 vrf {{ item.name }} sum\n"
+      - sh ip bgp vpnv4 vrf CORE
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         selectattr('description', 'equalto', 'main_loopback') |
