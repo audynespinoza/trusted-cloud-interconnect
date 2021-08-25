@@ -305,7 +305,11 @@
     cisco.ios.ios_config:
       lines:
       - "address family ipv4 {{ item.name }}"
-      - bgp router-id 1.1.1.1
+      - "bgp router-id {{ 
+            l3_interfaces[inventory_hostname] |
+            selectattr('description', 'equalto', 'loopback') |
+            selectattr('vrf', 'equalto', item.name) |
+            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
       parents: "router bgp {{ bgp.local_asn }}"
     loop: "{{ vrfs }}"
     tags:
