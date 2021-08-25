@@ -304,7 +304,7 @@
   - name: Configure Router-ID for each VRF
     cisco.ios.ios_config:
       lines:
-      - "address family ipv4 vrf {{ item.name }}"
+      - "address-family ipv4 vrf {{ item.name }}"
       - bgp router-id 1.1.1.1
     loop: "{{ vrfs }}"
     tags:
