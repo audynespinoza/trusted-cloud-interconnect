@@ -347,6 +347,7 @@
     tags:
     - ibgp
     notify: save_cfg
+    register: awesome
 
   handlers:
   - name: save_cfg
