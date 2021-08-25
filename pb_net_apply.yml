@@ -305,9 +305,9 @@
     cisco.ios.ios_config:
       lines:   
       - bgp router-id 1.1.1.1
-      parents: 
-      - "address-family ipv4 vrf {{ item.name }}"
+      parents:
       - "router bgp {{ bgp.local_asn }}"
+      - "address-family ipv4 vrf {{ item.name }}"
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         map(attribute='vrf') |
