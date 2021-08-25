@@ -376,7 +376,11 @@
           neighbor:
           - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
             activate: true
-            remote_as: "{{ bgp.local_asn }}"
+            remote_as: "{{ 
+              l3_interfaces[play_hosts] | list |
+              selectattr('cidr', 'equalto', item.cidr) |
+              selectattr('cidr', 'equalto', (not item.host_ip_index))
+              map(attribute='bgp_remote_as') }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
             nexthop_self:
               all: false
@@ -402,10 +406,10 @@
     loop: "{{
       l3_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
-      selectattr('bgp_type', 'equalto', ('internal' or 'external') |
+      selectattr('bgp_type', 'equalto', 'external') |
       list }}"
     tags:
-    - ibgp
+    - ebgp
     notify: save_cfg
 
   - name: Get BGP Neighbor status
