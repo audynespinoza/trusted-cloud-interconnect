@@ -380,7 +380,7 @@
     - show_bgp_neighbors
     
   - name: Display BGP Neighbor status
-    debug: var=bgp_neighbor_status
+    debug: "{{ bgp_neighbor_status.results }}"
     tags:
     - show_bgp_neighbors
 
