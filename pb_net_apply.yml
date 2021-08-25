@@ -308,21 +308,6 @@
     - bgp_router_id
     notify: save_cfg
 
-  handlers:
-  - name: save_cfg
-    ios_command:
-      commands:
-      - write mem
-    when: not ansible_check_mode
-
-# ------------------------
-# Play - BGP Configuration
-# ------------------------
-- name: Configure iBGP on All Devices
-  hosts: aln_wan:aln_core:aln_fab
-  tags: bgp
-  gather_facts: no
-  tasks:
   - name: Configure iBGP Neighbors
     cisco.ios.ios_bgp_address_family:
       config:
@@ -336,7 +321,7 @@
                 route_map: "CONN_BGP_{{ item.vrf }}"
             - static:
                 route_map: "STATIC_BGP_{{ item.vrf }}"
-      state: merged
+      state: replaced
     loop: "{{
       l3_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
