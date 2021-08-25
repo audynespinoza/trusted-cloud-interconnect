@@ -365,6 +365,25 @@
     - ibgp
     notify: save_cfg
 
+  - name: Get BGP Neighbor status
+    cisco.ios.ios_command:
+      commands:
+      - sh ip bgp vpnv4 vrf CORE
+    when: item.name in l3_interfaces[inventory_hostname] |
+        selectattr('vrf', 'equalto', item.name ) |
+        selectattr('description', 'equalto', 'main_loopback') |
+        map(attribute='vrf') |
+        list
+    loop: "{{ vrfs }}"
+    register: bgp_neighbor_status
+    tags:
+    - show_bgp_neighbors
+    
+  - name: Display BGP Neighbor status
+    debug:
+      msg: "{{ bgp_neighbor_status.stdout }}"
+    tags:
+    - show_bgp_neighbors
 
   handlers:
   - name: save_cfg
