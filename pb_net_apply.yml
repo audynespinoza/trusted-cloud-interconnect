@@ -308,7 +308,7 @@
             l3_interfaces[inventory_hostname] |
             selectattr('description', 'equalto', 'loopback') |
             selectattr('vrf', 'equalto', item.name) |
-            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
+            map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
       - "router bgp {{ bgp.local_asn }}"
       - "address-family ipv4 vrf {{ item.name }}"
