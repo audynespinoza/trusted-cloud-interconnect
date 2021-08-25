@@ -210,7 +210,7 @@
         - process_id: "{{ item.ospf_process }}"
           router_id: "{{ 
             l3_interfaces[inventory_hostname] |
-            selectattr('description', 'equalto', 'loopback') |
+            selectattr('description', 'equalto', 'main_loopback') |
             selectattr('vrf', 'equalto', item.vrf) |
             map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
           vrf: "{{ item.vrf }}"
@@ -306,7 +306,7 @@
       lines:
       - "bgp router-id {{ 
             l3_interfaces[inventory_hostname] |
-            selectattr('description', 'equalto', 'loopback') |
+            selectattr('description', 'equalto', 'main_loopback') |
             selectattr('vrf', 'equalto', item.name) |
             map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
@@ -314,7 +314,7 @@
       - "address-family ipv4 vrf {{ item.name }}"
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
-        selectattr('description', 'equalto', 'loopback') |
+        selectattr('description', 'equalto', 'main_loopback') |
         map(attribute='vrf') |
         list
     loop: "{{ vrfs }}"

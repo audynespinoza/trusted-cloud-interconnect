@@ -4,7 +4,7 @@ l3_interfaces:
     cidr: 10.224.111.3/32
     host_ip_index: 0
     vrf: CORE
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
@@ -20,7 +20,7 @@ l3_interfaces:
     cidr: 10.224.121.3/32
     host_ip_index: 0
     vrf: TRUSTED
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
@@ -65,7 +65,7 @@ l3_interfaces:
     bgp_route_reflect: true
 
   - name: GigabitEthernet0/2
-    cidr: 10.224.21.4/31
+    cidr: 10.224.11.4/31
     host_ip_index: 1
     vrf: CORE
     description: alnwan2
@@ -181,7 +181,7 @@ l3_interfaces:
     cidr: 10.224.111.4/32
     host_ip_index: 0
     vrf: CORE
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
@@ -197,7 +197,7 @@ l3_interfaces:
     cidr: 10.224.121.4/32
     host_ip_index: 0
     vrf: TRUSTED
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
@@ -242,7 +242,7 @@ l3_interfaces:
     bgp_route_reflect: true
 
   - name: GigabitEthernet0/2
-    cidr: 10.224.21.6/31
+    cidr: 10.224.11.6/31
     host_ip_index: 1
     vrf: CORE
     description: alnwan2

@@ -4,7 +4,7 @@ l3_interfaces:
     cidr: 10.224.111.5/32
     host_ip_index: 0
     vrf: CORE
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
@@ -16,12 +16,11 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-
   - name: Loopback2
     cidr: 10.224.121.5/32
     host_ip_index: 0
     vrf: TRUSTED
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
@@ -150,7 +149,7 @@ l3_interfaces:
     cidr: 10.224.111.6/32
     host_ip_index: 0
     vrf: CORE
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
@@ -166,7 +165,7 @@ l3_interfaces:
     cidr: 10.224.121.6/32
     host_ip_index: 0
     vrf: TRUSTED
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false

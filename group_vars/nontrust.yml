@@ -4,7 +4,7 @@ l3_interfaces:
     cidr: 10.224.111.8/32
     host_ip_index: 0
     vrf: CORE
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
@@ -20,7 +20,7 @@ l3_interfaces:
     cidr: 10.224.121.8/32
     host_ip_index: 0
     vrf: TRUSTED
-    description: loopback
+    description: main_loopback
     enabled: true
     underlay: false
     physical: false
