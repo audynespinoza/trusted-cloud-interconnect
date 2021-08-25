@@ -321,7 +321,8 @@
             activate: true
             remote_as: "{{ bgp.local_asn }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
-            next_hop_self: "{{ item.bgp_next_hop_self }}"
+            next_hop_self:
+              set: "{{ item.bgp_next_hop_self }}"
             timers:
               holdtime: "{{ bgp_holdtime }}"
               interval: "{{ bgp_keepalive_interval }}"
