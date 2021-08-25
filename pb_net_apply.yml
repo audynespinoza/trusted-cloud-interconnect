@@ -381,7 +381,7 @@
     
   - name: Display BGP Neighbor status
     debug:
-      msg: "{{ bgp_neighbor_status.results.stdout_lines }}"
+      msg: "{{ bgp_neighbor_status.results }}"
     tags:
     - show_bgp_neighbors
 
