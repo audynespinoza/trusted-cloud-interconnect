@@ -365,12 +365,6 @@
     - ibgp
     notify: save_cfg
 
-  - name: Get Running Config
-    cisco.ios.ios_command:
-      commands:
-      - sh run
-    register: running_config
-    tags: wow
 
   handlers:
   - name: save_cfg
