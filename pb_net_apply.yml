@@ -316,6 +316,9 @@
         - afi: ipv4
           safi: unicast
           vrf: "{{ item.vrf }}"
+          neighbor:
+          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            remote_as: "{{ bgp.local_asn }}"
           redistribute:
             - connected:
                 route_map: "CONN_BGP_{{ item.vrf }}"
