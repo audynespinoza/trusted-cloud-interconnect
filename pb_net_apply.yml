@@ -318,6 +318,7 @@
           vrf: "{{ item.vrf }}"
           neighbor:
           - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            activate: true
             remote_as: "{{ bgp.local_asn }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
             next_hop_self: "{{ item.bgp_next_hop_self }}"
