@@ -314,6 +314,7 @@
       - "address-family ipv4 vrf {{ item.name }}"
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
+        selectattr('description', 'equalto', 'loopback') |
         map(attribute='vrf') |
         list
     loop: "{{ vrfs }}"
