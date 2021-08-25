@@ -390,8 +390,3 @@
       commands:
       - write mem
     when: not ansible_check_mode
-
-
-show ip bgp vpnv4 vrf CORE sum
-show ip bgp vpnv4 vrf TRUSTED sum
-show ip ospf neigh
