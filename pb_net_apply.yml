@@ -340,7 +340,7 @@
                 route_map: "CONN_BGP_{{ item.vrf }}"
             - static:
                 route_map: "STATIC_BGP_{{ item.vrf }}"
-      state: replaced
+      state: overridden
     loop: "{{
       l3_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
