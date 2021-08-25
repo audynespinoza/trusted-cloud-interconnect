@@ -154,14 +154,12 @@
       interfaces: "{{
         l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
-        map(attribute='name') |
-        list }}"
+        map(attribute='name') | list }}"
       state: present
     loop: "{{ vrfs }}"
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
-        map(attribute='vrf') |
-        list
+        map(attribute='vrf') | list
     tags:
     - vrf
     notify: save_cfg
@@ -315,8 +313,7 @@
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         selectattr('description', 'equalto', 'main_loopback') |
-        map(attribute='vrf') |
-        list
+        map(attribute='vrf') | list
     loop: "{{ vrfs }}"
     tags:
     - bgp_router_id
@@ -380,8 +377,7 @@
               l3_interfaces[inventory_hostname] |
               selectattr('cidr', 'equalto', item.cidr) |
               selectattr('host_ip_index', 'equalto', (not item.host_ip_index)) |
-              map(attribute='bgp_local_as') |
-              join('') }}"
+              map(attribute='bgp_local_as') | join('') }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
             nexthop_self:
               all: false
@@ -420,8 +416,7 @@
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         selectattr('description', 'equalto', 'main_loopback') |
-        map(attribute='vrf') |
-        list
+        map(attribute='vrf') | list
     loop: "{{ vrfs }}"
     register: bgp_neighbor_status
     tags:
