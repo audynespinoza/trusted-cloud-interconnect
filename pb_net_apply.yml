@@ -159,7 +159,7 @@
       state: present
     loop: "{{ vrfs }}"
     when: item.name in l3_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.vrf ) |
+        selectattr('vrf', 'equalto', item.name ) |
         map(attribute='name') |
         list
     tags:
