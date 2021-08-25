@@ -369,15 +369,10 @@
     cisco.ios.ios_command:
       commands:
       - sh ip bgp vpnv4 vrf CORE
-    when: item.name in l3_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.name ) |
-        selectattr('description', 'equalto', 'main_loopback') |
-        map(attribute='vrf') |
-        list
-    loop: "{{ vrfs }}"
+    register: bgp_neighbor_status
     tags:
     - show_bgp_neighbors
-    register: bgp_neighbor_status
+    
 
   - name: Display BGP Neighbor status
     debug:
