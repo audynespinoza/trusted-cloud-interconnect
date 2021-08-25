@@ -391,16 +391,3 @@
       commands:
       - write mem
     when: not ansible_check_mode
-
-# ------------------------
-# Play - BGP Configuration
-# ------------------------
-- name: Configure BGP
-  hosts: aln_wan:aln_core:aln_fab
-  tags: bgp
-  gather_facts: no
-  tasks:
-
-    sh ip bgp vpnv4 vrf CORE sum
-    sh ip bgp vpnv4 vrf EDGE sum
-    sh ip ospf neigh
