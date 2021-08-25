@@ -158,6 +158,10 @@
         list }}"
       state: present
     loop: "{{ vrfs }}"
+    when: item.name in l3_interfaces[inventory_hostname] |
+        selectattr('vrf', 'equalto', item.vrf ) |
+        map(attribute='name') |
+        list
     tags:
     - vrf
     notify: save_cfg
@@ -297,13 +301,17 @@
   tags: bgp
   gather_facts: no
   tasks:
-  - name: Configure Router-ID VRF Auto-Assign
-    cisco.ios.ios_bgp_global:
-      config:
-        as_number: "{{ bgp.local_asn }}"
-        bgp:
-          router_id:
-            vrf: true
+  - name: Configure Router-ID for each VRF
+    cisco.ios.ios.ios_config:
+      lines:
+      - "address family ipv4 {{ item.name }}"
+      - "bgp router-id {{ 
+            l3_interfaces[inventory_hostname] |
+            selectattr('description', 'equalto', 'loopback') |
+            selectattr('vrf', 'equalto', item.name) |
+            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}" 
+      parents: "router bgp {{ local_asn }}"
+    loop: "{{ vrfs }}"
     tags:
     - bgp_router_id
     notify: save_cfg
