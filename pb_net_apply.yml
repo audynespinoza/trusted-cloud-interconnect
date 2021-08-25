@@ -317,7 +317,7 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           neighbor:
-          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+          - address: "2.2.2.2" 
             activate: true
             remote_as: "{{ bgp.local_asn }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
