@@ -377,7 +377,7 @@
           - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
             activate: true
             remote_as: "{{ 
-              l3_interfaces[play_hosts] | list |
+              l3_interfaces[inventory_hostname] | list |
               selectattr('cidr', 'equalto', item.cidr) |
               selectattr('cidr', 'equalto', (not item.host_ip_index))
               map(attribute='bgp_remote_as') | join('') }}"
