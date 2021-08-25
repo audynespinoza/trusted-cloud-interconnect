@@ -376,7 +376,7 @@
             remote_as: "{{ 
               l3_interfaces[inventory_hostname] |
               selectattr('cidr', 'equalto', item.cidr) |
-              selectattr('host_ip_index', 'equalto', item.host_ip_index) |
+              selectattr('host_ip_index', 'equalto', (not item.host_ip_index)) |
               map(attribute='bgp_local_as') | join('') }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
             nexthop_self:
