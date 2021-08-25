@@ -327,6 +327,7 @@
             timers:
               holdtime: "{{ bgp_holdtime }}"
               interval: "{{ bgp_keepalive_interval }}"
+            soft_reconfiguration: true
             send_community:
               both: true
             password: "{{bgp_neighbor_pwd}}"
