@@ -303,8 +303,12 @@
   tasks:
   - name: Configure Router-ID for each VRF
     cisco.ios.ios_config:
-      lines:   
-      - bgp router-id 1.1.1.1
+      lines:
+      - "bgp router-id {{ 
+            l3_interfaces[inventory_hostname] |
+            selectattr('description', 'equalto', 'loopback') |
+            selectattr('vrf', 'equalto', item.name) |
+            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
       parents:
       - "router bgp {{ bgp.local_asn }}"
       - "address-family ipv4 vrf {{ item.name }}"
