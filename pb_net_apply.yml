@@ -449,7 +449,11 @@
 
   - name: Display the Dictionary
     debug: var=device_map
-
+  
+  - name: display it all
+    debug:
+      var: hostvars
+      
   - name: Combine Each Device Interface-IP to BGP ASN mappings 
     set_fact:
       ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
