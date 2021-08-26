@@ -473,6 +473,25 @@
   - name: Display the Dictionary
     debug: var=userdata
 
+- name: consolidate and display my result
+  hosts: localhost
+  tags: make_dict
+  tasks:
+    - name: Consolidate result in a single hashmap
+      set_fact:
+        my_final_map: "{{ my_final_map | default({}) | combine(item) }}"
+      loop: >-
+        {{
+          groups["aln"]
+          | map("extract", hostvars)
+          | map(attribute="userdata")
+          | list
+        }}
+
+    - name: Display consolidated result
+      debug:
+        var: my_final_map
+
 # ------------------------
 # Play - BGP Configuration
 # ------------------------
