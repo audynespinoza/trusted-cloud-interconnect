@@ -438,20 +438,21 @@
 
 
 - name: Dictionary playbook example
-  hosts: localhost
+  hosts: all
+  tags: make_dict
   tasks:
+  - name: Create dictionary
+    set_fact: 
+        userdata: "{{ userdata | default({})}}"
 
-    - name: Create and Add items to dictionary
-      set_fact: 
-          userdata: "{{ userdata | default({}) | combine ({ item.key : item.value }) }}"
-      with_items:
-        - { 'key': 'Name' , 'value': 'SaravAK'}
-        - { 'key': 'Email' , 'value': 'sarav@gritfy.com'}
-        - { 'key': 'Location' , 'value': 'Coimbatore'}
-        - { 'key': 'Nationality' , 'value': 'Indian'}
+  - name: Add items to dictionary
+    set_fact: 
+      userdata: "{{ userdata | combine ({ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') : item.bgp_remote_as }) }}"
+    loop: "{{ l3_interfaces[inventory_hostname] }}"
 
-    -  name: Display the Dictionary
-       debug: var=userdata
+  - name: Display the Dictionary
+    debug: var=userdata
+
 
 # ------------------------
 # Play - BGP Configuration
