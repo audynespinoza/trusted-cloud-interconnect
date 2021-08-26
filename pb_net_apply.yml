@@ -299,6 +299,36 @@
   tags: bgp
   gather_facts: no
   tasks:
+  - name: Build Interface-IP to BGP ASN mappings For Each Device
+    set_fact:
+      device_map: "{{ device_map | default({}) | combine ({ (item.cidr | ipv4(item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
+    loop: "{{ l3_interfaces[inventory_hostname] }}"
+    tags:
+    - build_ip_asn_map
+
+  - name: Display the Dictionary
+    debug: var=device_map
+    tags:
+    - build_ip_asn_map   
+
+  - name: Combine Each Device Interface-IP to BGP ASN mappings 
+    set_fact:
+      ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
+    loop: "{{
+          groups['aln'] |
+          map('extract', hostvars) |
+          map(attribute='device_map') |
+          selectattr
+          list }}"
+    tags:
+    - build_ip_asn_map
+
+  - name: Display Interface-IP to BGP ASN mappings 
+    debug:
+      var: ip_asn_map
+    tags:
+    - build_ip_asn_map
+
   - name: Configure Router-ID for each VRF
     cisco.ios.ios_config:
       lines:
@@ -319,7 +349,7 @@
     - bgp_router_id
     notify: save_cfg
 
-  - name: Configure BGP Global & iBGP Neighbors
+  - name: Configure BGP Redistribution
     cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
@@ -327,42 +357,23 @@
         - afi: ipv4
           safi: unicast
           vrf: "{{ item.vrf }}"
-          neighbor:
-          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
-            activate: true
-            remote_as: "{{ bgp.local_asn }}"
-            route_reflector_client: "{{ item.bgp_route_reflect }}"
-            nexthop_self:
-              all: false
-              set: "{{ item.bgp_next_hop_self }}"
-            timers:
-              holdtime: "{{ bgp_holdtime }}"
-              interval: "{{ bgp_keepalive_interval }}"
-            soft_reconfiguration: true
-            send_community:
-              both: true
-            password: "{{bgp_neighbor_pwd}}"
-            route_maps:
-              - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
-                out: true
-              - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
-                in: true
           redistribute:
             - connected:
                 route_map: "CONN_BGP_{{ item.vrf }}"
             - static:
                 route_map: "STATIC_BGP_{{ item.vrf }}"
       state: replaced
-    loop: "{{
-      l3_interfaces[inventory_hostname] |
-      selectattr('bgp', 'equalto', true) |
-      selectattr('bgp_type', 'equalto', 'internal') |
-      list }}"
+    when: item.name in l3_interfaces[inventory_hostname] |
+        selectattr('vrf', 'equalto', item.name ) |
+        selectattr('description', 'equalto', 'main_loopback') |
+        map(attribute='vrf') | list
+    loop: "{{ vrfs }}"
     tags:
-    - ibgp
+    - bgp_redistribution
     notify: save_cfg
 
-  - name: Configure eBGP Neighbors
+
+  - name: Configure iBGP & eBGP Neighbors
     cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
@@ -374,10 +385,9 @@
           - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
             activate: true
             remote_as: "{{ 
-              l3_interfaces[host]
-              selectattr('cidr', 'equalto', item.cidr) |
-              rejectattr('host_ip_index', 'equalto', (not item.host_ip_index|bool)) |
-              map(attribute='bgp_local_as') | join('') }}"
+              ip_asn_map | 
+              map(attribute=(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))) |
+              join('') }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
             nexthop_self:
               all: false
@@ -394,24 +404,18 @@
                 out: true
               - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
                 in: true
-          redistribute:
-            - connected:
-                route_map: "CONN_BGP_{{ item.vrf }}"
-            - static:
-                route_map: "STATIC_BGP_{{ item.vrf }}"
-      state: replaced
+      state: merged
     loop: "{{
       l3_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
-      selectattr('bgp_type', 'equalto', 'external') |
       list }}"
     tags:
-    - ebgp
+    - bgp_neighbor
     notify: save_cfg
 
-# ------------------------
-# Play - BGP Configuration
-# ------------------------
+# ---------------------
+# Play - Get BGP Status
+# ---------------------
   - name: Get BGP Neighbor status
     cisco.ios.ios_command:
       commands:
@@ -436,61 +440,3 @@
       commands:
       - write mem
     when: not ansible_check_mode
-
-
-- name: Build Interface-IP to BGP ASN Map For Each Device
-  hosts: aln
-  tags: build_ip_asn_map
-  tasks:
-  - name: Add items to dictionary
-    set_fact:
-      device_map: "{{ device_map | default({}) | combine ({ (item.cidr | ipv4(item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
-    loop: "{{ l3_interfaces[inventory_hostname] }}"
-
-  - name: Display the Dictionary
-    debug: var=device_map
-  
-# - name: display it all
-#   debug:
-#      var: hostvars
-
-  - name: Combine Each Device Interface-IP to BGP ASN mappings 
-    set_fact:
-      ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
-    loop: "{{
-          groups['aln'] |
-          map('extract', hostvars) |
-          map(attribute='device_map') |
-          list }}"
-
-  - name: Display Interface-IP to BGP ASN mappings 
-    debug:
-      var: ip_asn_map
-
-
-# ------------------------
-# Play - BGP Configuration
-# ------------------------
-- name: Configure BGP
-  hosts: all
-  tags: bgp
-  gather_facts: no
-  tasks:
-  - name: Display all hosts
-    debug:
-      msg: "{{ ansible_play_hosts }}"
-    tags:
-    - all_hosts
-
-# testing this
-- hosts: myhosts
-  gather_facts: False
-  vars:
-    mydict: {}
-  tasks:
-  - name: Get dict result
-    shell: "cat /path/dict_output"
-    register: output
-  - set_fact:
-      result_dict="{{ output.stdout}}"
-  - debug: var=result_dict
