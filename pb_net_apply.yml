@@ -437,14 +437,18 @@
     when: not ansible_check_mode
 
 
-- name: Dictionary playbook example
-  hosts: all
+- name: Create Dictionary
+  hosts: localhost
   tags: make_dict
   tasks:
   - name: Create dictionary
     set_fact: 
         userdata: "{{ userdata | default({})}}"
 
+- name: Build Dictionary
+  hosts: all
+  tags: make_dict
+  tasks:
   - name: Add items to dictionary
     set_fact: 
       userdata: "{{ userdata | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
