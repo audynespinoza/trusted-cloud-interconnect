@@ -295,7 +295,7 @@
 # Play - BGP Configuration
 # ------------------------
 - name: Configure BGP
-  hosts: aln
+  hosts: aln:ash
   tags: bgp
   gather_facts: no
   tasks:
