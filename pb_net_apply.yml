@@ -450,7 +450,7 @@
   - debug: var=userdata
     when: userdata is defined
 
-  - debug: var=hostvars['localhost']['userdata']['ansible_facts']['userdata']
+  - debug: var=hostvars['localhost']
     when: hostvars['localhost']['userdata']['ansible_facts']['userdata'] is defined
 
 - name: Create Dictionary
