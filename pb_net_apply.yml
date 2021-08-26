@@ -457,7 +457,7 @@
 # Play - BGP Configuration
 # ------------------------
 - name: Configure BGP
-  hosts: localhost
+  hosts: all
   tags: bgp
   gather_facts: no
   tasks:
