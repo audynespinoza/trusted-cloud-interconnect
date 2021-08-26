@@ -460,13 +460,18 @@
   hosts: aln
   tags: make_dict
   tasks:
+  - name: Create dictionary
+    set_fact: 
+        userdata: "{{ userdata | default({})}}"
+    register: userdata
+
   - name: Add items to dictionary
     set_fact: 
       userdata : "{{ userdata | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
 
   - name: Display the Dictionary
-    debug: var=hostvars['userdata']
+    debug: var=userdata
 
 # ------------------------
 # Play - BGP Configuration
