@@ -453,13 +453,12 @@
   - name: Combine Each Device Interface-IP to BGP ASN mappings 
     set_fact:
       ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
-    loop: >-
-        {{
-          groups["all"]
-          | map("extract", hostvars)
-          | map(attribute="device_map")
-          | list
-        }}
+    loop: "{{
+          groups[all] | 
+          map('extract', hostvars) |
+          map(attribute='device_map') |
+          selectattr('device_map', 'defined')
+          list }}"
 
   - name: Display Interface-IP to BGP ASN mappings 
     debug:
