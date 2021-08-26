@@ -383,10 +383,7 @@
           neighbor:
           - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
             activate: true
-            remote_as: "{{ 
-              ip_asn_map | 
-              map(attribute=(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))) |
-              join('') }}"
+            remote_as: "11111"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
             nexthop_self:
               all: false
