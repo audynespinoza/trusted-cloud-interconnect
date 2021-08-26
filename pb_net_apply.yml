@@ -439,7 +439,7 @@
 
 
 - name: Build Interface-IP to BGP ASN Map For Each Device
-  hosts: all_devices
+  hosts: aln
   tags: build_ip_asn_map
   tasks:
   - name: Add items to dictionary
@@ -454,7 +454,7 @@
     set_fact:
       ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
     loop: "{{
-          groups['all_devices'] | 
+          groups['aln'] |
           map('extract', hostvars) |
           map(attribute='device_map') |
           selectattr('device_map', 'defined')
