@@ -446,7 +446,7 @@
   - debug: var=userdata
     when: userdata is defined
 
-  - debug: var=hostvars['localhost']['foo']
+  - debug: var=hostvars['localhost']['userdata']
     when: hostvars['localhost']['userdata'] is defined
 
 - name: Create Dictionary
