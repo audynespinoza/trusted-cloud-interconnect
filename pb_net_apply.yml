@@ -427,15 +427,12 @@
     tags:
     - show_bgp_neighbors
 
-
-
   handlers:
   - name: save_cfg
     ios_command:
       commands:
       - write mem
     when: not ansible_check_mode
-
 
 - name: Create Dictionary
   hosts: localhost
@@ -445,17 +442,21 @@
     set_fact: 
         userdata: "{{ userdata | default({})}}"
 
-- name: Build Dictionary
+- name: Create Dictionary
   hosts: all
   tags: make_dict
   tasks:
   - name: Add items to dictionary
     set_fact: 
-      userdata: "{{ userdata | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
+      hostvars[userdata]: "{{ hostvars[userdata] | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
 
+- name: View Dictionary
+  hosts: localhost
+  tags: make_dict
+  tasks:
   - name: Display the Dictionary
-    debug: var=userdata
+    debug: var=hostvars['userdata']
 
 
 # ------------------------
