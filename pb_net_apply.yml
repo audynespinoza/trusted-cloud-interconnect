@@ -475,7 +475,7 @@
   tags: build_ip_asn_map
   tasks:
   - name: display the map
-    debug: var=hostvars[wow]
+    debug: var=localhost[hostvars][userdata]
 
 # ------------------------
 # Play - BGP Configuration
