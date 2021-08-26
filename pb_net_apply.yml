@@ -465,10 +465,6 @@
       userdata : "{{ userdata | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
 
-- name: View Dictionary
-  hosts: localhost
-  tags: make_dict
-  tasks:
   - name: Display the Dictionary
     debug: var=hostvars['userdata']
 
