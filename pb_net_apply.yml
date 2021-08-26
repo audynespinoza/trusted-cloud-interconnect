@@ -320,8 +320,8 @@
     loop: "{{
           groups['all_devices'] |
           map('extract', hostvars) |
-          map(attribute='device_map') |
           selectattr('device_map', 'defined') |
+          map(attribute='device_map') |
           list }}"
     tags:
     - build_ip_asn_map
