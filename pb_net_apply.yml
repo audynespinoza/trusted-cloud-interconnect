@@ -321,6 +321,8 @@
           groups['aln'] |
           map('extract', hostvars) |
           map(attribute='device_map') |
+          selectattr('cidr','defined') |
+          selectattr('device_map', 'defined') |
           list }}"
     tags:
     - build_ip_asn_map
