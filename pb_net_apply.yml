@@ -450,9 +450,9 @@
   - name: Display the Dictionary
     debug: var=device_map
   
-  - name: display it all
-    debug:
-      var: hostvars
+# - name: display it all
+#   debug:
+#      var: hostvars
 
   - name: Combine Each Device Interface-IP to BGP ASN mappings 
     set_fact:
@@ -461,7 +461,6 @@
           groups['aln'] |
           map('extract', hostvars) |
           map(attribute='device_map') |
-          selectattr('device_map', 'defined') |
           list }}"
 
   - name: Display Interface-IP to BGP ASN mappings 
