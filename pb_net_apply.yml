@@ -437,60 +437,48 @@
       - write mem
     when: not ansible_check_mode
 
-- name: dood
-  hosts: localhost
-  tags: dood
+
+- name: Build Interface-IP to BGP ASN Map For Each Device
+  hosts: aln
+  tags: build_ip_asn_map
   tasks:
   - name: Create dictionary
     set_fact: 
         userdata: "{{ userdata | default({})}}"
     register: userdata
-
-- name: cool
-  hosts: aln
-  tags: dood
-  tasks:
-  - debug: var=userdata
-    when: userdata is defined
-
-  - debug: var=hostvars['localhost']
-    when: hostvars['localhost']['userdata']['ansible_facts']['userdata'] is defined
-
-- name: Create Dictionary
-  hosts: aln
-  tags: make_dict
-  tasks:
-  - name: Create dictionary
-    set_fact: 
-        userdata: "{{ userdata | default({})}}"
-    register: userdata
+    tags:
+    - build_dict
 
   - name: Add items to dictionary
-    set_fact: 
-      userdata : "{{ userdata | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
+    set_fact:
+      userdata: "{{ userdata | default({}) | combine ({ (item.cidr | ipv4(item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
 
   - name: Display the Dictionary
     debug: var=userdata
 
-- name: consolidate and display my result
+- name: Build
   hosts: localhost
   tags: make_dict
   tasks:
-    - name: Consolidate result in a single hashmap
+    - name: Combine Each Device Interface-IP to BGP ASN mappings 
       set_fact:
-        my_final_map: "{{ my_final_map | default({}) | combine(item) }}"
-      loop: >-
-        {{
-          groups["aln"]
-          | map("extract", hostvars)
-          | map(attribute="userdata")
-          | list
-        }}
-
-    - name: Display consolidated result
+        ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
+      loop: '{{ groups["aln"] |
+        map("extract", hostvars) |
+        map(attribute="userdata") |
+        list }}'
+        
+    - name: Display Interface-IP to BGP ASN mappings 
       debug:
-        var: my_final_map
+        var: ip_asn_map
+
+- name: Build
+  hosts: aln
+  tags: make_dict
+  tasks:
+  - name: display the map
+    debug: var=hostvars[ip_asn_map]
 
 # ------------------------
 # Play - BGP Configuration
