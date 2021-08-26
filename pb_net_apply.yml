@@ -447,7 +447,7 @@
 
   - name: Add items to dictionary
     set_fact: 
-      userdata: "{{ userdata | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_remote_as }) }}"
+      userdata: "{{ userdata | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
 
   - name: Display the Dictionary
