@@ -359,12 +359,12 @@
         address_family:
         - afi: ipv4
           safi: unicast
-          vrf: "{{ item.vrf }}"
+          vrf: "{{ item.name }}"
           redistribute:
             - connected:
-                route_map: "CONN_BGP_{{ item.vrf }}"
+                route_map: "CONN_BGP_{{ item.name }}"
             - static:
-                route_map: "STATIC_BGP_{{ item.vrf }}"
+                route_map: "STATIC_BGP_{{ item.name }}"
       state: replaced
     when: item.name in l3_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
