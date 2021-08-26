@@ -483,7 +483,6 @@
     - all_hosts
 
 # testing this
----
 - hosts: myhosts
   gather_facts: False
   vars:
