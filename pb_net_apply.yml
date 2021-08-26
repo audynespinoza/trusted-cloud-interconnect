@@ -450,8 +450,8 @@
   - debug: var=userdata
     when: userdata is defined
 
-  - debug: var=hostvars['localhost']['userdata']
-    when: hostvars['localhost']['userdata'] is defined
+  - debug: var=hostvars['localhost']['userdata']['ansible_facts']['userdata']
+    when: hostvars['localhost']['userdata']['ansible_facts']['userdata'] is defined
 
 - name: Create Dictionary
   hosts: aln
@@ -459,7 +459,7 @@
   tasks:
   - name: Add items to dictionary
     set_fact: 
-      hostvars['localhost']['userdata']: "{{ hostvars['localhost']['userdata'] | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
+      hostvars['localhost']['userdata']['ansible_facts']['userdata']: "{{ hostvars['localhost']['userdata']['ansible_facts']['userdata'] | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
 
 - name: View Dictionary
