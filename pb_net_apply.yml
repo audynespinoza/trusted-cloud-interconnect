@@ -452,7 +452,7 @@
 
 - name: Build
   hosts: localhost
-  tags: make_dict
+  tags: build_ip_asn_map
   tasks:
   - name: Combine Each Device Interface-IP to BGP ASN mappings 
     set_fact:
@@ -471,7 +471,7 @@
 
 - name: Build
   hosts: aln
-  tags: make_dict
+  tags: build_ip_asn_map
   tasks:
   - name: display the map
     debug: var=hostvars[ip_asn_map]
