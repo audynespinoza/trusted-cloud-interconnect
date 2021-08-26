@@ -318,9 +318,10 @@
     set_fact:
       ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
     loop: "{{
-          groups['aln'] |
+          groups['all_devices'] |
           map('extract', hostvars) |
           map(attribute='device_map') |
+          selectattr('device_map', 'defined') |
           list }}"
     tags:
     - build_ip_asn_map
