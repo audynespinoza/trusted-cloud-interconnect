@@ -302,7 +302,10 @@
   - name: Build Interface-IP to BGP ASN mappings For Each Device
     set_fact:
       device_map: "{{ device_map | default({}) | combine ({ (item.cidr | ipv4(item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
-    loop: "{{ l3_interfaces[inventory_hostname] }}"
+    loop: "{{ 
+      l3_interfaces[inventory_hostname] |
+      selectattr('cidr', 'defined') |
+      list }}"
     tags:
     - build_ip_asn_map
 
