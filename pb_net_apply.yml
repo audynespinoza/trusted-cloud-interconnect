@@ -427,11 +427,7 @@
     tags:
     - show_bgp_neighbors
 
-  - name: Display all hosts
-    debug:
-      msg: "{{ ansible_play_hosts }}"
-    tags:
-    - all_hosts
+
 
   handlers:
   - name: save_cfg
@@ -439,3 +435,18 @@
       commands:
       - write mem
     when: not ansible_check_mode
+
+
+# ------------------------
+# Play - BGP Configuration
+# ------------------------
+- name: Configure BGP
+  hosts: aln_wan:aln_core:aln_fab
+  tags: bgp
+  gather_facts: no
+  tasks:
+  - name: Display all hosts
+    debug:
+      msg: "{{ ansible_play_hosts }}"
+    tags:
+    - all_hosts
