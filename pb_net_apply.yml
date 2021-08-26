@@ -450,10 +450,6 @@
   - name: Display the Dictionary
     debug: var=device_map
 
-- name: Build
-  hosts: localhost
-  tags: build_ip_asn_map
-  tasks:
   - name: Combine Each Device Interface-IP to BGP ASN mappings 
     set_fact:
       ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
@@ -464,18 +460,11 @@
           | map(attribute="device_map")
           | list
         }}
-    register: wow
-        
+
   - name: Display Interface-IP to BGP ASN mappings 
     debug:
       var: ip_asn_map
 
-- name: Build
-  hosts: aln
-  tags: build_ip_asn_map
-  tasks:
-  - name: display the map
-    debug: var=hostvars
 
 # ------------------------
 # Play - BGP Configuration
