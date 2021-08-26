@@ -374,7 +374,7 @@
           - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
             activate: true
             remote_as: "{{ 
-              l3_interfaces[inventory_hostname] |
+              l3_interfaces[host]
               selectattr('cidr', 'equalto', item.cidr) |
               rejectattr('host_ip_index', 'equalto', (not item.host_ip_index|bool)) |
               map(attribute='bgp_local_as') | join('') }}"
@@ -426,6 +426,12 @@
     debug: var=bgp_neighbor_status.results
     tags:
     - show_bgp_neighbors
+
+  - name: Display all hosts
+    debug:
+      msg: "{{ ansible_play_hosts }}"
+    tags:
+    - all_hosts
 
   handlers:
   - name: save_cfg
