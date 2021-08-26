@@ -459,7 +459,7 @@
   tasks:
   - name: Add items to dictionary
     set_fact: 
-      hostvars['localhost']['userdata']['ansible_facts']['userdata']: "{{ hostvars['localhost']['userdata']['ansible_facts']['userdata'] | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
+      userdata : "{{ hostvars['localhost']['userdata']['ansible_facts']['userdata'] | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
 
 - name: View Dictionary
