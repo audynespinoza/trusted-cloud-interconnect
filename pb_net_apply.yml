@@ -443,7 +443,7 @@
         userdata: "{{ userdata | default({})}}"
 
 - name: Create Dictionary
-  hosts: all
+  hosts: aln
   tags: make_dict
   tasks:
   - name: Add items to dictionary
