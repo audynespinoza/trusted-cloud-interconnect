@@ -441,6 +441,7 @@
   - name: Create dictionary
     set_fact: 
         userdata: "{{ userdata | default({})}}"
+    register: userdata
 
 - name: Create Dictionary
   hosts: aln
