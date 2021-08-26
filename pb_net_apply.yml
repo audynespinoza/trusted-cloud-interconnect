@@ -434,14 +434,20 @@
       - write mem
     when: not ansible_check_mode
 
-- name: Create Dictionary
+- name: dood
   hosts: localhost
-  tags: make_dict
+  tags: dood
   tasks:
   - name: Create dictionary
     set_fact: 
         userdata: "{{ userdata | default({})}}"
     register: userdata
+
+  - debug: var=userdata
+    when: userdata is defined
+
+  - debug: var=hostvars['localhost']['foo']
+    when: hostvars['localhost']['userdata'] is defined
 
 - name: Create Dictionary
   hosts: aln
