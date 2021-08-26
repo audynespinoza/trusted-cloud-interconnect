@@ -464,6 +464,7 @@
           | map(attribute="device_map")
           | list
         }}
+    register: wow
         
   - name: Display Interface-IP to BGP ASN mappings 
     debug:
@@ -474,7 +475,7 @@
   tags: build_ip_asn_map
   tasks:
   - name: display the map
-    debug: var=hostvars[ip_asn_map]
+    debug: var=hostvars[wow]
 
 # ------------------------
 # Play - BGP Configuration
