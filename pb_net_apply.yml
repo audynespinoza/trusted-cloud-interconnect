@@ -409,6 +409,9 @@
     - ebgp
     notify: save_cfg
 
+# ------------------------
+# Play - BGP Configuration
+# ------------------------
   - name: Get BGP Neighbor status
     cisco.ios.ios_command:
       commands:
@@ -459,7 +462,7 @@
   tasks:
   - name: Add items to dictionary
     set_fact: 
-      userdata : "{{ hostvars['localhost']['userdata']['ansible_facts']['userdata'] | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
+      userdata : "{{ userdata | combine ({ (item.cidr | ipv4(not item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ l3_interfaces[inventory_hostname] }}"
 
 - name: View Dictionary
@@ -468,7 +471,6 @@
   tasks:
   - name: Display the Dictionary
     debug: var=hostvars['userdata']
-
 
 # ------------------------
 # Play - BGP Configuration
@@ -483,3 +485,17 @@
       msg: "{{ ansible_play_hosts }}"
     tags:
     - all_hosts
+
+# testing this
+---
+- hosts: myhosts
+  gather_facts: False
+  vars:
+    mydict: {}
+  tasks:
+  - name: Get dict result
+    shell: "cat /path/dict_output"
+    register: output
+  - set_fact:
+      result_dict="{{ output.stdout}}"
+  - debug: var=result_dict
