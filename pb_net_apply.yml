@@ -371,7 +371,6 @@
     - bgp_redistribution
     notify: save_cfg
 
-
   - name: Configure iBGP & eBGP Neighbors
     cisco.ios.ios_bgp_address_family:
       config:
