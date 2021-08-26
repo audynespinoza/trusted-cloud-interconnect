@@ -453,7 +453,7 @@
   - name: display it all
     debug:
       var: hostvars
-      
+
   - name: Combine Each Device Interface-IP to BGP ASN mappings 
     set_fact:
       ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
@@ -461,7 +461,7 @@
           groups['aln'] |
           map('extract', hostvars) |
           map(attribute='device_map') |
-          selectattr('device_map', 'defined')
+          selectattr('device_map', 'defined') |
           list }}"
 
   - name: Display Interface-IP to BGP ASN mappings 
