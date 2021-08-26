@@ -443,6 +443,10 @@
         userdata: "{{ userdata | default({})}}"
     register: userdata
 
+- name: cool
+  hosts: aln
+  tags: dood
+  tasks:
   - debug: var=userdata
     when: userdata is defined
 
