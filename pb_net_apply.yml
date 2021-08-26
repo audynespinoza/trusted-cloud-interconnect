@@ -442,13 +442,6 @@
   hosts: aln
   tags: build_ip_asn_map
   tasks:
-  - name: Create dictionary
-    set_fact: 
-        device_map: "{{ device_map | default({})}}"
-    register: device_map
-    tags:
-    - build_dict
-
   - name: Add items to dictionary
     set_fact:
       device_map: "{{ device_map | default({}) | combine ({ (item.cidr | ipv4(item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
