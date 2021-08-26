@@ -315,7 +315,7 @@
     set_fact:
       ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
     loop: "{{
-          groups['aln'] |
+          groups['aln_wan'] |
           map('extract', hostvars) |
           map(attribute='device_map') |
           list }}"
