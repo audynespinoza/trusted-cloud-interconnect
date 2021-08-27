@@ -421,10 +421,10 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           redistribute:
-            - static:
-                route_map: "{{ item.name }}"
+          - static:
+              route_map: "{{ item.name }}"
       state: replaced
-    when: "{{ redistribution.into_bgp | selectattr('from_static', 'defined') | map(attribute='from_static') | list }}"
+    when: "{{ redistribution.into_bgp | selectattr('from_static', 'defined') | map(attribute='from_static') }}"
     tags:
     - static_bgp_redistribution
     notify: save_cfg
@@ -438,10 +438,10 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           redistribute:
-            - connected:
-                route_map: "{{ item.name }}"
+          - connected:
+              route_map: "{{ item.name }}"
       state: replaced
-    loop: "{{ redistribution.into_bgp | selectattr('from_connected', 'defined') | map(attribute='from_connected') | list }}"
+    loop: "{{ redistribution.into_bgp | selectattr('from_connected', 'defined') | map(attribute='from_connected') }}"
     tags:
     - conn_bgp_redistribution
     notify: save_cfg
