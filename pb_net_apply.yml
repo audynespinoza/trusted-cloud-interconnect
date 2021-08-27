@@ -442,8 +442,8 @@
           - connected:
               route_map: "{{ item.name }}"
       state: replaced
-    loop: "{{ redistribution.into_bgp | selectattr('from_connected', 'defined') | map(attribute='from_connected') }}"
-    when: redistribution is defined
+    loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
+    when: redistribution.into_bgp.from_connected is defined
     tags:
     - conn_bgp_redistribution
     notify: save_cfg
