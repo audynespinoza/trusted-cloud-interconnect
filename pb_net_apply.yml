@@ -412,27 +412,38 @@
     - bgp_router_id
     notify: save_cfg
 
-  - name: Configure Redistribution-Into-BGP
+  - name: Configure Static Into BGP Redistribution
     cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
         address_family:
         - afi: ipv4
           safi: unicast
-          vrf: "{{ item.name }}"
+          vrf: "{{ item.vrf }}"
+          redistribute:
+            - static:
+                route_map: "{{ item.name }}"
+      state: replaced
+    when: "{{ redistribution.into_bgp | selectattr('from_static', 'defined') | map(attribute='from_static') | list }}"
+    tags:
+    - static_bgp_redistribution
+    notify: save_cfg
+
+  - name: Configure Connected Into BGP Redistribution
+    cisco.ios.ios_bgp_address_family:
+      config:
+        as_number: "{{ bgp.local_asn }}"
+        address_family:
+        - afi: ipv4
+          safi: unicast
+          vrf: "{{ item.vrf }}"
           redistribute:
             - connected:
-                route_map: "CONN_BGP_{{ item.name }}"
-            - static:
-                route_map: "STATIC_BGP_{{ item.name }}"
+                route_map: "{{ item.name }}"
       state: replaced
-    when: item.name in l3_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.name ) |
-        selectattr('description', 'equalto', 'main_loopback') |
-        map(attribute='vrf') | list
-    loop: "{{ vrfs }}"
+    loop: "{{ redistribution.into_bgp | selectattr('from_connected', 'defined') | map(attribute='from_connected') | list }}"
     tags:
-    - bgp_redistribution
+    - conn_bgp_redistribution
     notify: save_cfg
 
   - name: Configure iBGP & eBGP Neighbors
