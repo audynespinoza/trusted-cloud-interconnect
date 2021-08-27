@@ -291,6 +291,41 @@
       - write mem
     when: not ansible_check_mode
 
+
+# ---------------------------
+# Play - Build BGP Route-Maps
+# ---------------------------
+- name: Build BGP Route-Maps
+  hosts: aln_fab:aln_core
+  tags: bgp_route_maps
+  gather_facts: no
+  tasks:
+  - name: Configure CONN-BGP Route-Maps
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.name }}"
+        entries:
+        - sequence: "{{ item.sequence }}"
+          action: "{{ item.action }}"
+          match:
+            interfaces: "{{ item.match_interfaces }}"
+          set: "set community {{ 
+            vrfs |
+            selectattr('vrf', 'equalto', item.vrf) |
+            map(attribute='bgp_community_number') |
+            join('') }}"
+    loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
+    tags:
+    - bgp_redist_route_map
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+  
 # ------------------------
 # Play - BGP Configuration
 # ------------------------
@@ -352,7 +387,7 @@
     - bgp_router_id
     notify: save_cfg
 
-  - name: Configure BGP Redistribution
+  - name: Configure Redistribution-Into-BGP
     cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
@@ -411,27 +446,6 @@
     tags:
     - bgp_neighbor
     notify: save_cfg
-
-# ---------------------
-# Play - Get BGP Status
-# ---------------------
-  - name: Get BGP Neighbor status
-    cisco.ios.ios_command:
-      commands:
-      - "sh ip bgp vpnv4 vrf {{ item.name }} summary"
-    when: item.name in l3_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.name ) |
-        selectattr('description', 'equalto', 'main_loopback') |
-        map(attribute='vrf') | list
-    loop: "{{ vrfs }}"
-    register: bgp_neighbor_status
-    tags:
-    - show_bgp_neighbors
-    
-  - name: Display BGP Neighbor status
-    debug: var=bgp_neighbor_status.results
-    tags:
-    - show_bgp_neighbors
 
   handlers:
   - name: save_cfg

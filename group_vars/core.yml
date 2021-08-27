@@ -356,4 +356,26 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: true
 
+# -------------------------------------------------------
+# Route Redistribution Into BGP
+# -------------------------------------------------------
+redistribution:
+  into_bgp:
+    from_connected:
+      route-maps:
+      - vrf: CORE
+        name: CONN_BGP_CORE
+        sequence: 1000
+        action: permit
+        match_interfaces:
+        - GigabitEthernet3/1
+
+    from_static:
+      route-maps:
+      - vrf: CORE
+        name: STATIC_BGP_CORE
+        sequence: 1000
+        action: permit
+        match_tags:
+        - 1000
 

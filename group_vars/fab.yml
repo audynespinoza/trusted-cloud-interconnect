@@ -294,3 +294,17 @@ l3_interfaces:
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
+
+
+# -------------------------------------------------------
+# Route Redistribution Into BGP
+# -------------------------------------------------------
+redistribution:
+  into_bgp:
+    from_connected:
+      route-maps:
+      - vrf: TRUSTED
+        sequence: 1000
+        action: permit
+        match_interfaces:
+        - GigabitEthernet3/3

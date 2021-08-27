@@ -2,3 +2,8 @@ ansible==4.1.0
 ansible-lint
 netaddr
 paramiko
+pyats
+genie
+pybatfish
+pynetbox
+yamllint

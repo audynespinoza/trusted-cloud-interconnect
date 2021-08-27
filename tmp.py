@@ -203,3 +203,65 @@ for i in hosts:
     - ibgp
     notify: save_cfg
 
+
+
+  - name: Configure BGP Redistribution
+    cisco.ios.ios_bgp_address_family:
+      config:
+        as_number: "{{ bgp.local_asn }}"
+        address_family:
+        - afi: ipv4
+          safi: unicast
+          vrf: "{{ item.vrf }}"
+          neighbor:
+          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
+            activate: true
+            remote_as: "{{ bgp.local_asn }}"
+            route_reflector_client: "{{ item.bgp_route_reflect }}"
+            nexthop_self:
+              all: false
+              set: "{{ item.bgp_next_hop_self }}"
+            timers:
+              holdtime: "{{ bgp_holdtime }}"
+              interval: "{{ bgp_keepalive_interval }}"
+            soft_reconfiguration: true
+            send_community:
+              both: true
+            password: "{{bgp_neighbor_pwd}}"
+            route_maps:
+              - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+                out: true
+              - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+                in: true
+          redistribute:
+            - connected:
+                route_map: "CONN_BGP_{{ item.vrf }}"
+            - static:
+                route_map: "STATIC_BGP_{{ item.vrf }}"
+      state: replaced
+    loop: "{{
+      l3_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      selectattr('bgp_type', 'equalto', 'internal') |
+      list }}"
+    tags:
+    - ibgp
+    notify: save_cfg
+
+# ---------------------
+# Play - Get BGP Status
+# ---------------------
+  - name: Get BGP Neighbor status
+    cisco.ios.ios_command:
+      commands:
+      - "sh ip bgp vpnv4 vrf {{ item.name }} summary"
+    when: item.name in l3_interfaces[inventory_hostname] |
+        selectattr('vrf', 'equalto', item.name ) |
+        selectattr('description', 'equalto', 'main_loopback') |
+        map(attribute='vrf') | list
+    loop: "{{ vrfs }}"
+    register: bgp_neighbor_status
+    tags:
+    - show_bgp_neighbors
+    
+    

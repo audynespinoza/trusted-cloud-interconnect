@@ -25,16 +25,19 @@ vrfs:
   rd: 1:100
   route_both:
   - 1:100
+  bgp_community_number: "{{ bgp.local_asn }}:1000"
 - name: TRUSTED
   description: "Internal Routing Bypassing Firewalls"
   rd: 2:100
   route_both:
   - 2:100
+  bgp_community_number: "{{ bgp.local_asn }}:2000"
 - name: EDGE
   description: "Tunnel Underlay"
   rd: 3:100
   route_both:
   - 3:100
+  bgp_community_number: "{{ bgp.local_asn }}:3000"
 
 bgp_log_neighbor_changes: true
 bgp_keepalive_interval: 4

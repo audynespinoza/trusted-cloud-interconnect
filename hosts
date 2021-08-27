@@ -100,16 +100,12 @@ aln_wan
 aln_core
 aln_fab
 aln_fw
-aln_trust
-aln_nontrust
 
 [mck:children]
 mck_wan
 mck_core
 mck_fab
 mck_fw
-mck_trust
-mck_nontrust
 
 [ash:children]
 ash_wan

@@ -1,2 +1,43 @@
 bgp:
   local_asn: 64551
+
+tenant_networks:
+  - vrf: CORE
+    routes:
+    - name: tenant1
+      cidr: 10.10.11.1/32
+      next_hop: 10.224.11.28
+    - name: tenant2
+      cidr: 10.10.11.2/32
+      next_hop: 10.224.11.28
+  - vrf: TRUSTED
+    routes:
+    - name: tenant3
+      cidr: 10.10.21.1/32
+      next_hop: false
+    - name: tenant4
+      cidr: 10.10.21.2/32
+      next_hop: false
+
+rfc1918_routes:
+  - vrf: CORE
+    routes:
+    - name: rfc1918_summary_10/8
+      cidr: 10.0.0.0/8
+      next_hop: 10.224.11.36
+    - name: rfc1918_summary_172.16/12
+      cidr: 172.16.0.0/12
+      next_hop: 10.224.11.36
+    - name: rfc1918_summary_192.168/16
+      cidr: 172.16.0.0/12
+      next_hop: 10.224.11.36
+    - name: rfc1918_summary_172.16/12
+      cidr: 172.16.0.0/12
+      next_hop: 10.224.11.36
+
+default_routes:
+  - vrf: CORE
+    routes:
+    - name: default
+      cidr: 0.0.0.0/0
+      next_hop: 10.224.11.36
