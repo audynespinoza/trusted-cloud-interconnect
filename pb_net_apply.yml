@@ -300,7 +300,7 @@
   tags: bgp_route_map
   gather_facts: no
   tasks:
-  - name: Configure CONN-BGP Route-Maps
+  - name: Configure CONN_BGP Route-Maps
     cisco.ios.ios_route_maps:
       config:
       - route_map: "{{ item.name }}"
