@@ -295,40 +295,6 @@
 # Play - Build BGP Route-Maps
 # ---------------------------
 - name: Build BGP Route-Maps
-  hosts: aln_fab
-  tags: coo
-  gather_facts: no
-  tasks:
-  - name: Configure CONN_BGP Route-Maps
-    cisco.ios.ios_route_maps:
-      config:
-      - route_map: cool
-        entries:
-        - sequence: 1000
-          action: permit
-          match:
-            interfaces: ['GigabitEthernet3/3']
-          set:
-            community:
-              number: "65111:1111"
-      state: merged
-    tags:
-    - bgp_redist_route_map
-    notify: save_cfg
-
-  handlers:
-  - name: save_cfg
-    ios_command:
-      commands:
-      - write mem
-    when: not ansible_check_mode
-  
-
-
-# ---------------------------
-# Play - Build BGP Route-Maps
-# ---------------------------
-- name: Build BGP Route-Maps
   hosts: aln_fab:aln_core
   tags: bgp_route_map
   gather_facts: no
