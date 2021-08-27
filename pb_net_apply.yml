@@ -296,7 +296,7 @@
 # Play - Build BGP Route-Maps
 # ---------------------------
 - name: Build BGP Route-Maps
-  hosts: aln_fab:aln_core
+  hosts: aln_fab
   tags: bgp_route_map
   gather_facts: no
   tasks:
