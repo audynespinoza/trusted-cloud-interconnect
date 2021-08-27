@@ -1,4 +1,7 @@
 l3_interfaces:
+  # -------------------------------------------------------
+  # alnfab1
+  # -------------------------------------------------------
   alnfab1:
   - name: Loopback1
     cidr: 10.224.111.5/32
@@ -129,8 +132,8 @@ l3_interfaces:
     physical: true
     ospf_active: false 
     ospf_process: '0'
-    bgp: true
-    bgp_type: external
+    bgp: false
+    bgp_type: false
     bgp_local_as: "{{ bgp.local_asn }}"
     bgp_enabled: true
     bgp_next_hop_self: false
@@ -146,13 +149,16 @@ l3_interfaces:
     physical: true
     ospf_active: false 
     ospf_process: '0'
-    bgp: true
-    bgp_type: external
+    bgp: false
+    bgp_type: false
     bgp_local_as: "{{ bgp.local_asn }}"
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
+  # -------------------------------------------------------
+  # alnfab2
+  # -------------------------------------------------------
   alnfab2:
   - name: Loopback1
     cidr: 10.224.111.6/32
@@ -283,8 +289,8 @@ l3_interfaces:
     physical: true
     ospf_active: false 
     ospf_process: '0'
-    bgp: true
-    bgp_type: external
+    bgp: false
+    bgp_type: false
     bgp_local_as: "{{ bgp.local_asn }}"
     bgp_enabled: true
     bgp_next_hop_self: false
@@ -300,8 +306,8 @@ l3_interfaces:
     physical: true
     ospf_active: false 
     ospf_process: '0'
-    bgp: true
-    bgp_type: external  
+    bgp: false
+    bgp_type: false  
     bgp_local_as: "{{ bgp.local_asn }}"
     bgp_enabled: true
     bgp_next_hop_self: false
