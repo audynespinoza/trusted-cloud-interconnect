@@ -424,7 +424,8 @@
           - static:
               route_map: "{{ item.name }}"
       state: replaced
-    when: "{{ redistribution.into_bgp | selectattr('from_static', 'defined') | map(attribute='from_static') }}"
+    loop: "{{ redistribution.into_bgp | selectattr('from_static', 'defined') | map(attribute='from_static') }}"
+    when: redistribution is defined
     tags:
     - static_bgp_redistribution
     notify: save_cfg
@@ -442,6 +443,7 @@
               route_map: "{{ item.name }}"
       state: replaced
     loop: "{{ redistribution.into_bgp | selectattr('from_connected', 'defined') | map(attribute='from_connected') }}"
+    when: redistribution is defined
     tags:
     - conn_bgp_redistribution
     notify: save_cfg
