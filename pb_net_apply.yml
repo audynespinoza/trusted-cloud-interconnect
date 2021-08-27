@@ -309,11 +309,7 @@
           action: "{{ item.action }}"
           match:
             interfaces: "{{ item.match_interfaces }}"
-          set: "set community {{ 
-            vrfs |
-            selectattr('vrf', 'equalto', item.vrf) |
-            map(attribute='bgp_community_number') |
-            join('') }}"
+          set: "set community 65111:1111"
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     tags:
     - bgp_redist_route_map
