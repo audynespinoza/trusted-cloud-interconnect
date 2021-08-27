@@ -424,8 +424,8 @@
           - static:
               route_map: "{{ item.name }}"
       state: replaced
-    loop: "{{ redistribution.into_bgp | selectattr('from_static', 'defined') | map(attribute='from_static') }}"
-    when: redistribution is defined
+    loop: "{{ redistribution.into_bgp.from_static.route_map_entries }}"
+    when: redistribution.into_bgp.from_static is defined
     tags:
     - static_bgp_redistribution
     notify: save_cfg
