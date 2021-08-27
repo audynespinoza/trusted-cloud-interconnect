@@ -306,9 +306,6 @@
         entries:
         - sequence: 1000
           action: permit
-          match:
-            interfaces: ['GigabitEthernet3/3']
-          set: "set community 65111:1111"
       state: merged
     tags:
     - bgp_redist_route_map
