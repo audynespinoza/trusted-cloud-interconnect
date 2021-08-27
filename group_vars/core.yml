@@ -371,7 +371,7 @@ redistribution:
         - GigabitEthernet3/1
 
     from_static:
-      route-map_entries:
+      route_map_entries:
       - vrf: CORE
         name: STATIC_BGP_CORE
         sequence: 1000
