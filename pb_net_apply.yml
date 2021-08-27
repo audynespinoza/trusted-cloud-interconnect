@@ -296,7 +296,7 @@
 # --------------------------------------
 - name: Enable BGP Community New Format
   hosts: aln
-  tags: bgp_comm_new_format
+  tags: bgp
   gather_facts: no
   tasks:
   - name: Configure CONN_BGP Route-Maps
@@ -319,7 +319,7 @@
 # ---------------------------
 - name: Build BGP Route-Maps
   hosts: aln_fab:aln_core
-  tags: bgp_route_map
+  tags: bgp
   gather_facts: no
   tasks:
   - name: Configure CONN_BGP Route-Maps
