@@ -302,8 +302,9 @@ l3_interfaces:
 redistribution:
   into_bgp:
     from_connected:
-      route-maps:
+      route_map_entries:
       - vrf: TRUSTED
+        name: CONN_BGP_TRUSTED
         sequence: 1000
         action: permit
         match_interfaces:

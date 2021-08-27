@@ -297,7 +297,7 @@
 # ---------------------------
 - name: Build BGP Route-Maps
   hosts: aln_fab:aln_core
-  tags: bgp_route_maps
+  tags: bgp_route_map
   gather_facts: no
   tasks:
   - name: Configure CONN-BGP Route-Maps

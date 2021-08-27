@@ -362,7 +362,7 @@ l3_interfaces:
 redistribution:
   into_bgp:
     from_connected:
-      route-maps:
+      route_map_entries:
       - vrf: CORE
         name: CONN_BGP_CORE
         sequence: 1000
@@ -371,7 +371,7 @@ redistribution:
         - GigabitEthernet3/1
 
     from_static:
-      route-maps:
+      route-map_entries:
       - vrf: CORE
         name: STATIC_BGP_CORE
         sequence: 1000
