@@ -423,7 +423,7 @@
           redistribute:
           - static:
               route_map: "{{ item.name }}"
-      state: replaced
+      state: merged
     loop: "{{ redistribution.into_bgp.from_static.route_map_entries }}"
     when: redistribution.into_bgp.from_static is defined
     tags:
@@ -441,7 +441,7 @@
           redistribute:
           - connected:
               route_map: "{{ item.name }}"
-      state: replaced
+      state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
     tags:
