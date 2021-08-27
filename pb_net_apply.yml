@@ -308,11 +308,13 @@
           action: "{{ item.action }}"
           match:
             interfaces: "{{ item.match_interfaces }}"
-          set: "set community {{ 
-            vrfs |
-            selectattr('name', 'equalto', item.vrf) |
-            map(attribute='bgp_community_number') |
-            join('') }}"
+          set:
+            community:
+              number: "{{ 
+                vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}"
       state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     tags:
