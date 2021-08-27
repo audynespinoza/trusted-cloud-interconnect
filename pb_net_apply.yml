@@ -291,6 +291,29 @@
       - write mem
     when: not ansible_check_mode
 
+# --------------------------------------
+# Play - Enable BGP Community New Format
+# --------------------------------------
+- name: Enable BGP Community New Format
+  hosts: aln
+  tags: bgp_comm_new_format
+  gather_facts: no
+  tasks:
+  - name: Configure CONN_BGP Route-Maps
+    cisco.ios.ios_config:
+      lines:
+      - "ip bgp-community new-format"
+    tags:
+    - bgp_comm_new_format
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
 # ---------------------------
 # Play - Build BGP Route-Maps
 # ---------------------------
