@@ -310,6 +310,7 @@
           match:
             interfaces: "{{ item.match_interfaces }}"
           set: "set community 65111:1111"
+      state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     tags:
     - bgp_redist_route_map
