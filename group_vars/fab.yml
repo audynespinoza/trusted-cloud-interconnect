@@ -106,7 +106,7 @@ l3_interfaces:
     description: alnfab2
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: true
     ospf_process: '2'
     bgp: true
@@ -122,7 +122,7 @@ l3_interfaces:
     description: alnnontrust
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false 
     ospf_process: '0'
     bgp: false
@@ -138,7 +138,7 @@ l3_interfaces:
     description: alntrust
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false 
     ospf_process: '0'
     bgp: false
@@ -270,7 +270,7 @@ l3_interfaces:
     description: alnnontrust
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false 
     ospf_process: '0'
     bgp: false
@@ -286,7 +286,7 @@ l3_interfaces:
     description: alntrust
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false 
     ospf_process: '0'
     bgp: false  
