@@ -441,6 +441,7 @@
               route_map: "{{ item.name }}"
         scope:
           vrf:
+            global: false
             name: "{{ item.vrf }}"
       state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
