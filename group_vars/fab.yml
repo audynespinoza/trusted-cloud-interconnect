@@ -52,8 +52,8 @@ l3_interfaces:
     bgp_route_reflect: true
 
   - name: GigabitEthernet3/0
-    cidr: 10.224.11.14/31 
-    host_ip_index: 0
+    cidr: 10.224.11.32/29
+    host_ip_index: 2
     vrf: CORE
     description: alnfw1
     enabled: true
@@ -68,8 +68,8 @@ l3_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet3/1
-    cidr: 10.224.21.14/31
-    host_ip_index: 0
+    cidr: 10.224.21.32/29
+    host_ip_index: 2
     vrf: TRUSTED
     description: alnfw1
     enabled: true
@@ -115,9 +115,9 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: GigabitEthernet3/2
-    cidr: 10.224.11.20/31
-    host_ip_index: 0
+  - name: Vlan30
+    cidr: 10.224.11.40/29
+    host_ip_index: 2
     vrf: CORE
     description: alnnontrust
     enabled: true
@@ -131,9 +131,9 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-  - name: GigabitEthernet3/3
-    cidr: 10.224.21.20/31
-    host_ip_index: 0
+  - name: Vlan40
+    cidr: 10.224.21.48/29
+    host_ip_index: 2
     vrf: TRUSTED
     description: alntrust
     enabled: true
@@ -200,8 +200,8 @@ l3_interfaces:
     bgp_route_reflect: true
 
   - name: GigabitEthernet3/0
-    cidr: 10.224.11.16/31
-    host_ip_index: 0
+    cidr: 10.224.11.32/29
+    host_ip_index: 3
     vrf: CORE
     description: alnfw1
     enabled: true
@@ -216,14 +216,14 @@ l3_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet3/1
-    cidr: 10.224.21.16/31
-    host_ip_index: 0
+    cidr: 10.224.21.32/29
+    host_ip_index: 3
     vrf: TRUSTED
     description: alnfw1
     enabled: true
     underlay: false
     physical: true
-    ospf_active: false 
+    ospf_active: false
     ospf_process: '0'
     bgp: false
     bgp_local_as: "{{ bgp.local_asn }}"
@@ -263,9 +263,9 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: GigabitEthernet3/2
-    cidr: 10.224.11.22/31
-    host_ip_index: 0
+  - name: Vlan30
+    cidr: 10.224.11.40/29
+    host_ip_index: 3
     vrf: CORE
     description: alnnontrust
     enabled: true
@@ -279,9 +279,9 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-  - name: GigabitEthernet3/3
-    cidr: 10.224.21.22/31
-    host_ip_index: 0
+  - name: Vlan40
+    cidr: 10.224.21.48/29
+    host_ip_index: 3
     vrf: TRUSTED
     description: alntrust
     enabled: true
@@ -308,4 +308,4 @@ redistribution:
         sequence: 1000
         action: permit
         match_interfaces:
-        - GigabitEthernet3/3
+        - Vlan423
