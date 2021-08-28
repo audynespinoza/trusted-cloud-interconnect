@@ -437,7 +437,8 @@
       config:
         as_number: "{{ bgp.local_asn }}"
         redistribute:
-          connected: "{{ item.name }}"
+          connected:
+            route_map: "{{ item.name }}"
           vrf:
             name: "{{ item.vrf }}"
       state: merged
