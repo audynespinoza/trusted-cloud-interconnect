@@ -45,20 +45,8 @@ mckfw1 ansible_host=192.168.122.32
 [ash_fw]
 ashfw1 ansible_host=192.168.122.33
 
-[aln_trust]
-alntrust1 ansible_host=192.168.122.34
-
-[mck_trust]
-mcktrust1 ansible_host=192.168.122.35
-
 [ash_trust]
 ashtrust1 ansible_host=192.168.122.36
-
-[aln_nontrust]
-alnnontrust1 ansible_host=192.168.122.37
-
-[mck_nontrust]
-mcknontrust1 ansible_host=192.168.122.38
 
 [ash_nontrust]
 ashnontrust1 ansible_host=192.168.122.39
@@ -86,13 +74,9 @@ mck_fw
 ash_fw
 
 [trust:children]
-aln_trust
-mck_trust
 ash_trust
 
 [nontrust:children]
-aln_nontrust
-mck_nontrust
 ash_nontrust
 
 [aln:children]
