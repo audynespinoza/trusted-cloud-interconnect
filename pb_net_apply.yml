@@ -418,7 +418,7 @@
       - "redistribute static {{ item.name }}"
       parents:
       - "router bgp {{ bgp.local_asn }}"
-      - "address-family ipv4 vrf {{ item.name }}"
+      - "address-family ipv4 vrf {{ item.vrf }}"
     loop: "{{ redistribution.into_bgp.from_static.route_map_entries }}"
     when: redistribution.into_bgp.from_static is defined
     tags:
@@ -431,7 +431,7 @@
       - "redistribute connected {{ item.name }}"
       parents:
       - "router bgp {{ bgp.local_asn }}"
-      - "address-family ipv4 vrf {{ item.name }}"
+      - "address-family ipv4 vrf {{ item.vrf }}"
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
     tags:
