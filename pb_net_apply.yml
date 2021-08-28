@@ -70,7 +70,7 @@
 # Play - Change Switchports to Routed Ports Before Configuring L3 Interfaces
 # --------------------------------------------------------------------------
 - name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
-  hosts: aln_fab
+  hosts: aln_fab:aln_core:aln_fw
   tags: routed_switchport
   gather_facts: no
   tasks:
@@ -318,7 +318,7 @@
 # Play - Build BGP Route-Maps
 # ---------------------------
 - name: Build BGP Route-Maps
-  hosts: aln_fab:aln_core
+  hosts: aln_fab:aln_core:aln_wan
   tags: bgp
   gather_facts: no
   tasks:
