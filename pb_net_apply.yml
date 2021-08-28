@@ -438,7 +438,8 @@
         as_number: "{{ bgp.local_asn }}"
         redistribute:
           connected: "{{ item.name }}"
-          vrf: "{{ item.vrf }}"
+          vrf:
+            name: "{{ item.vrf }}"
       state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
