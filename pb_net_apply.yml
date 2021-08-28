@@ -413,16 +413,12 @@
     notify: save_cfg
 
   - name: Configure Static Into BGP Redistribution
-    cisco.ios.ios_bgp_address_family:
-      config:
-        as_number: "{{ bgp.local_asn }}"
-        address_family:
-        - afi: ipv4
-          safi: unicast
-          vrf: "{{ item.vrf }}"
-          redistribute:
-          - static:
-              route_map: "{{ item.name }}"
+    cisco.ios.ios_config:
+      lines:
+      - "redistribute static {{ item.name }}"
+      parents:
+      - "router bgp {{ bgp.local_asn }}"
+      - "address-family ipv4 vrf {{ item.name }}"
       state: merged
     loop: "{{ redistribution.into_bgp.from_static.route_map_entries }}"
     when: redistribution.into_bgp.from_static is defined
@@ -431,16 +427,12 @@
     notify: save_cfg
 
   - name: Configure Connected Into BGP Redistribution
-    cisco.ios.ios_bgp_address_family:
-      config:
-        as_number: "64551"
-        address_family:
-        - afi: ipv4
-          safi: unicast
-          vrf: "CORE"
-          redistribute:
-          - connected:
-              route_map: "bla"
+    cisco.ios.ios_config:
+      lines:
+      - "redistribute connected {{ item.name }}"
+      parents:
+      - "router bgp {{ bgp.local_asn }}"
+      - "address-family ipv4 vrf {{ item.name }}"
       state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
