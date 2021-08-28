@@ -3,14 +3,14 @@ l3_interfaces:
   # alnfw1
   # -------------------------------------------------------
   alnfw1:
-  - name: GigabitEthernet0/1
-    cidr: 10.224.21.10/31
-    host_ip_index: 1
+  - name: Vlan10
+    cidr: 10.224.21.24/29
+    host_ip_index: 4
     vrf: CORE
-    description: alncore1
+    description: alncore
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false
     ospf_process: '0'
     bgp: false
@@ -19,46 +19,14 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
     
-  - name: GigabitEthernet0/2
-    cidr: 10.224.11.12/31
-    host_ip_index: 1
-    vrf: CORE
-    description: alncore2
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: false
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-    
-  - name: GigabitEthernet1/1
-    cidr: 10.224.11.14/31
-    host_ip_index: 1
-    vrf: CORE
-    description: alnfab1
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: false 
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-    
-  - name: GigabitEthernet2/1
-    cidr: 10.224.21.14/31
-    host_ip_index: 1
+  - name: Vlan15
+    cidr: 10.224.21.32/29
+    host_ip_index: 4
     vrf: TRUSTED
-    description: alnfab1
+    description: alnfab
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false
     ospf_process: '0'
     bgp: false
@@ -67,31 +35,15 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
     
-  - name: GigabitEthernet1/2
-    cidr: 10.224.11.16/31
-    host_ip_index: 1
+  - name: Vlan20
+    cidr: 10.224.11.32/29
+    host_ip_index: 4
     vrf: CORE
-    description: alnfab2
+    description: alnfab
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-    
-  - name: GigabitEthernet2/2
-    cidr: 10.224.21.16/31
-    host_ip_index: 1
-    vrf: TRUSTED
-    description: alnfab2
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: false 
     ospf_process: '0'
     bgp: false
     bgp_local_as: "{{ bgp.local_asn }}"
