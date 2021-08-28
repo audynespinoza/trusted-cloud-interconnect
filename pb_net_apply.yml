@@ -415,7 +415,7 @@
   - name: Configure Static Into BGP Redistribution
     cisco.ios.ios_config:
       lines:
-      - "redistribute static {{ item.name }}"
+      - "redistribute static route-map {{ item.name }}"
       parents:
       - "router bgp {{ bgp.local_asn }}"
       - "address-family ipv4 vrf {{ item.vrf }}"
@@ -428,7 +428,7 @@
   - name: Configure Connected Into BGP Redistribution
     cisco.ios.ios_config:
       lines:
-      - "redistribute connected {{ item.name }}"
+      - "redistribute connected route-map {{ item.name }}"
       parents:
       - "router bgp {{ bgp.local_asn }}"
       - "address-family ipv4 vrf {{ item.vrf }}"
