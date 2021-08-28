@@ -419,7 +419,6 @@
       parents:
       - "router bgp {{ bgp.local_asn }}"
       - "address-family ipv4 vrf {{ item.name }}"
-      state: merged
     loop: "{{ redistribution.into_bgp.from_static.route_map_entries }}"
     when: redistribution.into_bgp.from_static is defined
     tags:
@@ -433,7 +432,6 @@
       parents:
       - "router bgp {{ bgp.local_asn }}"
       - "address-family ipv4 vrf {{ item.name }}"
-      state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
     tags:
