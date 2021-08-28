@@ -433,25 +433,6 @@
   - name: Configure Connected Into BGP Redistribution
     cisco.ios.ios_bgp_address_family:
       config:
-        as_number: "{{ bgp.local_asn }}"
-        address_family:
-        - afi: ipv4
-          safi: unicast
-          vrf: "{{ item.vrf }}"
-          redistribute:
-          - connected:
-              route_map: "{{ item.name }}"
-              metric: 1
-      state: merged
-    loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
-    when: redistribution.into_bgp.from_connected is defined
-    tags:
-    - conn_bgp_redistribution
-    notify: save_cfg
-
-  - name: Configure Connected Into BGP Redistribution
-    cisco.ios.ios_bgp_address_family:
-      config:
         as_number: "64551"
         address_family:
         - afi: ipv4
