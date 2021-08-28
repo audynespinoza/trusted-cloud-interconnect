@@ -441,6 +441,7 @@
           redistribute:
           - connected:
               route_map: "{{ item.name }}"
+              metric: 1
       state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
