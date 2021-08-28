@@ -430,28 +430,6 @@
     - static_bgp_redistribution
     notify: save_cfg
 
-# ---------
-
-  - name: Configure Connected Into BGP Redistribution
-    cisco.ios.ios_bgp_global:
-      config:
-        as_number: "{{ bgp.local_asn }}"
-        redistribute:
-          - connected:
-              route_map: "{{ item.name }}"
-        scope:
-          vrf:
-            global: true
-            name: "{{ item.vrf }}"
-      state: merged
-    loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
-    when: redistribution.into_bgp.from_connected is defined
-    tags:
-    - what
-    notify: save_cfg
-
-# ---------
-
   - name: Configure Connected Into BGP Redistribution
     cisco.ios.ios_bgp_address_family:
       config:
