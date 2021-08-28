@@ -452,14 +452,14 @@
   - name: Configure Connected Into BGP Redistribution
     cisco.ios.ios_bgp_address_family:
       config:
-        as_number: "{{ bgp.local_asn }}"
+        as_number: "64551"
         address_family:
         - afi: ipv4
           safi: unicast
-          vrf: "{{ item.vrf }}"
+          vrf: "CORE"
           redistribute:
           - connected:
-              route_map: "{{ item.name }}"
+              route_map: "bla"
       state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
