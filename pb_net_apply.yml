@@ -449,7 +449,7 @@
           neighbor:
           - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
             activate: true
-            remote_as: "{{ ip_asn_map[(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))] }}"
+            remote_as: "{{ ip_asn_map[(item.cidr | ipv4(not item.host_ip_index)|string | ipaddr('address'))] }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
             nexthop_self:
               all: false
