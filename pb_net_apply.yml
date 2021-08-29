@@ -486,7 +486,7 @@
 # ---------------------------
 # Play - Tenant Static Routes
 # ---------------------------
-- name: Configure BGP
+- name: Configure Tenant Static Routes
   hosts: aln_core:aln_fab
   tags: static_routes
   gather_facts: no
