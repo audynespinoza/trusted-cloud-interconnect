@@ -2,22 +2,35 @@ bgp:
   local_asn: 64556
 
 tenant_networks:
-  - vrf: CORE
-    routes:
-    - name: tenant1
-      cidr: 10.10.13.1/32
-      next_hop: false
-    - name: tenant2
-      cidr: 10.10.13.2/32
-      next_hop: false
-  - vrf: TRUSTED
-    routes:
-    - name: tenant3
-      cidr: 10.10.23.1/32
-      next_hop: false
-    - name: tenant4
-      cidr: 10.10.23.2/32
-      next_hop: false
+  # --------
+  # VRF CORE
+  # --------
+  - name: tenant-core
+    cidr: 10.10.13.1/32
+    next_hop: false
+    vrf: CORE
+    tag: 1000
+
+  - name: tenant-core
+    cidr: 10.10.13.2/32
+    next_hop: false
+    vrf: CORE
+    tag: 1000
+
+  # -----------
+  # VRF TRUSTED
+  # -----------   
+  - name: tenant-trusted
+    cidr: 10.10.23.1/32
+    next_hop: false
+    vrf: TRUSTED
+    tag: 2000
+
+  - name: tenant-trusted
+    cidr: 10.10.23.2/32
+    next_hop: false
+    vrf: TRUSTED
+    tag: 2000
 
 rfc1918_routes:
   - vrf: CORE

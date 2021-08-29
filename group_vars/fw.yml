@@ -18,11 +18,11 @@ l3_interfaces:
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
-    
+
   - name: Vlan15
-    cidr: 10.224.21.32/29
+    cidr: 10.224.11.32/29
     host_ip_index: 4
-    vrf: TRUSTED
+    vrf: CORE
     description: alnfab
     enabled: true
     underlay: false
@@ -34,11 +34,11 @@ l3_interfaces:
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
-    
+
   - name: Vlan20
-    cidr: 10.224.11.32/29
+    cidr: 10.224.21.32/29
     host_ip_index: 4
-    vrf: CORE
+    vrf: TRUSTED
     description: alnfab
     enabled: true
     underlay: false

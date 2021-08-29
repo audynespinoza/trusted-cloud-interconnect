@@ -115,7 +115,7 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: Vlan30
+  - name: Vlan25
     cidr: 10.224.11.40/29
     host_ip_index: 2
     vrf: CORE
@@ -131,8 +131,8 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-  - name: Vlan40
-    cidr: 10.224.21.48/29
+  - name: Vlan30
+    cidr: 10.224.21.40/29
     host_ip_index: 2
     vrf: TRUSTED
     description: alntrust
@@ -263,7 +263,7 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: Vlan30
+  - name: Vlan25
     cidr: 10.224.11.40/29
     host_ip_index: 3
     vrf: CORE
@@ -279,8 +279,8 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-  - name: Vlan40
-    cidr: 10.224.21.48/29
+  - name: Vlan30
+    cidr: 10.224.21.40/29
     host_ip_index: 3
     vrf: TRUSTED
     description: alntrust

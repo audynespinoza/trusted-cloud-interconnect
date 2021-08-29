@@ -481,3 +481,36 @@
       commands:
       - write mem
     when: not ansible_check_mode
+
+
+# ---------------------------
+# Play - Tenant Static Routes
+# ---------------------------
+- name: Configure BGP
+  hosts: aln_core:aln_fab
+  tags: static_routes
+  gather_facts: no
+  tasks:
+  - name: Add Tenant Network Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.next_hop }}"
+              name: "{{ item.name }}"
+              tag: "{{ item.tag }}"
+    loop: "{{ tenant_networks | selectattr('next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
