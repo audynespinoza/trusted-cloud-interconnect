@@ -447,7 +447,7 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           neighbor:
-          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
+          - address: "{{ item.cidr | ipv4(not item.host_ip_index)|string | ipaddr('address') }}" 
             activate: true
             remote_as: "{{ ip_asn_map[(item.cidr | ipv4(not item.host_ip_index)|string | ipaddr('address'))] }}"
             route_reflector_client: "{{ item.bgp_route_reflect }}"
@@ -487,8 +487,121 @@
 # Play - Tenant Static Routes
 # ---------------------------
 - name: Configure Tenant Static Routes
-  hosts: aln_core:aln_fab
-  tags: static_routes
+  hosts: aln_core
+  tags: tenant_network
+  gather_facts: no
+  tasks:
+  - name: Add Tenant Network Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.next_hop }}"
+              name: "{{ item.name }}"
+              tag: "{{ item.tag }}"
+    loop: "{{ tenant_networks | selectattr('next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
+# ------------------------------------------------------
+# Play - Default and Sumamries Static Routes To Firewall
+# ------------------------------------------------------
+- name: Configure Tenant Static Routes
+  hosts: aln_core
+  tags: tenant_network
+  gather_facts: no
+  tasks:
+  - name: Add Tenant Network Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.next_hop }}"
+              name: "{{ item.name }}"
+              tag: "{{ item.tag }}"
+    loop: "{{ tenant_networks | selectattr('next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
+# -------------------------------------------------------
+# Play - Default and Summary To Firewall Inside Interface
+# -------------------------------------------------------
+- name: Configure Default and Summary Routes To Firewall Inside Interface
+  hosts: aln_fab
+  tags: tenant_network
+  gather_facts: no
+  tasks:
+  - name: Add Private Summary Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.next_hop }}"
+              name: "{{ item.name }}"
+              tag: "{{ item.tag }}"
+    loop: "{{ private_summary_routes | selectattr('next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+  - name: Add Default Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.next_hop }}"
+              name: "{{ item.name }}"
+              tag: "{{ item.tag }}"
+    loop: "{{ default_route | selectattr('next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+  
+# ---------------------------------------------------------
+# Play - Tenant Static Routes To Firewall Outside Interface
+# ---------------------------------------------------------
+- name: Configure Tenant Static Routes
+  hosts: aln_core
+  tags: tenant_network
   gather_facts: no
   tasks:
   - name: Add Tenant Network Static Routes
