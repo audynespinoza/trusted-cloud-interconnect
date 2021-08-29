@@ -115,7 +115,7 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: Vlan25
+  - name: GigabitEthernet3/2
     cidr: 10.224.11.40/29
     host_ip_index: 2
     vrf: CORE
@@ -131,7 +131,7 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-  - name: Vlan30
+  - name: GigabitEthernet3/3
     cidr: 10.224.21.40/29
     host_ip_index: 2
     vrf: TRUSTED
@@ -263,7 +263,7 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: Vlan25
+  - name: GigabitEthernet3/2
     cidr: 10.224.11.40/29
     host_ip_index: 3
     vrf: CORE
@@ -279,7 +279,7 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-  - name: Vlan30
+  - name: GigabitEthernet3/3
     cidr: 10.224.21.40/29
     host_ip_index: 3
     vrf: TRUSTED
@@ -308,4 +308,4 @@ redistribution:
         sequence: 1000
         action: permit
         match_interfaces:
-        - Vlan423
+        - GigabitEthernet3/3
