@@ -106,7 +106,7 @@ l3_interfaces:
     description: alnfab2
     enabled: true
     underlay: false
-    physical: false
+    physical: true
     ospf_active: true
     ospf_process: '2'
     bgp: true
