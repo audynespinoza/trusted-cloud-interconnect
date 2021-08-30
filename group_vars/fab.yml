@@ -295,10 +295,10 @@ l3_transit_interfaces:
 # -------------------------------------------------------
 vrrp:
   alnfab1:
-  - priority: '200'
+    priority: 200
     host_ip_index: 2 
   alnfab2:
-  - priority: '100'
+    priority: 100
     host_ip_index: 3
 
 # -------------------------------------------------------
