@@ -8,13 +8,13 @@ l2_transit_interfaces:
     description: alnfw1
     mode: access
     vlan: 10
-    enable: True
+    enabled: True
   alncore2:
   - name: GigabitEthernet3/1
     description: alnfw1
     mode: access
     vlan: 10
-    enable: True
+    enabled: True
 
 l3_transit_interfaces:
   # -------------------------------------------------------

@@ -12,26 +12,32 @@ l2_transit_interfaces:
     description: alncore1
     mode: access
     vlan: 10
+    enabled: true
   - name: GigabitEthernet0/2
     description: alncore2
     mode: access
     vlan: 10
+    enabled: true
   - name: GigabitEthernet1/1
     description: alnfab1
     mode: access
     vlan: 15
+    enabled: true
   - name: GigabitEthernet1/2
     description: alnfab2
     mode: access
     vlan: 15
+    enabled: true
   - name: GigabitEthernet2/1
     description: alnfab1
     mode: access
     vlan: 20
+    enabled: true
   - name: GigabitEthernet2/2
     description: alnfab2
     mode: access
     vlan: 20
+    enabled: true
 
 l3_transit_interfaces:
   # -------------------------------------------------------

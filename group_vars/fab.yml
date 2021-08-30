@@ -10,24 +10,24 @@ l2_transit_interfaces:
     description: alnfw1
     mode: access
     vlan: 15
-    enable: True
+    enabled: True
   - name: GigabitEthernet3/1
     description: alnfw1
     mode: access
     vlan: 20
-    enable: True
+    enabled: True
 
   alnfab2:
   - name: GigabitEthernet3/0
     description: alnfw1
     mode: access
     vlan: 15
-    enable: True
+    enabled: True
   - name: GigabitEthernet3/1
     description: alnfw1
     mode: access
     vlan: 20
-    enable: True
+    enabled: True
 
 trunk_allowed_vlans: 1-999
 
@@ -37,24 +37,24 @@ l2_tenant_interfaces:
     description: l2-1
     mode: trunk
     allowed_vlans: "{{ trunk_allowed_vlans }}"
-    enable: True
+    enabled: True
   - name: GigabitEthernet3/3
     description: l2-2
     mode: trunk
     allowed_vlans: "{{ trunk_allowed_vlans }}"
-    enable: True
+    enabled: True
 
   alnfab2:
   - name: GigabitEthernet3/2
     description: l2-1
     mode: trunk
     allowed_vlans: "{{ trunk_allowed_vlans }}"
-    enable: True
+    enabled: True
   - name: GigabitEthernet3/3
     description: l2-2
     mode: trunk
     allowed_vlans: "{{ trunk_allowed_vlans }}"
-    enable: True
+    enabled: True
 
 l3_transit_interfaces:
   # -------------------------------------------------------
