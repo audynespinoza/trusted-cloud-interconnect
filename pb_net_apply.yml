@@ -454,7 +454,7 @@
         - sequence: "{{ item.sequence }}"
           action: "{{ item.action }}"
           match:
-            interfaces: "{{ item.match }}"
+            interfaces: "{{ item.match_interfaces }}"
           set:
             community:
               number: "{{ 
