@@ -248,20 +248,21 @@ for i in hosts:
     - ibgp
     notify: save_cfg
 
-# ---------------------
-# Play - Get BGP Status
-# ---------------------
-  - name: Get BGP Neighbor status
-    cisco.ios.ios_command:
-      commands:
-      - "sh ip bgp vpnv4 vrf {{ item.name }} summary"
-    when: item.name in l3_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.name ) |
-        selectattr('description', 'equalto', 'main_loopback') |
-        map(attribute='vrf') | list
-    loop: "{{ vrfs }}"
-    register: bgp_neighbor_status
+
+
+  - name: Display BGP Neighbor status
+    debug: var=bgp_neighbor_status.results
     tags:
     - show_bgp_neighbors
-    
-    
+
+OSPF
+          network:
+          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
+            wildcard_bits: 0.0.0.0
+            area: '0'
+          passive_interfaces:
+            default: true
+            interface:
+              set_interface: false
+              name:
+              - "{{ item.name }}"

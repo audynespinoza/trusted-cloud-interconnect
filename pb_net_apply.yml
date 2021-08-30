@@ -308,7 +308,7 @@
     - interface
     notify: save_cfg
 
-  - name: Interface Admin State
+  - name: Transit Interface Admin State
     cisco.ios.ios_interfaces:
       config:
       - name: "{{ item.name }}"
@@ -328,7 +328,7 @@
 # ----------------------------------------------------------------------------
 # Play - Global and Interface OSPF Configuration for BGP Next-Hop Reachability
 # ----------------------------------------------------------------------------
-- name: Configure OSPFv3 on All Devices
+- name: Configure OSPF on All Devices
   hosts: aln_wan:aln_core:aln_fab
   tags: ospf
   gather_facts: no
@@ -351,16 +351,6 @@
           areas:
           - area_id: '0'
             default_cost: 5
-          network:
-          - address: "{{ item.cidr | ipv4(item.host_ip_index) | ipaddr('address') }}" 
-            wildcard_bits: 0.0.0.0
-            area: '0'
-          passive_interfaces:
-            default: true
-            interface:
-              set_interface: false
-              name:
-              - "{{ item.name }}"
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
@@ -370,7 +360,7 @@
     - ospf_global
     notify: save_cfg
 
-  - name: Inteface OSPF Configuration on Transits
+  - name: Interface OSPF Configuration on Transits
     cisco.ios.ios_ospf_interfaces:
       config:
         - name: "{{ item.name }}"
@@ -396,7 +386,7 @@
     - ospf_phys_interface
     notify: save_cfg
 
-  - name: Inteface OSPF Configuration on Loopbacks
+  - name: Interface OSPF Configuration on Loopbacks
     cisco.ios.ios_ospf_interfaces:
       config:
         - name: "{{ item.name }}"
