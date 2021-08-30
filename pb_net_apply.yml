@@ -150,11 +150,23 @@
     loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
     notify: save_cfg
 
+  - name: Configure Switchport to Mode Trunk Ports
+    cisco.ios.ios_l2_interfaces:
+      lines:
+      - switchport mode {{ item.mode }}
+      parents:
+      - interface {{ item.name }}
+    tags:
+    - trunk_port
+    loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
+    when: item.mode == trunk
+    notify: save_cfg
+
   - name: Configure Trunk Ports
     cisco.ios.ios_l2_interfaces:
       config:
       - name: "{{ item.name }}"
-        mode: "{{ item.mode }}"
+        
         trunk:
           allowed_vlans: "{{ item.allowed_vlans }}"
           native_vlan: 1
@@ -163,6 +175,7 @@
     tags:
     - trunk_port
     loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
+    when: item.mode == trunk
     notify: save_cfg
 
   - name: Interface Admin State
