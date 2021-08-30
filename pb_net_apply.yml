@@ -347,7 +347,7 @@
       parents:
       - interface {{ item.interface }}
     loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
-    when: (item.cidr.split('/')[1] == '29') and (item.ospf_active == false)
+    when: item.ospf_active == false
     tags:
     - vrrp
     - interface
