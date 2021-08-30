@@ -66,9 +66,9 @@
       - write mem
     when: not ansible_check_mode
 
-# ----------------------------------------------------------------------------------
+# ---------------------------------
 # Play - Configure L2 Transit Links
-# ----------------------------------------------------------------------------------
+# ---------------------------------
 - name: Configure L2 Transit Links
   hosts: aln_fab:aln_core:aln_fw
   tags: l2_switchport
@@ -78,7 +78,7 @@
     cisco.ios.ios_vlans:
       config:
       - name: "{{ item.name }}"
-        vlan_id: "{{ item.number }}"
+        vlan_id: "{{ item.vlan }}"
         state: active
         shutdown: disabled
       state: merged
@@ -637,9 +637,9 @@
       - write mem
     when: not ansible_check_mode
 
-# -----------------------------------------------------------------------
+# -----------------------------------------
 # Play - Configure Tenant Network Interface
-# -----------------------------------------------------------------------
+# -----------------------------------------
 - name: Configure Tenant Network Interface on Primary
   hosts: aln_fab
   tags: tenant_network_interface
