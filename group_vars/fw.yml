@@ -45,7 +45,7 @@ l3_transit_interfaces:
   # -------------------------------------------------------
   alnfw1:
   - name: Vlan10
-    cidr: 10.224.21.24/29
+    cidr: 10.224.11.24/29
     host_ip_index: 4
     vrf: CORE
     description: alncore
@@ -79,7 +79,7 @@ l3_transit_interfaces:
   - name: Vlan20
     cidr: 10.224.21.32/29
     host_ip_index: 4
-    vrf: TRUSTED
+    vrf: CORE
     description: alnfab
     enabled: true
     underlay: false
