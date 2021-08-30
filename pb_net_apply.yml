@@ -744,7 +744,7 @@
           - dest: "{{ item.cidr }}"
             next_hops:
             - forward_router_address: "{{ item.fw_next_hop }}"
-              name: "{{ item.name }}"
+              name: "{{ item.description }}"
               tag: 1000
     loop: "{{ tenant_networks | selectattr('fw_next_hop', 'defined') }}"
     tags:
@@ -760,7 +760,7 @@
 
 # -------------------------------
 # Play - Configure Tenant Network 
-# --------------------------------
+# -------------------------------
 - name: Configure Tenant Network 
   hosts: aln_fab
   tags: tenant_network_interface
