@@ -342,7 +342,7 @@
   - name: Configure VRRP on Switch Interface
     cisco.ios.ios_config:
       lines: 
-      - "vrrp {{ item.name.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname]['priority'] }}"
+      - "vrrp {{ item.name.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname].priority }}"
       - vrrp {{ item.name.split('Vlan')[1] }} ip {{ item.cidr | ipv4(1) | ipaddr('address') }}
       parents:
       - interface {{ item.name }}
