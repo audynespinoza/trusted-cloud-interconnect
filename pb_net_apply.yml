@@ -166,7 +166,6 @@
     cisco.ios.ios_l2_interfaces:
       config:
       - name: "{{ item.name }}"
-        
         trunk:
           allowed_vlans: "{{ item.allowed_vlans }}"
           native_vlan: 1
