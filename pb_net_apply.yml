@@ -778,15 +778,15 @@
     loop: "{{ tenant_networks }}"
     notify: save_cfg
 
-  - name: Associate VRF to Interface
-    cisco.ios.ios_vrf:
-      name: "{{ item.vrf }}"
-      interfaces: 
-      - "{{ item.interface }}" 
-      state: merged
+  - name: Associate Interface to VRF
+    cisco.ios.ios_config:
+      lines:
+      - vrf forwarding {{ item.vrf }}
+      parents:
+      - interface {{ item.name }}
     loop: "{{ tenant_networks }}"
     tags:
-    - vrf
+    - vrf_interface
     notify: save_cfg
 
   - name: Assign IPv4 Address to Switch Interface
