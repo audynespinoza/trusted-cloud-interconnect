@@ -192,7 +192,8 @@
     cisco.ios.ios_config:
       lines:
       - no switchport
-      parents: "interface {{ item.name }}"
+      parents:
+      - interface {{ item.name }}
     loop: "{{ l3_transit_interfaces[inventory_hostname] | selectattr('physical', 'equalto', true) }}"
     tags:
     - switchport
@@ -204,6 +205,26 @@
       commands:
       - write mem
     when: not ansible_check_mode
+
+
+# ---------------------------------
+# Play - Create VRFs On All Devices
+# ---------------------------------
+  - name: Create VRFs
+    cisco.ios.ios_vrf:
+      name: "{{ item.name }}"
+      description: "{{ item.description }}"
+      rd: "{{ item.rd }}"
+      route_both: "{{ item.route_both }}"
+      state: present
+    loop: "{{ vrfs }}"
+    when: item.name in l3_transit_interfaces[inventory_hostname] |
+        selectattr('vrf', 'equalto', item.name ) |
+        map(attribute='vrf') | list
+    tags:
+    - vrf
+    notify: save_cfg
+
 
 # -----------------------------------------------------------------------
 # Play - Configure Physical & Tunnel & Loopback Interfaces On All Devices
@@ -259,27 +280,12 @@
       list }}"
     notify: save_cfg
 
-  - name: Create VRFs
-    cisco.ios.ios_vrf:
-      name: "{{ item.name }}"
-      description: "{{ item.description }}"
-      rd: "{{ item.rd }}"
-      route_both: "{{ item.route_both }}"
-      state: present
-    loop: "{{ vrfs }}"
-    when: item.name in l3_transit_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.name ) |
-        map(attribute='vrf') | list
-    tags:
-    - vrf
-    notify: save_cfg
-
   - name: Associate Interface to VRF
     cisco.ios.ios_vrf:
       lines:
       - vrf forwarding {{ item.vrf }}
       parents:
-      - "interface {{ item.name }}"
+      - interface {{ item.name }}
     loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
     tags:
     - vrf
@@ -563,8 +569,8 @@
             selectattr('vrf', 'equalto', item.name) |
             map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
-      - "router bgp {{ bgp.local_asn }}"
-      - "address-family ipv4 vrf {{ item.name }}"
+      - router bgp {{ bgp.local_asn }}
+      - address-family ipv4 vrf {{ item.name }}
     when: item.name in l3_transit_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         selectattr('description', 'equalto', 'main_loopback') |
@@ -577,10 +583,10 @@
   - name: Configure Static Into BGP Redistribution
     cisco.ios.ios_config:
       lines:
-      - "redistribute static route-map {{ item.name }}"
+      - redistribute static route-map {{ item.name }}
       parents:
-      - "router bgp {{ bgp.local_asn }}"
-      - "address-family ipv4 vrf {{ item.vrf }}"
+      - router bgp {{ bgp.local_asn }}
+      - address-family ipv4 vrf {{ item.vrf }}
     loop: "{{ redistribution.into_bgp.from_static.route_map_entries }}"
     when: redistribution.into_bgp.from_static is defined
     tags:
@@ -590,10 +596,10 @@
   - name: Configure Connected Into BGP Redistribution
     cisco.ios.ios_config:
       lines:
-      - "redistribute connected route-map {{ item.name }}"
+      - redistribute connected route-map {{ item.name }}
       parents:
-      - "router bgp {{ bgp.local_asn }}"
-      - "address-family ipv4 vrf {{ item.vrf }}"
+      - router bgp {{ bgp.local_asn }}
+      - address-family ipv4 vrf {{ item.vrf }}
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
     tags:
@@ -773,7 +779,8 @@
       lines: 
       - vrrp {{ item.interface.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname][priority] }}
       - vrrp {{ item.interface.split('Vlan')[1] }} ip {{ item.cidr | ipv4(1) | ipaddr('address') }}
-      parents: "interface {{ item.interface }}"
+      parents:
+      - interface {{ item.interface }}
     loop: "{{ tenant_networks }}"
     when: primary is true
     tags:
