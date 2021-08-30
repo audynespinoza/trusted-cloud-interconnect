@@ -839,13 +839,12 @@
   - name: Interface Admin State
     cisco.ios.ios_interfaces:
       config:
-      - name: "{{ item.name }}"
+      - name: "{{ item.interface }}"
         enabled: "{{ item.enabled }}"
     loop: "{{ tenant_networks }}"
     tags:
     - admin_state
     notify: save_cfg
- 
 
 
   handlers:
