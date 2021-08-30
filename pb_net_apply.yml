@@ -210,6 +210,11 @@
 # ---------------------------------
 # Play - Create VRFs On All Devices
 # ---------------------------------
+- name: Create VRFs On All Devices
+  hosts: aln
+  tags: vrf
+  gather_facts: no
+  tasks:
   - name: Create VRFs
     cisco.ios.ios_vrf:
       name: "{{ item.name }}"
