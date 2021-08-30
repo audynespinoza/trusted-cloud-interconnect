@@ -259,7 +259,7 @@
       list }}"
     notify: save_cfg
 
-  - name: Create VRFs and Associate to Interfaces
+  - name: Create VRFs
     cisco.ios.ios_vrf:
       name: "{{ item.name }}"
       description: "{{ item.description }}"
@@ -274,7 +274,7 @@
     - vrf
     notify: save_cfg
 
-  - name: Create Associate Interface to VRF
+  - name: Associate Interface to VRF
     cisco.ios.ios_vrf:
       lines:
       - vrf forwarding {{ item.vrf }}
