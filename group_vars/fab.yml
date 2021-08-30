@@ -1,4 +1,4 @@
-vlans:
+transit_vlans:
 - name: INSIDE_TRANSIT_CORE
   vlan: 15
 - name: INSIDE_TRANSIT_TRUSTED

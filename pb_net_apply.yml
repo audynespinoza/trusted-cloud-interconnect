@@ -84,7 +84,7 @@
       state: merged
     tags:
     - vlan_db
-    loop: "{{ vlans }}"
+    loop: "{{ transit_vlans }}"
     notify: save_cfg
 
   - name: Configure L2 Transit Interface Description and MTU
@@ -766,6 +766,19 @@
   tags: tenant_network_interface
   gather_facts: no
   tasks:
+  - name: Create Tenant Vlans in DB
+    cisco.ios.ios_vlans:
+      config:
+      - name: "{{ item.description }}"
+        vlan_id: "{{ item.interface.split('Vlan')[1] }}"
+        state: active
+        shutdown: disabled
+      state: merged
+    tags:
+    - vlan_db
+    loop: "{{ tenant_networks }}"
+    notify: save_cfg
+
   - name: Configure Tenant Network Interface
     cisco.ios.ios_interfaces:
       config:
@@ -845,7 +858,6 @@
     tags:
     - admin_state
     notify: save_cfg
-
 
   handlers:
   - name: save_cfg
