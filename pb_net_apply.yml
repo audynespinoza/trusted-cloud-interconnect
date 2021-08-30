@@ -454,7 +454,7 @@
         - sequence: "{{ item.sequence }}"
           action: "{{ item.action }}"
           match:
-            interfaces: "{{ tenant_networks | selectattr('vrf', 'equalto', item.vrf) }}"
+            interfaces: "{{ item.match }}"
           set:
             community:
               number: "{{ 
@@ -464,6 +464,34 @@
                 join('') }}"
       state: merged
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
+    tags:
+    - bgp_redist_route_map
+    notify: save_cfg
+
+- name: Build BGP Route-Maps
+  hosts: aln_core
+  tags: bgp
+  gather_facts: no
+  tasks:
+  - name: Configure STATIC_BGP Route-Maps
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.name }}"
+        entries:
+        - sequence: "{{ item.sequence }}"
+          action: "{{ item.action }}"
+          match:
+            tag:
+              tag_list: "{{ item.match_tags }}"
+          set:
+            community:
+              number: "{{ 
+                vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}"
+      state: merged
+    loop: "{{ redistribution.into_bgp.from_static.route_map_entries }}"
     tags:
     - bgp_redist_route_map
     notify: save_cfg
@@ -655,10 +683,9 @@
       - write mem
     when: not ansible_check_mode
 
-#>>>>>>>>>>>>>>>>>>>>>>>
-# ---------------------------------------------------------
-# Play - Tenant Static Routes To Firewall Outside Interface
-# ---------------------------------------------------------
+# -----------------------------------------------------------------------
+# Play - Tenant Static Routes With Firewall Outside Interface as Next-Hop
+# -----------------------------------------------------------------------
 - name: Configure Tenant Static Routes To Firewall Outside Interface
   hosts: aln_core
   tags: tenant_network
@@ -688,15 +715,15 @@
       - write mem
     when: not ansible_check_mode
 
-# -----------------------------------------
-# Play - Configure Tenant Network Interface
-# -----------------------------------------
-- name: Configure Tenant Network Interface on Primary
+# -------------------------------
+# Play - Configure Tenant Network 
+# --------------------------------
+- name: Configure Tenant Network 
   hosts: aln_fab
   tags: tenant_network_interface
   gather_facts: no
   tasks:
-  - name: Create Interface
+  - name: Configure Tenant Network Interface on Primary
     cisco.ios.ios_interfaces:
       config:
       - name: "{{ item.interface }}"
@@ -719,30 +746,51 @@
     - vrf
     notify: save_cfg
 
-  - name: Assign IPv4 Address to Primary Switch Interface
+  - name: Assign IPv4 Address to Switch Interface
     cisco.ios.ios_l3_interfaces:
       config: 
       - name: "{{ item.interface }}"
         ipv4:
-        - address: "{{ item.cidr | ipv4(2) }}" 
+        - address: "{{ item.cidr | ipv4(vrrp[inventory_hostname][host_ip_index]) }}" 
     loop: "{{ tenant_networks }}"
-    when: "primary is true"
     tags:
     - ip_address
     - interface
     notify: save_cfg
 
-  - name: Assign IPv4 Address to Secondary Switch Interface
-    cisco.ios.ios_l3_interfaces:
-      config: 
-      - name: "{{ item.interface }}"
-        ipv4:
-        - address: "{{ item.cidr | ipv4(3) }}" 
+  - name: Configure VRRP on Switch Interface
+    cisco.ios.ios_config:
+      lines: 
+      - vrrp {{ item.interface.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname][priority] }}
+      - vrrp {{ item.interface.split('Vlan')[1] }} ip {{ item.cidr | ipv4(1) | ipaddr('address') }}
+      parents: "interface {{ item.interface }}"
     loop: "{{ tenant_networks }}"
-    when: "primary is false"
+    when: primary is true
     tags:
-    - ip_address
+    - vrrp
     - interface
+    notify: save_cfg
+
+  - name: Add Interface to CONN_BGP Route-Map
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "CONN_BGP_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          match:
+            interfaces: "{{ tenant_networks | selectattr('vrf', 'equalto', item.vrf) }}"
+          set:
+            community:
+              number: "{{ 
+                vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}"
+      state: merged
+    loop: "{{ tenant_networks }}"
+    tags:
+    - bgp_redist_route_map
     notify: save_cfg
 
   - name: Interface Admin State
@@ -754,6 +802,8 @@
     tags:
     - admin_state
     notify: save_cfg
+ 
+
 
   handlers:
   - name: save_cfg

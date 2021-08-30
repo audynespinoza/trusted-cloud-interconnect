@@ -289,6 +289,18 @@ l3_transit_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
+
+# -------------------------------------------------------
+# VRRP
+# -------------------------------------------------------
+vrrp:
+  alnfab1:
+  - priority: 200
+    host_ip_index: 2 
+  alnfab2:
+  - priority: 100
+    host_ip_index: 3
+
 # -------------------------------------------------------
 # Route Redistribution Into BGP
 # -------------------------------------------------------
@@ -296,7 +308,16 @@ redistribution:
   into_bgp:
     from_connected:
       route_map_entries:
+      - vrf: CORE
+        name: CONN_BGP_CORE
+        sequence: 1000
+        action: permit
+        match_interfaces:
+        - Loopback1
+
       - vrf: TRUSTED
         name: CONN_BGP_TRUSTED
         sequence: 1000
         action: permit
+        match_interfaces: 
+        - Loopback2

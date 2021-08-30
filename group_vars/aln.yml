@@ -5,18 +5,17 @@ tenant_networks:
   # --------
   # VRF CORE
   # --------
-  - interface: GigabitEthernet3/2
+  - interface: Vlan25
     cidr: 10.224.11.40/29
     vrf: CORE
     description: tenant-nontrusted
     enabled: true
-    physical: true
     fw_next_hop: 10.224.11.28
 
   # -----------
   # VRF TRUSTED
   # -----------
-  - interface: GigabitEthernet3/3
+  - interface: Vlan30
     cidr: 10.224.21.40/29
     vrf: TRUSTED
     description: tenant-trusted

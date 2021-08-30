@@ -385,6 +385,15 @@ redistribution:
         name: CONN_BGP_CORE
         sequence: 1000
         action: permit
+        match_interfaces:
+        - Loopback1
+
+      - vrf: TRUSTED
+        name: CONN_BGP_TRUSTED
+        sequence: 1000
+        action: permit
+        match_interfaces: 
+        - Loopback2
 
     from_static:
       route_map_entries:
