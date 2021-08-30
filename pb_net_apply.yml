@@ -159,7 +159,7 @@
     tags:
     - trunk_port
     loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
-    when: item.mode == trunk
+    when: item.mode == 'trunk'
     notify: save_cfg
 
   - name: Configure Trunk Ports
@@ -175,7 +175,7 @@
     tags:
     - trunk_port
     loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
-    when: item.mode == trunk
+    when: item.mode == 'trunk'
     notify: save_cfg
 
   - name: Interface Admin State
