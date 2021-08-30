@@ -766,7 +766,7 @@
   tags: tenant_network_interface
   gather_facts: no
   tasks:
-  - name: Configure Tenant Network Interface on Primary
+  - name: Configure Tenant Network Interface
     cisco.ios.ios_interfaces:
       config:
       - name: "{{ item.interface }}"
@@ -789,19 +789,19 @@
     - vrf_interface
     notify: save_cfg
 
-  - name: Assign IPv4 Address to Switch Interface
+  - name: Assign IPv4 Address to Interface Interface
     cisco.ios.ios_l3_interfaces:
       config: 
       - name: "{{ item.interface }}"
         ipv4:
-        - address: "{{ item.cidr | ipv4(vrrp[inventory_hostname][host_ip_index]) }}" 
+        - address: "{{ item.cidr | ipv4(vrrp[inventory_hostname].host_ip_index) }}" 
     loop: "{{ tenant_networks }}"
     tags:
     - ip_address
     - interface
     notify: save_cfg
 
-  - name: Configure VRRP on Switch Tenant Interface
+  - name: Configure VRRP on Tenant Interface
     cisco.ios.ios_config:
       lines: 
       - "vrrp {{ item.interface.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname].priority }}"
