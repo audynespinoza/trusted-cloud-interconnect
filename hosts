@@ -25,16 +25,16 @@ ashcore1 ansible_host=192.168.122.23
 ashcore2 ansible_host=192.168.122.24
 
 [aln_fab]
-alnfab1 ansible_host=192.168.122.25
-alnfab2 ansible_host=192.168.122.26
+alnfab1 ansible_host=192.168.122.25 primary=true
+alnfab2 ansible_host=192.168.122.26 primary=false
 
 [mck_fab]
-mckfab1 ansible_host=192.168.122.27
-mckfab2 ansible_host=192.168.122.28
+mckfab1 ansible_host=192.168.122.27 primary=true
+mckfab2 ansible_host=192.168.122.28 primary=false
 
 [ash_cld]
-ashcld1 ansible_host=192.168.122.29
-ashcld2 ansible_host=192.168.122.30
+ashcld1 ansible_host=192.168.122.29 primary=true
+ashcld2 ansible_host=192.168.122.30 primary=false
 
 [aln_fw]
 alnfw1 ansible_host=192.168.122.31

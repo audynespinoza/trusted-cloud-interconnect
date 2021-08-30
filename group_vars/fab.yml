@@ -1,4 +1,31 @@
-l3_interfaces:
+vlans:
+- name: INSIDE_TRANSIT_CORE
+  vlan: 15
+- name: INSIDE_TRANSIT_TRUSTED
+  vlan: 20
+
+l2_transit_interfaces:
+  alnfab1:
+  - name: GigabitEthernet3/0
+    description: alnfw1
+    mode: access
+    vlan: 15
+  - name: GigabitEthernet3/1
+    description: alnfw1
+    mode: access
+    vlan: 20
+
+  alnfab2:
+  - name: GigabitEthernet3/0
+    description: alnfw1
+    mode: access
+    vlan: 15
+  - name: GigabitEthernet3/1
+    description: alnfw1
+    mode: access
+    vlan: 20
+
+l3_transit_interfaces:
   # -------------------------------------------------------
   # alnfab1
   # -------------------------------------------------------
@@ -51,14 +78,14 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: GigabitEthernet3/0
+  - name: Vlan15
     cidr: 10.224.11.32/29
     host_ip_index: 2
     vrf: CORE
     description: alnfw1
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false
     ospf_process: '0'
     bgp: false
@@ -67,14 +94,14 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-  - name: GigabitEthernet3/1
+  - name: Vlan20
     cidr: 10.224.21.32/29
     host_ip_index: 2
     vrf: TRUSTED
     description: alnfw1
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false 
     ospf_process: '0'
     bgp: false
@@ -114,38 +141,6 @@ l3_interfaces:
     bgp_enabled: true
     bgp_next_hop_self: true
     bgp_route_reflect: true
-
-  - name: GigabitEthernet3/2
-    cidr: 10.224.11.40/29
-    host_ip_index: 2
-    vrf: CORE
-    description: alnnontrust
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: false 
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
-    bgp_enabled: true
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-
-  - name: GigabitEthernet3/3
-    cidr: 10.224.21.40/29
-    host_ip_index: 2
-    vrf: TRUSTED
-    description: alntrust
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: false 
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
-    bgp_enabled: true
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
 
   # -------------------------------------------------------
   # alnfab2
@@ -199,14 +194,14 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: GigabitEthernet3/0
+  - name: Vlan15
     cidr: 10.224.11.32/29
     host_ip_index: 3
     vrf: CORE
     description: alnfw1
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false
     ospf_process: '0'
     bgp: false
@@ -215,14 +210,14 @@ l3_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
 
-  - name: GigabitEthernet3/1
+  - name: Vlan20
     cidr: 10.224.21.32/29
     host_ip_index: 3
     vrf: TRUSTED
     description: alnfw1
     enabled: true
     underlay: false
-    physical: true
+    physical: false
     ospf_active: false
     ospf_process: '0'
     bgp: false
@@ -263,39 +258,6 @@ l3_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  - name: GigabitEthernet3/2
-    cidr: 10.224.11.40/29
-    host_ip_index: 3
-    vrf: CORE
-    description: alnnontrust
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: false 
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
-    bgp_enabled: true
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-
-  - name: GigabitEthernet3/3
-    cidr: 10.224.21.40/29
-    host_ip_index: 3
-    vrf: TRUSTED
-    description: alntrust
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: false 
-    ospf_process: '0'
-    bgp: false  
-    bgp_local_as: "{{ bgp.local_asn }}"
-    bgp_enabled: true
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-
-
 # -------------------------------------------------------
 # Route Redistribution Into BGP
 # -------------------------------------------------------
@@ -307,5 +269,3 @@ redistribution:
         name: CONN_BGP_TRUSTED
         sequence: 1000
         action: permit
-        match_interfaces:
-        - GigabitEthernet3/3

@@ -5,46 +5,70 @@ tenant_networks:
   # --------
   # VRF CORE
   # --------
-  - name: tenant-core
-    cidr: 10.10.11.40/32
-    fw_next_hop: 10.224.11.28
+  - interface: GigabitEthernet3/2
+    cidr: 10.224.11.40/29
     vrf: CORE
-    tag: 1000
+    description: tenant-nontrusted
+    enabled: true
+    physical: true
+    fw_next_hop: 10.224.11.28
 
   # -----------
   # VRF TRUSTED
   # -----------
-  - name: tenant-trusted
-    cidr: 10.10.21.40/29
-    fw_next_hop: false
+  - interface: GigabitEthernet3/3
+    cidr: 10.224.21.40/29
     vrf: TRUSTED
-    tag: 2000
+    description: tenant-trusted
+    enabled: true
+    fw_next_hop: 10.224.11.28
 
 private_summary_routes:
+  # --------
+  # VRF CORE
+  # --------
   - name: rfc1918_summary_10/8
     cidr: 10.0.0.0/8
     fw_next_hop: 10.224.11.36
     vrf: CORE
-    tag: 1000
   - name: rfc1918_summary_172.16/12
     cidr: 172.16.0.0/12
     fw_next_hop: 10.224.11.36
     vrf: CORE
-    tag: 1000
   - name: rfc1918_summary_192.168/16
-    cidr: 172.16.0.0/12
+    cidr: 192.168.0.0/16
     fw_next_hop: 10.224.11.36
     vrf: CORE
-    tag: 1000
+
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  - name: rfc1918_summary_10/8
+    cidr: 10.0.0.0/8
+    fw_next_hop: 10.224.21.36
+    vrf: TRUSTED
   - name: rfc1918_summary_172.16/12
     cidr: 172.16.0.0/12
-    fw_next_hop: 10.224.11.36
-    vrf: CORE
-    tag: 1000
+    fw_next_hop: 10.224.21.36
+    vrf: TRUSTED
+  - name: rfc1918_summary_192.168/16
+    cidr: 192.168.0.0/16
+    fw_next_hop: 10.224.21.36
+    vrf: TRUSTED
 
 default_route:
+  # --------
+  # VRF CORE
+  # --------
   - name: default
     cidr: 0.0.0.0/0
     fw_next_hop: 10.224.11.36
     vrf: CORE
-    tag: 1000
+
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  - name: default
+    cidr: 0.0.0.0/0
+    fw_next_hop: 10.224.21.36
+    vrf: TRUSTED

@@ -66,9 +66,72 @@
       - write mem
     when: not ansible_check_mode
 
-# --------------------------------------------------------------------------
-# Play - Change Switchports to Routed Ports Before Configuring L3 Interfaces
-# --------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------
+# Play - Configure L2 Transit Links
+# ----------------------------------------------------------------------------------
+- name: Configure L2 Transit Links
+  hosts: aln_fab:aln_core:aln_fw
+  tags: l2_switchport
+  gather_facts: no
+  tasks:
+  - name: Create Transit Vlans in DB
+    cisco.ios.ios_vlans:
+      config:
+      - name: "{{ item.name }}"
+        vlan_id: "{{ item.number }}"
+        state: active
+        shutdown: disabled
+      state: merged
+    tags:
+    - vlan_db
+    loop: "{{ vlans }}"
+    notify: save_cfg
+
+  - name: Configure L2 Transit Interface Description and MTU
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        mtu: "{{ phys_intf_mtu }}"
+        description: "{{ item.description }}"
+      state: merged
+    tags:
+    - l2_switchport
+    loop: "{{ 
+      l2_transit_interfaces[inventory_hostname] }}"
+    notify: save_cfg
+
+  - name: Configure Access Ports
+    cisco.ios.ios_l2_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        access:
+          vlan: "{{ item.vlan }}"
+      state: merged
+    tags:
+    - access_port
+    loop: "{{ l2_transit_interfaces[inventory_hostname] }}"
+    notify: save_cfg
+
+  - name: Interface Admin State
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        enabled: "{{ item.enabled }}"
+    loop: "{{ l2_transit_interfaces[inventory_hostname] }}"
+    tags:
+    - admin_state
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
+# ----------------------------------------------------------------------------------
+# Play - Change Switchports to Routed Ports Before Configuring L3 Transit Interfaces
+# ----------------------------------------------------------------------------------
 - name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
   hosts: aln_fab:aln_core
   tags: routed_switchport
@@ -79,9 +142,19 @@
       lines:
       - no switchport
       parents: "interface {{ item.name }}"
-    loop: "{{ l3_interfaces[inventory_hostname] | selectattr('physical','equalto', true) }}"
+    loop: "{{ l3_transit_interfaces[inventory_hostname] | selectattr('physical', 'equalto', true) }}"
     tags:
     - switchport
+    notify: save_cfg
+
+  - name: Interface Admin State
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        enabled: "{{ item.enabled }}"
+    loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
+    tags:
+    - admin_state
     notify: save_cfg
 
   handlers:
@@ -109,7 +182,7 @@
     tags:
     - underlay
     loop: "{{ 
-      l3_interfaces[inventory_hostname] |
+      l3_transit_interfaces[inventory_hostname] |
       selectattr('underlay', 'equalto', true) |
       list }}"
     notify: save_cfg
@@ -125,7 +198,7 @@
     - interface
     - physical
     loop: "{{ 
-      l3_interfaces[inventory_hostname] |
+      l3_transit_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', true) |
       list }}"
     notify: save_cfg
@@ -140,7 +213,7 @@
     - tunnel
     - loopback
     loop: "{{
-      l3_interfaces[inventory_hostname] |
+      l3_transit_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', false) |
       list }}"
     notify: save_cfg
@@ -152,12 +225,12 @@
       rd: "{{ item.rd }}"
       route_both: "{{ item.route_both }}"
       interfaces: "{{
-        l3_interfaces[inventory_hostname] |
+        l3_transit_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         map(attribute='name') | list }}"
       state: present
     loop: "{{ vrfs }}"
-    when: item.name in l3_interfaces[inventory_hostname] |
+    when: item.name in l3_transit_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         map(attribute='vrf') | list
     tags:
@@ -170,7 +243,7 @@
       - name: "{{ item.name }}"
         ipv4:
         - address: "{{ item.cidr | ipv4(item.host_ip_index) }}" 
-    loop: "{{ l3_interfaces[inventory_hostname] }}"
+    loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
     tags:
     - ip_address
     - interface
@@ -181,7 +254,7 @@
       config:
       - name: "{{ item.name }}"
         enabled: "{{ item.enabled }}"
-    loop: "{{ l3_interfaces[inventory_hostname] }}"
+    loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
     tags:
     - admin_state
     notify: save_cfg
@@ -207,7 +280,7 @@
         processes:
         - process_id: "{{ item.ospf_process }}"
           router_id: "{{ 
-            l3_interfaces[inventory_hostname] |
+            l3_transit_interfaces[inventory_hostname] |
             selectattr('description', 'equalto', 'main_loopback') |
             selectattr('vrf', 'equalto', item.vrf) |
             map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
@@ -231,7 +304,7 @@
               - "{{ item.name }}"
       state: merged
     loop: "{{
-      l3_interfaces[inventory_hostname] |
+      l3_transit_interfaces[inventory_hostname] |
       selectattr('ospf_active', 'equalto', true) |
       list }}"
     tags:
@@ -256,7 +329,7 @@
               network:
                 point_to_point: true
     loop: "{{
-      l3_interfaces[inventory_hostname] |
+      l3_transit_interfaces[inventory_hostname] |
       selectattr('ospf_active', 'equalto', true) |
       selectattr('physical', 'equalto', true) |
       list }}"
@@ -276,7 +349,7 @@
               cost:
                 interface_cost: 5
     loop: "{{ 
-      l3_interfaces[inventory_hostname] |
+      l3_transit_interfaces[inventory_hostname] |
       selectattr('ospf_active', 'equalto', true) |
       selectattr('physical', 'equalto', false) |
       list }}"
@@ -299,7 +372,7 @@
   tags: bgp
   gather_facts: no
   tasks:
-  - name: Configure CONN_BGP Route-Maps
+  - name: Enable BGP Community New Format
     cisco.ios.ios_config:
       lines:
       - "ip bgp-community new-format"
@@ -330,7 +403,7 @@
         - sequence: "{{ item.sequence }}"
           action: "{{ item.action }}"
           match:
-            interfaces: "{{ item.match_interfaces }}"
+            interfaces: "{{ tenant_networks | selectattr('vrf', 'equalto', item.vrf) }}"
           set:
             community:
               number: "{{ 
@@ -363,7 +436,7 @@
     set_fact:
       device_map: "{{ device_map | default({}) | combine ({ (item.cidr | ipv4(item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ 
-      l3_interfaces[inventory_hostname] |
+      l3_transit_interfaces[inventory_hostname] |
       selectattr('cidr', 'defined') |
       list }}"
     tags:
@@ -396,14 +469,14 @@
     cisco.ios.ios_config:
       lines:
       - "bgp router-id {{ 
-            l3_interfaces[inventory_hostname] |
+            l3_transit_interfaces[inventory_hostname] |
             selectattr('description', 'equalto', 'main_loopback') |
             selectattr('vrf', 'equalto', item.name) |
             map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
       - "router bgp {{ bgp.local_asn }}"
       - "address-family ipv4 vrf {{ item.name }}"
-    when: item.name in l3_interfaces[inventory_hostname] |
+    when: item.name in l3_transit_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         selectattr('description', 'equalto', 'main_loopback') |
         map(attribute='vrf') | list
@@ -468,7 +541,7 @@
                 in: true
       state: merged
     loop: "{{
-      l3_interfaces[inventory_hostname] |
+      l3_transit_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     tags:
@@ -481,78 +554,13 @@
       commands:
       - write mem
     when: not ansible_check_mode
-
-
-# ---------------------------
-# Play - Tenant Static Routes
-# ---------------------------
-- name: Configure Tenant Static Routes
-  hosts: aln_core
-  tags: tenant_network
-  gather_facts: no
-  tasks:
-  - name: Add Tenant Network Static Routes
-    cisco.ios.ios_static_routes:
-      config:
-      - vrf: "{{ item.vrf }}"
-        address_families:
-        - afi: ipv4
-          routes:
-          - dest: "{{ item.cidr }}"
-            next_hops:
-            - forward_router_address: "{{ item.next_hop }}"
-              name: "{{ item.name }}"
-              tag: "{{ item.tag }}"
-    loop: "{{ tenant_networks | selectattr('next_hop', 'defined') }}"
-    tags:
-    - static_route
-    notify: save_cfg
-
-  handlers:
-  - name: save_cfg
-    ios_command:
-      commands:
-      - write mem
-    when: not ansible_check_mode
-
-# ------------------------------------------------------
-# Play - Default and Sumamries Static Routes To Firewall
-# ------------------------------------------------------
-- name: Configure Tenant Static Routes
-  hosts: aln_core
-  tags: tenant_network
-  gather_facts: no
-  tasks:
-  - name: Add Tenant Network Static Routes
-    cisco.ios.ios_static_routes:
-      config:
-      - vrf: "{{ item.vrf }}"
-        address_families:
-        - afi: ipv4
-          routes:
-          - dest: "{{ item.cidr }}"
-            next_hops:
-            - forward_router_address: "{{ item.next_hop }}"
-              name: "{{ item.name }}"
-              tag: "{{ item.tag }}"
-    loop: "{{ tenant_networks | selectattr('next_hop', 'defined') }}"
-    tags:
-    - static_route
-    notify: save_cfg
-
-  handlers:
-  - name: save_cfg
-    ios_command:
-      commands:
-      - write mem
-    when: not ansible_check_mode
-
+  
 # -------------------------------------------------------
 # Play - Default and Summary To Firewall Inside Interface
 # -------------------------------------------------------
 - name: Configure Default and Summary Routes To Firewall Inside Interface
   hosts: aln_fab
-  tags: tenant_network
+  tags: outbound_statics
   gather_facts: no
   tasks:
   - name: Add Private Summary Static Routes
@@ -564,10 +572,10 @@
           routes:
           - dest: "{{ item.cidr }}"
             next_hops:
-            - forward_router_address: "{{ item.next_hop }}"
+            - forward_router_address: "{{ item.fw_next_hop }}"
               name: "{{ item.name }}"
               tag: "{{ item.tag }}"
-    loop: "{{ private_summary_routes | selectattr('next_hop', 'defined') }}"
+    loop: "{{ private_summary_routes | selectattr('fw_next_hop', 'defined') }}"
     tags:
     - static_route
     notify: save_cfg
@@ -581,10 +589,10 @@
           routes:
           - dest: "{{ item.cidr }}"
             next_hops:
-            - forward_router_address: "{{ item.next_hop }}"
+            - forward_router_address: "{{ item.fw_next_hop }}"
               name: "{{ item.name }}"
               tag: "{{ item.tag }}"
-    loop: "{{ default_route | selectattr('next_hop', 'defined') }}"
+    loop: "{{ default_route | selectattr('fw_next_hop', 'defined') }}"
     tags:
     - static_route
     notify: save_cfg
@@ -595,11 +603,12 @@
       commands:
       - write mem
     when: not ansible_check_mode
-  
+
+#>>>>>>>>>>>>>>>>>>>>>>>
 # ---------------------------------------------------------
 # Play - Tenant Static Routes To Firewall Outside Interface
 # ---------------------------------------------------------
-- name: Configure Tenant Static Routes
+- name: Configure Tenant Static Routes To Firewall Outside Interface
   hosts: aln_core
   tags: tenant_network
   gather_facts: no
@@ -607,18 +616,92 @@
   - name: Add Tenant Network Static Routes
     cisco.ios.ios_static_routes:
       config:
-      - vrf: "{{ item.vrf }}"
+      - vrf: CORE
         address_families:
         - afi: ipv4
           routes:
           - dest: "{{ item.cidr }}"
             next_hops:
-            - forward_router_address: "{{ item.next_hop }}"
+            - forward_router_address: "{{ item.fw_next_hop }}"
               name: "{{ item.name }}"
-              tag: "{{ item.tag }}"
-    loop: "{{ tenant_networks | selectattr('next_hop', 'defined') }}"
+              tag: 1000
+    loop: "{{ tenant_networks | selectattr('fw_next_hop', 'defined') }}"
     tags:
     - static_route
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
+# -----------------------------------------------------------------------
+# Play - Configure Tenant Network Interface
+# -----------------------------------------------------------------------
+- name: Configure Tenant Network Interface on Primary
+  hosts: aln_fab
+  tags: tenant_network_interface
+  gather_facts: no
+  tasks:
+  - name: Create Interface
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.interface }}"
+        description: "{{ item.description }}"
+      state: merged
+    tags:
+    - interface
+    - physical
+    loop: "{{ tenant_networks }}"
+    notify: save_cfg
+
+  - name: Associate VRF to Interface
+    cisco.ios.ios_vrf:
+      name: "{{ item.vrf }}"
+      interfaces: 
+      - "{{ item.interface }}" 
+      state: merged
+    loop: "{{ tenant_networks }}"
+    tags:
+    - vrf
+    notify: save_cfg
+
+  - name: Assign IPv4 Address to Primary Switch Interface
+    cisco.ios.ios_l3_interfaces:
+      config: 
+      - name: "{{ item.interface }}"
+        ipv4:
+        - address: "{{ item.cidr | ipv4(2) }}" 
+    loop: "{{ tenant_networks }}"
+    when: "primary is true"
+    tags:
+    - ip_address
+    - interface
+    notify: save_cfg
+
+  - name: Assign IPv4 Address to Secondary Switch Interface
+    cisco.ios.ios_l3_interfaces:
+      config: 
+      - name: "{{ item.interface }}"
+        ipv4:
+        - address: "{{ item.cidr | ipv4(3) }}" 
+    loop: "{{ tenant_networks }}"
+    when: "primary is false"
+    tags:
+    - ip_address
+    - interface
+    notify: save_cfg
+
+  - name: Interface Admin State
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        enabled: "{{ item.enabled }}"
+    loop: "{{ tenant_networks }}"
+    tags:
+    - admin_state
     notify: save_cfg
 
   handlers:

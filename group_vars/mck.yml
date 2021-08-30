@@ -5,46 +5,86 @@ tenant_networks:
   # --------
   # VRF CORE
   # --------
-  - name: tenant-core
-    cidr: 10.10.12.40/29
-    next_hop: 10.224.12.25
+  - interface: GigabitEthernet3/2
+    cidr: 10.224.12.40/29
     vrf: CORE
-    tag: 1000
+    description: alnnontrust
+    enabled: true
+    physical: true
+    fw_next_hop: 10.224.12.28
 
   # -----------
   # VRF TRUSTED
-  # -----------  
-  - name: tenant-trusted
-    cidr: 10.10.22.40/29
-    next_hop: false
+  # -----------
+  - interface: GigabitEthernet3/3
+    cidr: 10.224.22.40/29
     vrf: TRUSTED
-    tag: 2000
+    description: tenant-trusted
+    enabled: true
+    fw_next_hop: 10.224.12.28
 
 private_summary_routes:
+  # --------
+  # VRF CORE
+  # --------
   - name: rfc1918_summary_10/8
     cidr: 10.0.0.0/8
     fw_next_hop: 10.224.12.36
     vrf: CORE
-    tag: 1000
+    tag: false
   - name: rfc1918_summary_172.16/12
     cidr: 172.16.0.0/12
     fw_next_hop: 10.224.12.36
     vrf: CORE
-    tag: 1000
+    tag: false
   - name: rfc1918_summary_192.168/16
     cidr: 172.16.0.0/12
     fw_next_hop: 10.224.12.36
     vrf: CORE
-    tag: 1000
+    tag: false
   - name: rfc1918_summary_172.16/12
     cidr: 172.16.0.0/12
     fw_next_hop: 10.224.12.36
     vrf: CORE
-    tag: 1000
+    tag: false
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  - name: rfc1918_summary_10/8
+    cidr: 10.0.0.0/8
+    fw_next_hop: 10.224.22.36
+    vrf: TRUSTED
+    tag: false
+  - name: rfc1918_summary_172.16/12
+    cidr: 172.16.0.0/12
+    fw_next_hop: 10.224.22.36
+    vrf: TRUSTED
+    tag: false
+  - name: rfc1918_summary_192.168/16
+    cidr: 172.16.0.0/12
+    fw_next_hop: 10.224.22.36
+    vrf: TRUSTED
+    tag: false
+  - name: rfc1918_summary_172.16/12
+    cidr: 172.16.0.0/12
+    fw_next_hop: 10.224.22.36
+    vrf: TRUSTED
+    tag: false
 
 default_route:
+  # -----------
+  # VRF CORE
+  # -----------
   - name: default
     cidr: 0.0.0.0/0
     fw_next_hop: 10.224.12.36
     vrf: CORE
-    tag: 1000
+    tag: false
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  - name: default
+    cidr: 0.0.0.0/0
+    fw_next_hop: 10.224.22.36
+    vrf: TRUSTED
+    tag: false

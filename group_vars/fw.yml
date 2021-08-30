@@ -1,4 +1,39 @@
-l3_interfaces:
+vlans:
+- name: OUTSIDE_TRANSIT_CORE
+  vlan: 10
+- name: INSIDE_TRANSIT_CORE
+  vlan: 15
+- name: INSIDE_TRANSIT_TRUSTED
+  vlan: 20
+
+l2_transit_interfaces:
+  alnfw1:
+  - name: GigabitEthernet0/1
+    description: alncore1
+    mode: access
+    vlan: 10
+  - name: GigabitEthernet0/2
+    description: alncore2
+    mode: access
+    vlan: 10
+  - name: GigabitEthernet1/1
+    description: alnfab1
+    mode: access
+    vlan: 15
+  - name: GigabitEthernet1/2
+    description: alnfab2
+    mode: access
+    vlan: 15
+  - name: GigabitEthernet2/1
+    description: alnfab1
+    mode: access
+    vlan: 20
+  - name: GigabitEthernet2/2
+    description: alnfab2
+    mode: access
+    vlan: 20
+
+l3_transit_interfaces:
   # -------------------------------------------------------
   # alnfw1
   # -------------------------------------------------------
