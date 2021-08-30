@@ -783,7 +783,7 @@
       lines:
       - vrf forwarding {{ item.vrf }}
       parents:
-      - interface {{ item.name }}
+      - interface {{ item.interface }}
     loop: "{{ tenant_networks }}"
     tags:
     - vrf_interface
