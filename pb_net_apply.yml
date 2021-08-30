@@ -822,7 +822,7 @@
         - sequence: 1000
           action: permit
           match:
-            interfaces: "{{ tenant_networks | selectattr('vrf', 'equalto', item.vrf) }}"
+            interfaces: "{{ tenant_networks | selectattr('vrf', 'equalto', item.vrf) | map(attribute='interface') | list }}"
           set:
             community:
               number: "{{ 
