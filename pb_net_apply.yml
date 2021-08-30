@@ -231,9 +231,9 @@
     notify: save_cfg
 
 
-# -----------------------------------------------------------------------
-# Play - Configure Physical & Tunnel & Loopback Interfaces On All Devices
-# -----------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Play - Configure Physical, VLAN, Tunnel & Loopback Interfaces On All Devices
+# ----------------------------------------------------------------------------
 - name: Configure Device Interfaces
   hosts: aln
   tags: l3_interface
@@ -305,6 +305,20 @@
     loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
     tags:
     - ip_address
+    - interface
+    notify: save_cfg
+
+  - name: Configure VRRP on Switch Interface
+    cisco.ios.ios_config:
+      lines: 
+      - vrrp {{ item.name.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname][priority] }}
+      - vrrp {{ item.name.split('Vlan')[1] }} ip {{ item.cidr | ipv4(1) | ipaddr('address') }}
+      parents:
+      - interface {{ item.interface }}
+    loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
+    when: item.name.startswith('Vlan')
+    tags:
+    - vrrp
     - interface
     notify: save_cfg
 
