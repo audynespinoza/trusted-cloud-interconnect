@@ -684,7 +684,7 @@
 # -------------------------------------------------------
 - name: Configure Default and Summary Routes To Firewall Inside Interface
   hosts: aln_fab
-  tags: outbound_statics
+  tags: outbound_static
   gather_facts: no
   tasks:
   - name: Add Private Summary Static Routes
@@ -731,7 +731,7 @@
 # -----------------------------------------------------------------------
 - name: Configure Tenant Static Routes To Firewall Outside Interface
   hosts: aln_core
-  tags: tenant_network
+  tags: tenant_static
   gather_facts: no
   tasks:
   - name: Add Tenant Network Static Routes
