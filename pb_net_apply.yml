@@ -345,9 +345,9 @@
       - vrrp {{ item.name.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname][priority] }}
       - vrrp {{ item.name.split('Vlan')[1] }} ip {{ item.cidr | ipv4(1) | ipaddr('address') }}
       parents:
-      - interface {{ item.interface }}
+      - interface {{ item.name }}
     loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
-    when: item.ospf_active == false
+    when: (item.cidr.split('/')[1] == '29') and (item.ospf_active == false)
     tags:
     - vrrp
     - interface
