@@ -698,7 +698,6 @@
             next_hops:
             - forward_router_address: "{{ item.fw_next_hop }}"
               name: "{{ item.name }}"
-              tag: "{{ item.tag }}"
     loop: "{{ private_summary_routes | selectattr('fw_next_hop', 'defined') }}"
     tags:
     - static_route
@@ -715,7 +714,6 @@
             next_hops:
             - forward_router_address: "{{ item.fw_next_hop }}"
               name: "{{ item.name }}"
-              tag: "{{ item.tag }}"
     loop: "{{ default_route | selectattr('fw_next_hop', 'defined') }}"
     tags:
     - static_route
@@ -803,15 +801,14 @@
     - interface
     notify: save_cfg
 
-  - name: Configure VRRP on Switch Interface
+  - name: Configure VRRP on Switch Tenant Interface
     cisco.ios.ios_config:
       lines: 
-      - vrrp {{ item.interface.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname][priority] }}
+      - "vrrp {{ item.interface.split('Vlan')[1] }} priority {{ vrrp[inventory_hostname].priority }}"
       - vrrp {{ item.interface.split('Vlan')[1] }} ip {{ item.cidr | ipv4(1) | ipaddr('address') }}
       parents:
       - interface {{ item.interface }}
-    loop: "{{ tenant_networks }}"
-    when: primary is true
+    loop: "{{ tenant_networks}}"
     tags:
     - vrrp
     - interface
