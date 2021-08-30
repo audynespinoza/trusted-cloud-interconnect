@@ -288,8 +288,7 @@
       - interface {{ item.name }}
     loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
     tags:
-    - vrf
-    - interface
+    - vrf_interface
     notify: save_cfg
 
   - name: Assign IPv4 Address to Interfaces
