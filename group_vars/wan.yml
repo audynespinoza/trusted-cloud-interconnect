@@ -35,7 +35,21 @@ l3_transit_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: false
     
-
+  - name: GigabitEthernet0/1
+    cidr: 10.224.11.0/31
+    host_ip_index: 0
+    vrf: CORE
+    description: alncore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: false
     
   - name: GigabitEthernet0/3
     cidr: 10.224.21.0/31
