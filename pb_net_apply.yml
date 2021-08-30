@@ -129,6 +129,57 @@
       - write mem
     when: not ansible_check_mode
 
+# ----------------------------------------
+# Play - Configure L2 Tenant Network Links
+# ----------------------------------------
+- name: Configure L2 Tenant Network Links
+  hosts: aln_fab
+  tags: l2_switchport
+  gather_facts: no
+  tasks:
+  - name: Configure L2 Tenant Interface Description and MTU
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        mtu: "{{ phys_intf_mtu }}"
+        description: "{{ item.description }}"
+      state: merged
+    tags:
+    - l2_switchport
+    loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
+    notify: save_cfg
+
+  - name: Configure Trunk Ports
+    cisco.ios.ios_l2_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        trunk:
+          allowed_vlans: "{{ item.allowed_vlans }}"
+          native_vlan: 1
+          encapsulation: dot1q
+      state: merged
+    tags:
+    - access_port
+    loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
+    notify: save_cfg
+
+  - name: Interface Admin State
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        enabled: "{{ item.enabled }}"
+    loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
+    tags:
+    - admin_state
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
 # ----------------------------------------------------------------------------------
 # Play - Change Switchports to Routed Ports Before Configuring L3 Transit Interfaces
 # ----------------------------------------------------------------------------------
