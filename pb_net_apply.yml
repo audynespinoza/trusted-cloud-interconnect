@@ -788,10 +788,10 @@
       - write mem
     when: not ansible_check_mode
 
-# -----------------------------------------------------------------------
-# Play - Tenant Static Routes With Firewall Outside Interface as Next-Hop
-# -----------------------------------------------------------------------
-- name: Configure Tenant Static Routes To Firewall Outside Interface
+# ----------------------------------------------------------
+# Play - Configure Tenant Static Routes On Core Switch Layer
+# ----------------------------------------------------------
+- name: Configure Tenant Static Routes On Core Switch Layer
   hosts: aln_core
   tags: tenant_static
   gather_facts: no
@@ -820,11 +820,11 @@
       - write mem
     when: not ansible_check_mode
 
-# -----------------------------------------------------------------
-# Play - Tenant Static Routes With Fab Switch Interface as Next-Hop
-# -----------------------------------------------------------------
-- name: Configure Tenant Static Routes To Firewall Outside Interface
-  hosts: aln_core
+# -------------------------------------------------------
+# Play - Configure Tenant Static Routes On Firewall Layer
+# -------------------------------------------------------
+- name: Configure Tenant Static Routes On Firewall Layer
+  hosts: aln_fw
   tags: tenant_static
   gather_facts: no
   tasks:
