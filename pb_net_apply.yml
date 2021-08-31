@@ -855,7 +855,7 @@
 # Play - Configure iBGP Route Policy - WAN and WAN Layer
 # ------------------------------------------------------
 - name: Configure iBGP Route Policy - Between WAN and WAN Layer
-  hosts: wan
+  hosts: aln_wan
   tags: route_policy
   gather_facts: no
   tasks:
