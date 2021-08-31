@@ -11,6 +11,7 @@ tenant_networks:
     description: tenant-nontrusted
     enabled: true
     fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.11.33
 
   # -----------
   # VRF TRUSTED
@@ -21,6 +22,7 @@ tenant_networks:
     description: tenant-trusted
     enabled: true
     fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.21.33
 
 private_summary_routes:
   # --------
@@ -29,14 +31,17 @@ private_summary_routes:
   - name: rfc1918_summary_10/8
     cidr: 10.0.0.0/8
     fw_next_hop: 10.224.11.36
+    sw_next_hop: 10.224.11.25
     vrf: CORE
   - name: rfc1918_summary_172.16/12
     cidr: 172.16.0.0/12
     fw_next_hop: 10.224.11.36
+    sw_next_hop: 10.224.11.25
     vrf: CORE
   - name: rfc1918_summary_192.168/16
     cidr: 192.168.0.0/16
     fw_next_hop: 10.224.11.36
+    sw_next_hop: 10.224.11.25
     vrf: CORE
 
   # -----------
@@ -62,6 +67,7 @@ default_route:
   - name: default
     cidr: 0.0.0.0/0
     fw_next_hop: 10.224.11.36
+    sw_next_hop: 10.224.11.25
     vrf: CORE
 
   # -----------

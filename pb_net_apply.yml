@@ -692,7 +692,55 @@
       commands:
       - write mem
     when: not ansible_check_mode
-  
+
+
+# -------------------------------------------------------------
+# Play - Configure Default and Summary Routes On Firewall Layer
+# -------------------------------------------------------------
+- name: Configure Default and Summary Routes On Firewall Layer
+  hosts: aln_fw
+  tags: outbound_static
+  gather_facts: no
+  tasks:
+  - name: Add Private Summary Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.sw_next_hop }}"
+              name: "{{ item.name }}"
+    loop: "{{ private_summary_routes | selectattr('sw_next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+  - name: Add Default Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.sw_next_hop }}"
+              name: "{{ item.name }}"
+    loop: "{{ default_route | selectattr('sw_next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
 # -------------------------------------------------------
 # Play - Default and Summary To Firewall Inside Interface
 # -------------------------------------------------------
@@ -761,6 +809,37 @@
               name: "{{ item.description }}"
               tag: 1000
     loop: "{{ tenant_networks | selectattr('fw_next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
+# -----------------------------------------------------------------
+# Play - Tenant Static Routes With Fab Switch Interface as Next-Hop
+# -----------------------------------------------------------------
+- name: Configure Tenant Static Routes To Firewall Outside Interface
+  hosts: aln_core
+  tags: tenant_static
+  gather_facts: no
+  tasks:
+  - name: Add Tenant Network Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: CORE
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.sw_next_hop }}"
+              name: "{{ item.description }}"
+    loop: "{{ tenant_networks | selectattr('sw_next_hop', 'defined') }}"
     tags:
     - static_route
     notify: save_cfg
