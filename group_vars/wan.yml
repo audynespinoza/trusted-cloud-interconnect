@@ -1,3 +1,49 @@
+
+bgp_prepend_route_policy:
+  # --------
+  # VRF CORE
+  # --------
+  core:
+    primary:
+      devices:
+      - mckwan1
+      - ashwan1
+      as_path_prepend: 0
+
+    secondary:
+      devices:
+      - alnwan1
+      - ashwan2
+      as_path_prepend: 1
+
+    tertiary:
+      devices:
+      - ashwan3
+      - mckwan2
+      as_path_prepend: 2
+
+    quarternary:
+      devices:
+      - ashwan4
+      - alnash2
+      as_path_prepend: 3
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  trusted:
+    primary:
+      devices:
+      - mckwan1
+      - ashwan1
+      as_path_prepend: 3
+
+    secondary:
+      devices:
+      - alnwan1
+      - ashwan2
+      as_path_prepend: 3
+
+
 l3_transit_interfaces:
   # -------------------------------------------------------
   # alnwan1
