@@ -873,7 +873,6 @@
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as)
     tags:
     - ibgp_route_policy
     notify: save_cfg
@@ -891,7 +890,6 @@
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == bgp.local_asn)
     tags:
     - ibgp_route_policy
     notify: save_cfg
