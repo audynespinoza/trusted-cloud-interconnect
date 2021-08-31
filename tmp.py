@@ -266,3 +266,31 @@ OSPF
               set_interface: false
               name:
               - "{{ item.name }}"
+
+
+
+  - name: Configure iBGP Route Policy - WAN to WAN Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          set:
+            community:
+              number: "{{ 
+                vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}"
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when: "'wan' in hostvars[item.description].group_names"
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
+
+
