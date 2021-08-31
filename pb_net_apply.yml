@@ -693,6 +693,116 @@
       - write mem
     when: not ansible_check_mode
 
+# ------------------------------------------------------
+# Play - Configure iBGP Route Policy - WAN and WAN Layer
+# ------------------------------------------------------
+- name: Configure Site Based BGP Community-Lists
+  hosts: aln_wan
+  tags: route_policy
+  gather_facts: no
+  tasks:
+  - name: Configure Site Based BGP Community-Lists
+    cisco.ios.ios_config:
+      lines: ip community-list expanded "{{ item.bgp_community_number }}" permit "{{ item.bgp_community_number }}"
+    loop: "{{ vrfs }}"
+    tags:
+    - bgp_community_list
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+    
+# ------------------------------------------------------
+# Play - Configure iBGP Route Policy - WAN and WAN Layer
+# ------------------------------------------------------
+- name: Configure iBGP Route Policy - Between WAN and WAN Layer
+  hosts: aln_wan
+  tags: route_policy
+  gather_facts: no
+  tasks:
+  - name: Configure iBGP Route Policy - WAN To WAN Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
+
+
+# ------------------------------------------------------
+# Play - Configure eBGP Route Policy - WAN and WAN Layer
+# ------------------------------------------------------
+- name: Configure eBGP Route Policy - Between WAN and WAN Layer
+  hosts: aln_wan
+  tags: route_policy
+  gather_facts: no
+  tasks:
+  - name: Configure eBGP Route Policy - WAN To WAN Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    tags:
+    - ebgp_route_policy
+    notify: save_cfg
+
+# ------------------------------------------------------
+# Play - Configure iBGP Route Policy - WAN to CORE Layer
+# ------------------------------------------------------
+
+
+# ------------------------------------------------------
+# Play - Configure iBGP Route Policy - CORE to WAN Layer
+# ------------------------------------------------------
+
+# -------------------------------------------------------
+# Play - Configure iBGP Route Policy - CORE to CORE Layer
+# -------------------------------------------------------
+
+# -------------------------------------------------------
+# Play - Configure iBGP Route Policy - CORE to FAB Layer
+# -------------------------------------------------------
+
+# -------------------------------------------------------
+# Play - Configure iBGP Route Policy - FAB to CORE Layer
+# -------------------------------------------------------
+
+# -----------------------------------------------------
+# Play - Configure eBGP Route Policy - WAN to WAN Layer
+# -----------------------------------------------------
 
 # -------------------------------------------------------------
 # Play - Configure Default and Summary Routes On Firewall Layer
@@ -850,78 +960,6 @@
       commands:
       - write mem
     when: not ansible_check_mode
-
-# ------------------------------------------------------
-# Play - Configure iBGP Route Policy - WAN and WAN Layer
-# ------------------------------------------------------
-- name: Configure iBGP Route Policy - Between WAN and WAN Layer
-  hosts: aln_wan
-  tags: route_policy
-  gather_facts: no
-  tasks:
-  - name: Configure iBGP Route Policy - WAN To WAN Layer
-    cisco.ios.ios_route_maps:
-      config:
-      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
-        entries:
-        - sequence: 1000
-          action: permit
-      state: merged
-    loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp', 'equalto', true) |
-      list }}"
-    when:
-    - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
-    tags:
-    - ibgp_route_policy
-    notify: save_cfg
-  - name: Configure iBGP Route Policy - WAN From WAN Layer
-    cisco.ios.ios_route_maps:
-      config:
-      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
-        entries:
-        - sequence: 1000
-          action: permit
-      state: merged
-    loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp', 'equalto', true) |
-      list }}"
-    when:
-    - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == bgp.local_asn
-    tags:
-    - ibgp_route_policy
-    notify: save_cfg
-
-
-# ------------------------------------------------------
-# Play - Configure iBGP Route Policy - WAN to CORE Layer
-# ------------------------------------------------------
-
-
-# ------------------------------------------------------
-# Play - Configure iBGP Route Policy - CORE to WAN Layer
-# ------------------------------------------------------
-
-# -------------------------------------------------------
-# Play - Configure iBGP Route Policy - CORE to CORE Layer
-# -------------------------------------------------------
-
-# -------------------------------------------------------
-# Play - Configure iBGP Route Policy - CORE to FAB Layer
-# -------------------------------------------------------
-
-# -------------------------------------------------------
-# Play - Configure iBGP Route Policy - FAB to CORE Layer
-# -------------------------------------------------------
-
-# -----------------------------------------------------
-# Play - Configure eBGP Route Policy - WAN to WAN Layer
-# -----------------------------------------------------
-
 
 # -------------------------------
 # Play - Configure Tenant Network 
