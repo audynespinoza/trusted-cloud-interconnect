@@ -501,7 +501,8 @@
       groups['wan'] |
       map('extract', hostvars) |
       selectattr('vrfs', 'defined') |
-      map(attribute='vrfs') | flatten | map(attribute='bgp_community_number') |
+      map(attribute='vrfs') | flatten |
+      map(attribute='bgp_community_number') |
       list }}"
     tags:
     - bgp_community_list
@@ -580,8 +581,7 @@
               prepend: "{{
                 bgp_prepend_route_policy |
                 selectattr('vrf','equalto',item.vrf) |
-                map(attribute='as_path_prepend') |
-                list }}"
+                map(attribute='as_path_prepend') }}"
 
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
