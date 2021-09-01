@@ -580,7 +580,7 @@
             as_path:
               prepend: "{{
                 bgp_prepend_route_policy |
-                selectattr('vrf','equalto',item.vrf) |
+                selectattr('vrf','equalto',item.vrf) | flatten |
                 map(attribute='as_path_prepend') | flatten }}"
 
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
