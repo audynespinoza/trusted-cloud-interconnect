@@ -575,13 +575,7 @@
                 selectattr('name', 'equalto', item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
-          set:
-            as_path:
-              prepend: "{{
-                bgp_prepend_route_policy |
-                selectattr('vrf','equalto',item.vrf) |
-                map(attribute='as_path_prepend') |
-                list }}"
+
 
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
