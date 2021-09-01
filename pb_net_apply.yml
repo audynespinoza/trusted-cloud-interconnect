@@ -496,7 +496,7 @@
   - name: Configure Site Based BGP Community-Lists
     cisco.ios.ios_config:
       lines: 
-      - ip community-list expanded "{{ item.bgp_community_number }}" permit "{{ item.bgp_community_number }}"
+      - ip community-list expanded "{{ item }}" permit "{{ item }}"
     loop: "{{
       groups['wan'] |
       map('extract', hostvars) |
