@@ -501,7 +501,7 @@
       groups['wan'] |
       map('extract', hostvars) |
       selectattr('vrfs', 'defined') |
-      map(attribute='vrfs') |
+      map(attribute='vrfs') | map(attribute='bgp_community_number') |
       list }}"
     tags:
     - bgp_community_list
