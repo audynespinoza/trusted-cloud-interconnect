@@ -1,7 +1,6 @@
 community_lists:
   - name: ALN-MCK
     
-
 bgp_prepend_route_policy:
 # --------
 # VRF CORE
