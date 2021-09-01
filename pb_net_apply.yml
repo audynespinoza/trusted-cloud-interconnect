@@ -545,6 +545,12 @@
     - ibgp_route_policy
     notify: save_cfg
 
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
 
 # ------------------------------------------------------
 # Play - Configure eBGP Route Policy - WAN and WAN Layer
@@ -592,6 +598,13 @@
     tags:
     - ebgp_route_policy
     notify: save_cfg
+    
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
 
 # ------------------------------------------------------
 # Play - Configure iBGP Route Policy - WAN to CORE Layer
