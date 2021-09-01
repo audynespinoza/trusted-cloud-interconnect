@@ -11,7 +11,8 @@ bgp_prepend_route_policy:
   devices:
   - mckwan1
   - ashwan1
-  as_path_prepend: []
+  as_path_prepend:
+  - "{{ bgp.local_asn }}"
 
 - role: secondary
   vrf: CORE
