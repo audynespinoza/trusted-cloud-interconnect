@@ -581,7 +581,7 @@
               prepend: "{{
                 bgp_prepend_route_policy |
                 selectattr('vrf','equalto',item.vrf) |
-                map(attribute='as_path_prepend') }}"
+                map(attribute='as_path_prepend') | join('') }}"
 
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
