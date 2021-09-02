@@ -208,7 +208,7 @@
       - no switchport
       parents:
       - interface {{ item.name }}
-    loop: "{{ l3_transit_interfaces[inventory_hostname] | selectattr('physical', 'equalto', true) }}"
+    loop: "{{ l3_transit_interfaces[inventory_hostname] | selectattr('physical','equalto',true) }}"
     tags:
     - switchport
     notify: save_cfg
@@ -238,7 +238,7 @@
       state: present
     loop: "{{ vrfs }}"
     when: item.name in l3_transit_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.name ) |
+        selectattr('vrf','equalto',item.name ) |
         map(attribute='vrf') | list
     tags:
     - vrf
@@ -270,7 +270,7 @@
     - underlay
     loop: "{{ 
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('underlay', 'equalto', true) |
+      selectattr('underlay','equalto',true) |
       list }}"
     notify: save_cfg
 
@@ -286,7 +286,7 @@
     - physical
     loop: "{{ 
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('physical', 'equalto', true) |
+      selectattr('physical','equalto',true) |
       list }}"
     notify: save_cfg
 
@@ -301,7 +301,7 @@
     - loopback
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('physical', 'equalto', false) |
+      selectattr('physical','equalto',false) |
       list }}"
     notify: save_cfg
 
@@ -389,8 +389,8 @@
         - process_id: "{{ item.ospf_process }}"
           router_id: "{{ 
             l3_transit_interfaces[inventory_hostname] |
-            selectattr('description', 'equalto', 'main_loopback') |
-            selectattr('vrf', 'equalto', item.vrf) |
+            selectattr('description','equalto','main_loopback') |
+            selectattr('vrf','equalto',item.vrf) |
             map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
           vrf: "{{ item.vrf }}"
           max_metric:
@@ -403,7 +403,7 @@
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('ospf_active', 'equalto', true) |
+      selectattr('ospf_active','equalto',true) |
       list }}"
     tags:
     - ospf_global
@@ -428,8 +428,8 @@
                 point_to_point: true
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('ospf_active', 'equalto', true) |
-      selectattr('physical', 'equalto', true) |
+      selectattr('ospf_active','equalto',true) |
+      selectattr('physical','equalto',true) |
       list }}"
     tags:
     - ospf_phys_interface
@@ -448,8 +448,8 @@
                 interface_cost: 5
     loop: "{{ 
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('ospf_active', 'equalto', true) |
-      selectattr('physical', 'equalto', false) |
+      selectattr('ospf_active','equalto',true) |
+      selectattr('physical','equalto',false) |
       list }}"
     tags:
     - ospf_loopback_interface
@@ -515,49 +515,6 @@
       - write mem
     when: not ansible_check_mode
 
-# --------------------------------------------------
-# Play - Build Device Name to AS-Path Prepend Policy
-# --------------------------------------------------
-- name: Configure Site Based BGP Community-Lists
-  hosts: aln_wan
-  tags: route_policy
-  gather_facts: no
-  tasks:
-  - name: Build Device Name to AS-Path Prepend Policy Map for Each Device
-    set_fact:
-      device_map: "{{ 
-        device_map | default({}) |
-        combine ({ inventory_hostname : item.bgp_local_as }) }}"
-    loop: "{{ 
-      bgp_prepend_route_policy|
-      selectattr('cidr', 'defined') |
-      list }}"
-    tags:
-    - build_ip_asn_map
-
-  - name: Display the Dictionary
-    debug: var=device_map
-    tags:
-    - build_ip_asn_map   
-
-  - name: Combine Each Device Interface-IP to BGP ASN mappings 
-    set_fact:
-      ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
-    loop: "{{
-          groups['all_devices'] |
-          map('extract', hostvars) |
-          selectattr('device_map', 'defined') |
-          map(attribute='device_map') |
-          list }}"
-    tags:
-    - build_ip_asn_map
-
-  - name: Display Interface-IP to BGP ASN mappings 
-    debug:
-      var: ip_asn_map
-    tags:
-    - build_ip_asn_map
-
 # ------------------------------------------------------
 # Play - Configure iBGP Route Policy - WAN and WAN Layer
 # ------------------------------------------------------
@@ -580,7 +537,7 @@
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp', 'equalto', true) |
+      selectattr('bgp','equalto',true) |
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
@@ -616,7 +573,7 @@
               name: 
               - "{{ 
                 vrfs |
-                selectattr('name', 'equalto', item.vrf) |
+                selectattr('name','equalto',item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
           set:
@@ -638,13 +595,13 @@
               name: 
               - "{{ 
                 hostvars[item.description].vrfs |
-                selectattr('name', 'equalto', item.vrf) |
+                selectattr('name','equalto',item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"  
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp', 'equalto', true) |
+      selectattr('bgp','equalto',true) |
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
@@ -707,7 +664,7 @@
             community:
               number: "{{ 
                 vrfs |
-                selectattr('name', 'equalto', item.vrf) |
+                selectattr('name','equalto',item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
       state: merged
@@ -745,7 +702,7 @@
             community:
               number: "{{ 
                 vrfs |
-                selectattr('name', 'equalto', item.vrf) |
+                selectattr('name','equalto',item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
       state: merged
@@ -809,15 +766,15 @@
       lines:
       - "bgp router-id {{ 
             l3_transit_interfaces[inventory_hostname] |
-            selectattr('description', 'equalto', 'main_loopback') |
-            selectattr('vrf', 'equalto', item.name) |
+            selectattr('description','equalto','main_loopback') |
+            selectattr('vrf','equalto',item.name) |
             map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
       - router bgp {{ bgp.local_asn }}
       - address-family ipv4 vrf {{ item.name }}
     when: item.name in l3_transit_interfaces[inventory_hostname] |
-        selectattr('vrf', 'equalto', item.name ) |
-        selectattr('description', 'equalto', 'main_loopback') |
+        selectattr('vrf','equalto',item.name ) |
+        selectattr('description','equalto','main_loopback') |
         map(attribute='vrf') | list
     loop: "{{ vrfs }}"
     tags:
@@ -881,7 +838,7 @@
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp', 'equalto', true) |
+      selectattr('bgp','equalto',true) |
       list }}"
     tags:
     - bgp_neighbor
@@ -1129,12 +1086,12 @@
         - sequence: 1000
           action: permit
           match:
-            interfaces: "{{ tenant_networks | selectattr('vrf', 'equalto', item.vrf) | map(attribute='interface') | list }}"
+            interfaces: "{{ tenant_networks | selectattr('vrf','equalto',item.vrf) | map(attribute='interface') | list }}"
           set:
             community:
               number: "{{ 
                 vrfs |
-                selectattr('name', 'equalto', item.vrf) |
+                selectattr('name','equalto',item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
       state: merged
