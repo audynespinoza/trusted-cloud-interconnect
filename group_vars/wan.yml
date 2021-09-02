@@ -47,17 +47,17 @@ bgp_prepend_route_policy:
   vrf: TRUSTED
   devices:
   - name: mckwan1
-    as_path_prepend: "{{ bgp_as_path_prepend_x_0 }}"
+    as_path_prepend: 1
   - name: ashwan1
-    as_path_prepend: "{{ bgp_as_path_prepend_x_0 }}"
+    as_path_prepend: 1 
 
 - role: secondary
   vrf: TRUSTED
   devices:
   - name: alnwan1
-    as_path_prepend: "{{ bgp_as_path_prepend_x_1 }}"
+    as_path_prepend: 1
   - name: ashwan2
-    as_path_prepend: "{{ bgp_as_path_prepend_x_1 }}"
+    as_path_prepend: 1
 
 
 l3_transit_interfaces:
