@@ -581,7 +581,7 @@
               prepend: "{{
                 bgp_prepend_route_policy |
                 selectattr('vrf','equalto',item.vrf) |
-                map(attribute='devices') | flatten |
+                map(attribute='devices') | 
                 selectattr('name','equalto',inventory_hostname) |
                 map(attribute='as_path_prepend') }}"
 
