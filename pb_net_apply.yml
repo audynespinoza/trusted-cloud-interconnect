@@ -515,6 +515,49 @@
       - write mem
     when: not ansible_check_mode
 
+# --------------------------------------------------
+# Play - Build Device Name to AS-Path Prepend Policy
+# --------------------------------------------------
+- name: Configure Site Based BGP Community-Lists
+  hosts: aln_wan
+  tags: route_policy
+  gather_facts: no
+  tasks:
+  - name: Build Device Name to AS-Path Prepend Policy Map for Each Device
+    set_fact:
+      device_map: "{{ 
+        device_map | default({}) |
+        combine ({ inventory_hostname : item.bgp_local_as }) }}"
+    loop: "{{ 
+      bgp_prepend_route_policy|
+      selectattr('cidr', 'defined') |
+      list }}"
+    tags:
+    - build_ip_asn_map
+
+  - name: Display the Dictionary
+    debug: var=device_map
+    tags:
+    - build_ip_asn_map   
+
+  - name: Combine Each Device Interface-IP to BGP ASN mappings 
+    set_fact:
+      ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
+    loop: "{{
+          groups['all_devices'] |
+          map('extract', hostvars) |
+          selectattr('device_map', 'defined') |
+          map(attribute='device_map') |
+          list }}"
+    tags:
+    - build_ip_asn_map
+
+  - name: Display Interface-IP to BGP ASN mappings 
+    debug:
+      var: ip_asn_map
+    tags:
+    - build_ip_asn_map
+
 # ------------------------------------------------------
 # Play - Configure iBGP Route Policy - WAN and WAN Layer
 # ------------------------------------------------------
@@ -580,8 +623,11 @@
             as_path:
               prepend: "{{
                 bgp_prepend_route_policy |
-                selectattr('vrf','equalto',item.vrf) | flatten |
-                map(attribute='as_path_prepend') | flatten }}"
+                selectattr('vrf','equalto',item.vrf) |
+                map(attribute='devices') | flatten |
+                selectattr('name','equalto',inventory_hostname) |
+                map(attribute='as_path_prepend') |
+                join('') }}"
 
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
@@ -594,8 +640,7 @@
                 hostvars[item.description].vrfs |
                 selectattr('name', 'equalto', item.vrf) |
                 map(attribute='bgp_community_number') |
-                join('') }}"
-            
+                join('') }}"  
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
