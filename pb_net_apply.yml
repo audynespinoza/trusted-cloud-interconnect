@@ -582,9 +582,9 @@
                 as_number: "{{
                   bgp_prepend_route_policy |
                   selectattr('vrf','equalto',item.vrf) |
-                  map(attribute='devices') | list |
+                  map(attribute='devices') | flatten |
                   selectattr('name','equalto',inventory_hostname) |
-                  map(attribute='as_path_prepend') }}"
+                  map(attribute='as_path_prepend') | join('') }}"
 
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
