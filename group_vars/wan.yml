@@ -11,9 +11,9 @@ bgp_prepend_route_policy:
   vrf: CORE
   devices:
   - name: mckwan1
-    as_path_prepend: 1
+    as_path_prepend: 0
   - name: ashwan1
-    as_path_prepend: 1
+    as_path_prepend: 0
 
 - role: secondary
   vrf: CORE
