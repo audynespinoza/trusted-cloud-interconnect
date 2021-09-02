@@ -583,8 +583,7 @@
                 selectattr('vrf','equalto',item.vrf) |
                 map(attribute='devices') | flatten |
                 selectattr('name','equalto',inventory_hostname) |
-                map(attribute='as_path_prepend') |
-                join('') }}"
+                map(attribute='as_path_prepend') }}"
 
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
