@@ -44,16 +44,3 @@ bgp_keepalive_interval: 4
 bgp_holdtime: 12
 bgp_neighbor_pwd: cisco
 
-bgp_as_path_prepend_x_0:
-- false
-bgp_as_path_prepend_x_1:
-- "{{ bgp.local_asn }}"
-
-bgp_as_path_prepend_x_2:
-- "{{ bgp.local_asn }}"
-- "{{ bgp.local_asn }}"
-
-bgp_as_path_prepend_x_3:
-- "{{ bgp.local_asn }}"
-- "{{ bgp.local_asn }}"
-- "{{ bgp.local_asn }}"
