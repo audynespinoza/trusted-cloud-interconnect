@@ -579,7 +579,7 @@
           set:
             as_path:
               prepend: 
-                as_number: "{{
+                last_as: "{{
                   bgp_prepend_route_policy |
                   selectattr('vrf','equalto',item.vrf) |
                   map(attribute='devices') | flatten |
