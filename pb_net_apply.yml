@@ -578,8 +578,13 @@
                 join('') }}"
           set:
             as_path:
-              prepend:
-                last_as: omit
+              prepend: "{{
+                bgp_prepend_route_policy |
+                selectattr('vrf','equalto',item.vrf) |
+                map(attribute='devices') |
+                selectattr('name','equalto',inventory_hostname) |
+                map(attribute='as_path_prepend') }}"
+
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
         - sequence: 1000
