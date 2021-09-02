@@ -15,7 +15,6 @@ bgp_prepend_route_policy:
   - name: ashwan1
     as_path_prepend: 1
 
-
 - role: secondary
   vrf: CORE
   devices:
@@ -37,7 +36,7 @@ bgp_prepend_route_policy:
   devices:
   - name: ashwan4
     as_path_prepend: 3
-  - name: alnash2
+  - name: alnwan2
     as_path_prepend: 3
 
 # -----------
