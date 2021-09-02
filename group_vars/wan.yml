@@ -11,34 +11,34 @@ bgp_prepend_route_policy:
   vrf: CORE
   devices:
   - name: mckwan1
-    as_path_prepend: bgp_as_path_prepend_x_0 
+    as_path_prepend: "{{ bgp_as_path_prepend_x_0 }}" 
   - name: ashwan1
-    as_path_prepend: bgp_as_path_prepend_x_0 
+    as_path_prepend: "{{ bgp_as_path_prepend_x_0 }}" 
 
 
 - role: secondary
   vrf: CORE
   devices:
   - name: alnwan1
-    as_path_prepend: bgp_as_path_prepend_x_1
+    as_path_prepend: "{{ bgp_as_path_prepend_x_1 }}"
   - name: ashwan2
-    as_path_prepend: bgp_as_path_prepend_x_1
+    as_path_prepend: "{{ bgp_as_path_prepend_x_1 }}"
 
 - role: tertiary
   vrf: CORE
   devices:
   - name: ashwan3
-    as_path_prepend: bgp_as_path_prepend_x_2
+    as_path_prepend: "{{ bgp_as_path_prepend_x_2 }}"
   - name: mckwan2
-    as_path_prepend: bgp_as_path_prepend_x_2
+    as_path_prepend: "{{ bgp_as_path_prepend_x_2 }}"
 
 - role: quarternary
   vrf: CORE
   devices:
   - name: ashwan4
-    as_path_prepend: bgp_as_path_prepend_x_2
+    as_path_prepend: "{{ bgp_as_path_prepend_x_2 }}"
   - name: alnash2
-    as_path_prepend: bgp_as_path_prepend_x_2
+    as_path_prepend: "{{ bgp_as_path_prepend_x_2 }}"
 
 # -----------
 # VRF TRUSTED
@@ -47,17 +47,17 @@ bgp_prepend_route_policy:
   vrf: TRUSTED
   devices:
   - name: mckwan1
-    as_path_prepend: bgp_as_path_prepend_x_0
+    as_path_prepend: "{{ bgp_as_path_prepend_x_0 }}"
   - name: ashwan1
-    as_path_prepend: bgp_as_path_prepend_x_0
+    as_path_prepend: "{{ bgp_as_path_prepend_x_0 }}"
 
 - role: secondary
   vrf: TRUSTED
   devices:
   - name: alnwan1
-    as_path_prepend: bgp_as_path_prepend_x_1
+    as_path_prepend: "{{ bgp_as_path_prepend_x_1 }}"
   - name: ashwan2
-    as_path_prepend: bgp_as_path_prepend_x_1
+    as_path_prepend: "{{ bgp_as_path_prepend_x_1 }}"
 
 
 l3_transit_interfaces:
