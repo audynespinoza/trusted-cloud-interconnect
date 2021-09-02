@@ -3,7 +3,7 @@ community_lists:
 
 
 
-bgp_as_path_prepend_x_1_route_policy:
+bgp_prepend_route_policy:
 # --------
 # VRF CORE
 # --------
