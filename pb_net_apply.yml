@@ -561,7 +561,7 @@
   tags: route_policy
   gather_facts: no
   tasks:
-  - name: Configure eBGP Route Policy - WAN To WAN Layer
+  - name: Configure eBGP Route Policy - WAN To WAN Layer (Match)
     cisco.ios.ios_route_maps:
       config:
       - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
@@ -576,16 +576,6 @@
                 selectattr('name','equalto',item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
-          set:
-            as_path:
-              prepend: 
-                last_as: "{{
-                  bgp_prepend_route_policy |
-                  selectattr('vrf','equalto',item.vrf) |
-                  map(attribute='devices') | flatten |
-                  selectattr('name','equalto',inventory_hostname) |
-                  map(attribute='as_path_prepend') | join('') }}"
-
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
         - sequence: 1000
@@ -609,6 +599,40 @@
     tags:
     - ebgp_route_policy
     notify: save_cfg
+
+  - name: Configure eBGP Route Policy - WAN To WAN Layer (Set)
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          set:
+            as_path:
+              prepend: 
+                last_as: "{{
+                  bgp_prepend_route_policy |
+                  selectattr('vrf','equalto',item.vrf) |
+                  map(attribute='devices') | flatten |
+                  selectattr('name','equalto',inventory_hostname) |
+                  map(attribute='as_path_prepend') | join('') }}"
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp','equalto',true) |
+      list }}"
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - bgp_prepend_route_policy |
+                  selectattr('vrf','equalto',item.vrf) |
+                  map(attribute='devices') | flatten |
+                  selectattr('name','equalto',inventory_hostname) |
+                  map(attribute='as_path_prepend') | join('') == true
+    tags:
+    - ebgp_route_policy
+    notify: save_cfg
+
 
   handlers:
   - name: save_cfg
