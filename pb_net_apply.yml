@@ -579,9 +579,7 @@
           set:
             as_path:
               prepend:
-                as_number:
-                - 11111
-                - 11111
+                as_number: '11111 11111' 
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
         entries:
         - sequence: 1000
