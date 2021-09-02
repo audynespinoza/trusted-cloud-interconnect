@@ -1,44 +1,44 @@
 community_lists:
   - name: ALN-MCK
-    
-bgp_prepend_route_policy:
+
+
+
+bgp_as_path_prepend_x_1_route_policy:
 # --------
 # VRF CORE
 # --------
 - role: primary
   vrf: CORE
   devices:
-  - mckwan1
-  - ashwan1
-  as_path_prepend:
-  - "{{ bgp.local_asn }}"
+  - name: mckwan1
+    as_path_prepend: bgp_as_path_prepend_x_0 
+  - name: ashwan1
+    as_path_prepend: bgp_as_path_prepend_x_0 
+
 
 - role: secondary
   vrf: CORE
   devices:
-  - alnwan1
-  - ashwan2
-  as_path_prepend:
-  - "{{ bgp.local_asn }}"
+  - name: alnwan1
+    as_path_prepend: bgp_as_path_prepend_x_1
+  - name: ashwan2
+    as_path_prepend: bgp_as_path_prepend_x_1
 
 - role: tertiary
   vrf: CORE
   devices:
-  - ashwan3
-  - mckwan2
-  as_path_prepend:
-  - "{{ bgp.local_asn }} "
-  - "{{ bgp.local_asn }} "
+  - name: ashwan3
+    as_path_prepend: bgp_as_path_prepend_x_2
+  - name: mckwan2
+    as_path_prepend: bgp_as_path_prepend_x_2
 
 - role: quarternary
   vrf: CORE
   devices:
-  - ashwan4
-  - alnash2
-  as_path_prepend:
-  - "{{ bgp.local_asn }} "
-  - "{{ bgp.local_asn }} "
-  - "{{ bgp.local_asn }} "
+  - name: ashwan4
+    as_path_prepend: bgp_as_path_prepend_x_2
+  - name: alnash2
+    as_path_prepend: bgp_as_path_prepend_x_2
 
 # -----------
 # VRF TRUSTED
@@ -46,17 +46,18 @@ bgp_prepend_route_policy:
 - role: primary
   vrf: TRUSTED
   devices:
-  - mckwan1
-  - ashwan1
-  as_path_prepend: false
+  - name: mckwan1
+    as_path_prepend: bgp_as_path_prepend_x_0
+  - name: ashwan1
+    as_path_prepend: bgp_as_path_prepend_x_0
 
 - role: secondary
   vrf: TRUSTED
   devices:
-  - alnwan1
-  - ashwan2
-  as_path_prepend:
-  - "{{ bgp.local_asn }}"
+  - name: alnwan1
+    as_path_prepend: bgp_as_path_prepend_x_1
+  - name: ashwan2
+    as_path_prepend: bgp_as_path_prepend_x_1
 
 
 l3_transit_interfaces:
