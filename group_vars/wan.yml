@@ -19,7 +19,7 @@ bgp_prepend_route_policy:
   vrf: CORE
   devices:
   - name: alnwan1
-    as_path_prepend: false
+    as_path_prepend: 'no'
   - name: ashwan2
     as_path_prepend: 1
 
