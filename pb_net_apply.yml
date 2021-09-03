@@ -745,7 +745,7 @@
       list }}"
     when:
     - "'core' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_as == item.bgp_local_as|int
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
     tags:
     - ibgp_route_policy
     notify: save_cfg
