@@ -622,7 +622,7 @@
         selectattr('name','equalto',inventory_hostname) |
         map(attribute='as_path_prepend') | join('') in bgp_as_path_count_options
     tags:
-    - ebgp_route_polic
+    - ebgp_route_policy
     notify: save_cfg
 
   - name: Configure eBGP Route Policy - WAN To WAN Layer - Remove AS-Path Prepending
