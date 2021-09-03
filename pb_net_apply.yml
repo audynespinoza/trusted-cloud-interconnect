@@ -615,8 +615,6 @@
       selectattr('bgp','equalto',true) |
       list }}"
     when:
-    - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
     - (bgp_prepend_route_policy |
         selectattr('vrf','equalto',item.vrf) |
         map(attribute='devices') | flatten |
