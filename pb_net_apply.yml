@@ -561,7 +561,7 @@
   tags: route_policy
   gather_facts: no
   tasks:
-  - name: Configure eBGP Route Policy - WAN To WAN Layer [Match]
+  - name: Configure eBGP Route Policy - WAN To WAN Layer - Match Community
     cisco.ios.ios_route_maps:
       config:
       - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
