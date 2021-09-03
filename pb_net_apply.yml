@@ -722,7 +722,7 @@
 # -----------------------------------------------
 # Play - Configure iBGP Route Policy - CORE layer
 # -----------------------------------------------
-- name: Configure iBGP Route Policy - On CORE Layer
+- name: Configure iBGP Route Policy - CORE layer
   hosts: aln_core
   tags: bgp_route_policy
   gather_facts: no
@@ -745,7 +745,7 @@
       list }}"
     when:
     - "'core' in hostvars[item.description].group_names"
-    - item.bgp_local_as == hostvars[item.description].bgp.local_as
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as|string
     tags:
     - ibgp_route_policy
     notify: save_cfg
