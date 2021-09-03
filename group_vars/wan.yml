@@ -10,15 +10,15 @@ ebgp_prepend_route_policy:
   vrf: CORE
   devices:
   - name: mckwan1
-    as_path_prepend: 1
+    as_path_prepend: 5
   - name: ashwan1
-    as_path_prepend: 1
+    as_path_prepend: 5
 
 - role: secondary
   vrf: CORE
   devices:
   - name: alnwan1
-    as_path_prepend: 'no'
+    as_path_prepend: 1
   - name: ashwan2
     as_path_prepend: 1
 
