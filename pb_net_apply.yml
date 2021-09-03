@@ -819,7 +819,7 @@
 # Play - Configure iBGP Route Policy - FABRIC Layer
 # -------------------------------------------------
 - name: Configure iBGP Route Policy - FABRIC Layer
-  hosts: aln_core
+  hosts: aln_fab
   tags: bgp_route_policy
   gather_facts: no
   tasks:
