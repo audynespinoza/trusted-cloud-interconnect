@@ -600,7 +600,7 @@
     - ebgp_route_policy
     notify: save_cfg
 
-  - name: Configure eBGP Route Policy - WAN To WAN Layer [Set]
+  - name: Configure eBGP Route Policy - WAN To WAN Layer - Set AS-Path Prepending
     cisco.ios.ios_config:
       lines:
       - no set as-path prepend last-as
@@ -608,7 +608,7 @@
                   selectattr('vrf','equalto',item.vrf) |
                   map(attribute='devices') | flatten |
                   selectattr('name','equalto',inventory_hostname) |
-                  map(attribute='as_path_prepend') | join('') | default(omit) }}"
+                  map(attribute='as_path_prepend') | join('') }}"
       parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
@@ -617,11 +617,38 @@
     when:
     - "'wan' in hostvars[item.description].group_names"
     - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - bgp_prepend_route_policy |
+                  selectattr('vrf','equalto',item.vrf) |
+                  map(attribute='devices') | flatten |
+                  selectattr('name','equalto',inventory_hostname) |
+                  map(attribute='as_path_prepend') | join('') == true
     tags:
     - ebgp_route_policy
     - sweet
     notify: save_cfg
 
+
+  - name: Configure eBGP Route Policy - WAN To WAN Layer - Remove AS-Path Prepending
+    cisco.ios.ios_config:
+      lines:
+      - no set as-path prepend last-as
+      parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp','equalto',true) |
+      list }}"
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - bgp_prepend_route_policy |
+                  selectattr('vrf','equalto',item.vrf) |
+                  map(attribute='devices') | flatten |
+                  selectattr('name','equalto',inventory_hostname) |
+                  map(attribute='as_path_prepend') | join('') == false
+    tags:
+    - ebgp_route_policy
+    - sweet
+    notify: save_cfg
 
   handlers:
   - name: save_cfg
