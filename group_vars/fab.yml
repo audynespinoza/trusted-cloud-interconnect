@@ -1,9 +1,15 @@
+# --------------------------
+# Transit VLANs to add to DB
+# --------------------------
 transit_vlans:
 - name: INSIDE_TRANSIT_CORE
   vlan: 15
 - name: INSIDE_TRANSIT_TRUSTED
   vlan: 20
 
+# ---------------------
+# L2 Transit Interfaces
+# ---------------------
 l2_transit_interfaces:
   alnfab1:
   - name: GigabitEthernet3/0

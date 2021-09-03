@@ -1,3 +1,6 @@
+# -------------------------------
+# Cisco IOS Connection Parameters
+# -------------------------------
 ansible_network_os: ios
 ansible_connection: network_cli
 ansible_user: lab
@@ -5,20 +8,27 @@ ansible_password: cisco
 ansible_become: yes
 ansible_become_password: cisco
 ansible_become_method: enable
-
 interpreter_python: root/git/trusted-cloud-interconnect/venv/bin/python
 
+# ------------------------
+# Interface MTU Parameters
+# ------------------------
 underlay_mtu: 1460
 phys_intf_mtu: 1500
 
+
+# ------------------------
+# Global Config Parameters
+# ------------------------
 domain_name: devnet.io
-
 ntp_server: 172.20.1.18
-
 dns_servers:
 - 172.20.1.250
 - 172.20.1.251
 
+# ----------------------------
+# Global VRF Config Parameters
+# ----------------------------
 vrfs:
 - name: CORE
   description: "Internal Routing via Firewalls"
@@ -39,6 +49,9 @@ vrfs:
   - 3:100
   bgp_community_number: "{{ bgp.local_asn }}:3000"
 
+# ----------------------------
+# Global BGP Config Parameters
+# ----------------------------
 bgp_log_neighbor_changes: true
 bgp_keepalive_interval: 4
 bgp_holdtime: 12

@@ -1,14 +1,28 @@
-vlans:
-- name: OUTSIDE_TRANSIT_CORE
-  vlan: 10
+# --------------------------
+# Transit VLANs to add to DB
+# --------------------------
+transit_vlans:
+- name: INSIDE_TRANSIT_CORE
+  vlan: 15
+- name: INSIDE_TRANSIT_TRUSTED
+  vlan: 20
 
+# ---------------------
+# L2 Transit Interfaces
+# ---------------------
 l2_transit_interfaces:
+  # --------
+  # alncore1
+  # --------
   alncore1:
   - name: GigabitEthernet3/1
     description: alnfw1
     mode: access
     vlan: 10
     enabled: True
+  # --------
+  # alncore2
+  # --------
   alncore2:
   - name: GigabitEthernet3/1
     description: alnfw1
@@ -16,10 +30,13 @@ l2_transit_interfaces:
     vlan: 10
     enabled: True
 
+# ---------------------
+# L3 Transit Interfaces
+# ---------------------
 l3_transit_interfaces:
-  # -------------------------------------------------------
+  # --------
   # alncore1
-  # -------------------------------------------------------
+  # --------
   alncore1:
   - name: Loopback1
     cidr: 10.224.111.3/32
@@ -374,9 +391,9 @@ l3_transit_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: true
 
-# -------------------------------------------------------
+# ----
 # VRRP
-# -------------------------------------------------------
+# ----
 vrrp:
   alncore1:
     priority: 200
@@ -385,9 +402,9 @@ vrrp:
     priority: 100
     host_ip_index: 3
 
-# -------------------------------------------------------
+# -----------------------------
 # Route Redistribution Into BGP
-# -------------------------------------------------------
+# -----------------------------
 redistribution:
   into_bgp:
     from_connected:
