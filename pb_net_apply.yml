@@ -505,8 +505,8 @@
       lines:
       - "ip bgp-community new-format"
     when: true in l3_transit_interfaces[inventory_hostname] |
-       selectattr('bgp', 'equalto', true) |
-       map(attribute='bgp') |
+      selectattr('bgp', 'equalto', true) |
+      map(attribute='bgp') |
       list | unique
     tags:
     - bgp_comm_new_format
@@ -537,7 +537,7 @@
       selectattr('vrfs', 'defined') |
       map(attribute='vrfs') | flatten |
       map(attribute='bgp_community_number') |
-      list }}"
+      list | unique }}"
     tags:
     - bgp_community_list
     notify: save_cfg
