@@ -56,5 +56,5 @@ bgp_log_neighbor_changes: true
 bgp_keepalive_interval: 4
 bgp_holdtime: 12
 bgp_neighbor_pwd: cisco
-bgp_as_path_length_options: ['1','2','3','4','5','6','7','8','9','10']
+bgp_as_path_count_options: ['1','2','3','4','5','6','7','8','9','10']
 
