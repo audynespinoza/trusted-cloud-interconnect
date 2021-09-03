@@ -608,7 +608,7 @@
                   selectattr('vrf','equalto',item.vrf) |
                   map(attribute='devices') | flatten |
                   selectattr('name','equalto',inventory_hostname) |
-                  map(attribute='as_path_prepend') | join('') | default('', true)}}"
+                  map(attribute='as_path_prepend') | join('') | default(omit) }}"
       parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
