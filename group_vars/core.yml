@@ -210,7 +210,7 @@ l3_transit_interfaces:
     bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: false
-    bgp_route_reflect: false
+    bgp_route_reflect: true
 
   alncore2:
   - name: Loopback1
