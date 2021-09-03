@@ -11,17 +11,17 @@ bgp_prepend_route_policy:
   vrf: CORE
   devices:
   - name: mckwan1
-    as_path_prepend: false
+    as_path_prepend: 1
   - name: ashwan1
-    as_path_prepend: 0
+    as_path_prepend: 1
 
 - role: secondary
   vrf: CORE
   devices:
   - name: alnwan1
-    as_path_prepend: false
+    as_path_prepend: 1
   - name: ashwan2
-    as_path_prepend: 0
+    as_path_prepend: 1
 
 - role: tertiary
   vrf: CORE
