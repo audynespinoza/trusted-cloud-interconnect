@@ -604,7 +604,7 @@
     cisco.ios.ios_config:
       lines:
       - no set as-path prepend last-as
-      - "{{ bgp_prepend_route_policy |
+      - "set as-path prepend last-as {{ bgp_prepend_route_policy |
                   selectattr('vrf','equalto',item.vrf) |
                   map(attribute='devices') | flatten |
                   selectattr('name','equalto',inventory_hostname) |
@@ -619,6 +619,7 @@
     - hostvars[item.description].bgp.local_asn != item.bgp_local_as
     tags:
     - ebgp_route_policy
+    - sweet
     notify: save_cfg
 
 
