@@ -74,7 +74,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '1'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -90,7 +90,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '2'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -106,7 +106,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '1'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: true
     bgp_route_reflect: false
@@ -122,7 +122,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '2'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: true
     bgp_route_reflect: false
@@ -138,7 +138,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '1'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: true
     bgp_route_reflect: false
@@ -154,7 +154,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '2'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: true
     bgp_route_reflect: false
@@ -170,7 +170,7 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -186,7 +186,7 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -204,7 +204,7 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -226,7 +226,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '1'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -242,7 +242,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '2'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -258,7 +258,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '1'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: true
     bgp_route_reflect: false
@@ -274,7 +274,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '1'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: true
     bgp_route_reflect: false
@@ -290,7 +290,7 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -306,7 +306,7 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -328,7 +328,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '1'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -344,7 +344,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '2'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -360,7 +360,7 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -376,10 +376,12 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
+    tunnel_source: GigabitEthernet0/5
+    tunnel_destination: 10.224.253.0
     
   - name: Tunnel2
     cidr: 10.224.255.0/31 
@@ -392,10 +394,12 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
+    tunnel_source: GigabitEthernet0/5
+    tunnel_destination: 10.224.253.0
 
   # -------
   # alnwan4
@@ -412,7 +416,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '1'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -428,7 +432,7 @@ l3_transit_interfaces:
     ospf_active: true
     ospf_process: '2'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -444,7 +448,7 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: false
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: false
@@ -460,10 +464,12 @@ l3_transit_interfaces:
     ospf_active: false
     ospf_process: '0'
     bgp: true
-    bgp_local_as: "{{ bgp.local_asn }}"
+    bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
+    tunnel_source: GigabitEthernet0/3
+    tunnel_destination: 10.224.253.3
 
 # -----------------------------
 # Route Redistribution Into BGP

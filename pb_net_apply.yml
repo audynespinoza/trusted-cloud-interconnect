@@ -549,10 +549,10 @@
       - write mem
     when: not ansible_check_mode
 
-# ------------------------------------------------------
-# Play - Configure eBGP Route Policy - WAN and WAN Layer
-# ------------------------------------------------------
-- name: Configure eBGP Route Policy - Between WAN and WAN Layer
+# ----------------------------------------------
+# Play - Configure eBGP Route Policy - WAN Layer
+# ----------------------------------------------
+- name: Configure eBGP Route Policy - WAN Layer
   hosts: aln_wan
   tags: bgp_route_policy
   gather_facts: no
@@ -591,7 +591,7 @@
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - hostvars[item.description].bgp.local_as != item.bgp_local_as
     tags:
     - ebgp_route_policy
     notify: save_cfg
@@ -611,7 +611,7 @@
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - hostvars[item.description].bgp.local_as != item.bgp_local_as
     - ebgp_prepend_route_policy |
         selectattr('vrf', 'equalto', item.vrf) |
         map(attribute='devices') | flatten |
@@ -632,7 +632,7 @@
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - hostvars[item.description].bgp.local_as != item.bgp_local_as
     - ebgp_prepend_route_policy |
         selectattr('vrf', 'equalto', item.vrf) |
         map(attribute='devices') | flatten |
@@ -650,9 +650,9 @@
       - write mem
     when: not ansible_check_mode
 
-# -------------------------------------------------
+# ----------------------------------------------
 # Play - Configure iBGP Route Policy - WAN Layer
-# -------------------------------------------------
+# ----------------------------------------------
 - name: Configure iBGP Route Policy - On WAN Layer
   hosts: aln_wan
   tags: bgp_route_policy
@@ -676,7 +676,7 @@
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
     tags:
     - ibgp_route_policy
     notify: save_cfg
@@ -705,7 +705,9 @@
       l3_transit_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
-
+    when:
+    - "'core' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
     tags:
     - ibgp_route_policy
     notify: save_cfg
@@ -743,7 +745,7 @@
       list }}"
     when:
     - "'core' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
     tags:
     - ibgp_route_policy
     notify: save_cfg
@@ -774,7 +776,7 @@
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
     tags:
     - ibgp_route_policy
     notify: save_cfg
@@ -805,7 +807,7 @@
       list }}"
     when:
     - "'fab' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
     tags:
     - ibgp_route_policy
     notify: save_cfg
@@ -843,7 +845,7 @@
       list }}"
     when:
     - "'fab' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
     tags:
     - ibgp_route_policy
     notify: save_cfg
@@ -874,7 +876,7 @@
       list }}"
     when:
     - "'core' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
     tags:
     - ibgp_route_policy
     notify: save_cfg
@@ -1013,7 +1015,7 @@
             selectattr('vrf', 'equalto', item.name) |
             map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
-      - router bgp {{ bgp.local_asn }}
+      - router bgp {{ bgp.local_as }}
       - address-family ipv4 vrf {{ item.name }}
     when: item.name in l3_transit_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
@@ -1029,7 +1031,7 @@
       lines:
       - redistribute static route-map {{ item.name }}
       parents:
-      - router bgp {{ bgp.local_asn }}
+      - router bgp {{ bgp.local_as }}
       - address-family ipv4 vrf {{ item.vrf }}
     loop: "{{ redistribution.into_bgp.from_static.route_map_entries }}"
     when: redistribution.into_bgp.from_static is defined
@@ -1042,7 +1044,7 @@
       lines:
       - redistribute connected route-map {{ item.name }}
       parents:
-      - router bgp {{ bgp.local_asn }}
+      - router bgp {{ bgp.local_as }}
       - address-family ipv4 vrf {{ item.vrf }}
     loop: "{{ redistribution.into_bgp.from_connected.route_map_entries }}"
     when: redistribution.into_bgp.from_connected is defined
@@ -1053,7 +1055,7 @@
   - name: Configure iBGP & eBGP Neighbor
     cisco.ios.ios_bgp_address_family:
       config:
-        as_number: "{{ bgp.local_asn }}"
+        as_number: "{{ bgp.local_as }}"
         address_family:
         - afi: ipv4
           safi: unicast
