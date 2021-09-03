@@ -603,7 +603,7 @@
   - name: Configure eBGP Route Policy - WAN To WAN Layer - Set AS-Path Prepending
     cisco.ios.ios_config:
       lines:
-      - "set as-path prepend last-as {{ bgp_prepend_route_policy |
+      - "set as-path prepend last-as {{ ebgp_prepend_route_policy |
                   selectattr('vrf','equalto',item.vrf) |
                   map(attribute='devices') | flatten |
                   selectattr('name','equalto',inventory_hostname) |
@@ -616,7 +616,7 @@
     when:
     - "'wan' in hostvars[item.description].group_names"
     - hostvars[item.description].bgp.local_asn != item.bgp_local_as
-    - bgp_prepend_route_policy |
+    - ebgp_prepend_route_policy |
         selectattr('vrf','equalto',item.vrf) |
         map(attribute='devices') | flatten |
         selectattr('name','equalto',inventory_hostname) |
@@ -638,7 +638,7 @@
     when:
     - "'wan' in hostvars[item.description].group_names"
     - hostvars[item.description].bgp.local_asn != item.bgp_local_as
-    - bgp_prepend_route_policy |
+    - ebgp_prepend_route_policy |
         selectattr('vrf','equalto',item.vrf) |
         map(attribute='devices') | flatten |
         selectattr('name','equalto',inventory_hostname) |

@@ -1,3 +1,8 @@
+# ---------------------------------
+# Allowed VLANs on Trunk Interfaces
+# ---------------------------------
+trunk_allowed_vlans: 1-999
+
 # --------------------------
 # Transit VLANs to add to DB
 # --------------------------
@@ -35,8 +40,9 @@ l2_transit_interfaces:
     vlan: 20
     enabled: True
 
-trunk_allowed_vlans: 1-999
-
+# ---------------------
+# L2 Transit Interfaces
+# ---------------------
 l2_tenant_interfaces:
   alnfab1:
   - name: GigabitEthernet3/2
@@ -62,10 +68,13 @@ l2_tenant_interfaces:
     allowed_vlans: "{{ trunk_allowed_vlans }}"
     enabled: True
 
+# ---------------------
+# L3 Transit Interfaces
+# ---------------------
 l3_transit_interfaces:
-  # -------------------------------------------------------
+  # -------
   # alnfab1
-  # -------------------------------------------------------
+  # -------
   alnfab1:
   - name: Loopback1
     cidr: 10.224.111.5/32
@@ -179,9 +188,9 @@ l3_transit_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-  # -------------------------------------------------------
+  # -------
   # alnfab2
-  # -------------------------------------------------------
+  # -------
   alnfab2:
   - name: Loopback1
     cidr: 10.224.111.6/32
@@ -295,10 +304,9 @@ l3_transit_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
-
-# -------------------------------------------------------
+# ----
 # VRRP
-# -------------------------------------------------------
+# ----
 vrrp:
   alnfab1:
     priority: 200
@@ -307,9 +315,9 @@ vrrp:
     priority: 100
     host_ip_index: 3
 
-# -------------------------------------------------------
+# -----------------------------
 # Route Redistribution Into BGP
-# -------------------------------------------------------
+# -----------------------------
 redistribution:
   into_bgp:
     from_connected:
