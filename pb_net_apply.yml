@@ -614,8 +614,7 @@
       l3_transit_interfaces[inventory_hostname] |
       selectattr('bgp','equalto',true) |
       list }}"
-    when:
-    - (bgp_prepend_route_policy |
+    when: bgp_prepend_route_policy |
         selectattr('vrf','equalto',item.vrf) |
         map(attribute='devices') | flatten |
         selectattr('name','equalto',inventory_hostname) |
