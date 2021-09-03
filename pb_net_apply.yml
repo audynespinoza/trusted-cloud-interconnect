@@ -69,7 +69,7 @@
 # ---------------------------------
 # Play - Configure L2 Transit Links
 # ---------------------------------
-- name: Configure L2 Transit Links
+- name: Configure L2 Transit Link
   hosts: aln_fab:aln_core:aln_fw
   tags: l2_switchport
   gather_facts: no
@@ -133,7 +133,7 @@
 # ----------------------------------------
 # Play - Configure L2 Tenant Network Links
 # ----------------------------------------
-- name: Configure L2 Tenant Network Links
+- name: Configure L2 Tenant Network L2 Link
   hosts: aln_fab
   tags: l2_switchport
   gather_facts: no
@@ -150,7 +150,7 @@
     loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
     notify: save_cfg
 
-  - name: Configure Switchport to Mode Trunk Ports
+  - name: Configure Switchport to Mode Trunk
     cisco.ios.ios_config:
       lines:
       - switchport mode {{ item.mode }}
@@ -162,7 +162,7 @@
     when: item.mode == 'trunk'
     notify: save_cfg
 
-  - name: Configure Trunk Ports
+  - name: Configure Trunk Port
     cisco.ios.ios_l2_interfaces:
       config:
       - name: "{{ item.name }}"
@@ -197,18 +197,18 @@
 # ----------------------------------------------------------------------------------
 # Play - Change Switchports to Routed Ports Before Configuring L3 Transit Interfaces
 # ----------------------------------------------------------------------------------
-- name: Change Switchports to Routed Ports Before Configuring L3 Interfaces
+- name: Change Switchport to Routed Port Before Configuring L3 Interface
   hosts: aln_fab:aln_core
   tags: routed_switchport
   gather_facts: no
   tasks:
-  - name: Execute No Switchport Command on Switch Ports
+  - name: Execute No Switchport Command on Switch Port
     cisco.ios.ios_config:
       lines:
       - no switchport
       parents:
       - interface {{ item.name }}
-    loop: "{{ l3_transit_interfaces[inventory_hostname] | selectattr('physical','equalto',true) }}"
+    loop: "{{ l3_transit_interfaces[inventory_hostname] | selectattr('physical', 'equalto', true) }}"
     tags:
     - switchport
     notify: save_cfg
@@ -224,7 +224,7 @@
 # ---------------------------------
 # Play - Create VRFs On All Devices
 # ---------------------------------
-- name: Create VRFs On All Devices
+- name: Create VRFs
   hosts: aln
   tags: vrf
   gather_facts: no
@@ -238,7 +238,7 @@
       state: present
     loop: "{{ vrfs }}"
     when: item.name in l3_transit_interfaces[inventory_hostname] |
-        selectattr('vrf','equalto',item.name ) |
+        selectattr('vrf', 'equalto', item.name ) |
         map(attribute='vrf') | list
     tags:
     - vrf
@@ -251,10 +251,10 @@
       - write mem
     when: not ansible_check_mode
 
-# ----------------------------------------------------------------------------
-# Play - Configure Physical, VLAN, Tunnel & Loopback Interfaces On All Devices
-# ----------------------------------------------------------------------------
-- name: Configure Device Interfaces
+# -----------------------------------------------------------
+# Play - Configure Physical, SVI, Tunnel & Loopback Interface
+# -----------------------------------------------------------
+- name: Configure Device Interface
   hosts: aln
   tags: l3_interface
   gather_facts: no
@@ -270,11 +270,11 @@
     - underlay
     loop: "{{ 
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('underlay','equalto',true) |
+      selectattr('underlay', 'equalto', true) |
       list }}"
     notify: save_cfg
 
-  - name: Configure Physical Interfaces
+  - name: Configure Physical Interface
     cisco.ios.ios_interfaces:
       config:
       - name: "{{ item.name }}"
@@ -286,11 +286,25 @@
     - physical
     loop: "{{ 
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('physical','equalto',true) |
+      selectattr('physical', 'equalto', true) |
       list }}"
     notify: save_cfg
 
-  - name: Configure Tunnel & Loopback Interfaces
+  - name: Configure Loopback Interface
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "{{ item.name }}"
+        description: "{{ item.description }}"
+      state: merged
+    tags:
+    - loopback
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('physical', 'equalto', false) |
+      list }}"
+    notify: save_cfg
+
+  - name: Configure Tunnel Interface
     cisco.ios.ios_interfaces:
       config:
       - name: "{{ item.name }}"
@@ -298,10 +312,26 @@
       state: merged
     tags:
     - tunnel
-    - loopback
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('physical','equalto',false) |
+      selectattr('physical', 'equalto', false) |
+      selectattr('underlay', 'equalto', false) |
+      list }}"
+    notify: save_cfg
+
+  - name: Configure Tunnel Source & Destination
+    cisco.ios.ios_config:
+      lines:
+      - tunnel mode gre ipv4
+      - tunnel source {{ item.tunnel_source }}
+      - tunnel destination {{ item.tunnel_destination }}
+      parents: interface {{ item.name }}
+    tags:
+    - tunnel
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('physical', 'equalto', false) |
+      selectattr('underlay', 'equalto', false) |
       list }}"
     notify: save_cfg
 
@@ -316,7 +346,7 @@
     - vrf_interface
     notify: save_cfg
 
-  - name: Assign IPv4 Address to Interfaces
+  - name: Assign IPv4 Address to Interface
     cisco.ios.ios_l3_interfaces:
       config: 
       - name: "{{ item.name }}"
@@ -377,7 +407,7 @@
 # ----------------------------------------------------------------------------
 # Play - Global and Interface OSPF Configuration for BGP Next-Hop Reachability
 # ----------------------------------------------------------------------------
-- name: Configure OSPF on All Devices
+- name: Configure OSPF
   hosts: aln_wan:aln_core:aln_fab
   tags: ospf
   gather_facts: no
@@ -389,8 +419,8 @@
         - process_id: "{{ item.ospf_process }}"
           router_id: "{{ 
             l3_transit_interfaces[inventory_hostname] |
-            selectattr('description','equalto','main_loopback') |
-            selectattr('vrf','equalto',item.vrf) |
+            selectattr('description', 'equalto', 'main_loopback') |
+            selectattr('vrf', 'equalto', item.vrf) |
             map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
           vrf: "{{ item.vrf }}"
           max_metric:
@@ -403,13 +433,13 @@
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('ospf_active','equalto',true) |
+      selectattr('ospf_active', 'equalto', true) |
       list }}"
     tags:
     - ospf_global
     notify: save_cfg
 
-  - name: Interface OSPF Configuration on Transits
+  - name: Interface OSPF Configuration on Transit Network
     cisco.ios.ios_ospf_interfaces:
       config:
         - name: "{{ item.name }}"
@@ -428,14 +458,14 @@
                 point_to_point: true
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('ospf_active','equalto',true) |
-      selectattr('physical','equalto',true) |
+      selectattr('ospf_active', 'equalto', true) |
+      selectattr('physical', 'equalto', true) |
       list }}"
     tags:
     - ospf_phys_interface
     notify: save_cfg
 
-  - name: Interface OSPF Configuration on Loopbacks
+  - name: Interface OSPF Configuration on Loopback
     cisco.ios.ios_ospf_interfaces:
       config:
         - name: "{{ item.name }}"
@@ -448,8 +478,8 @@
                 interface_cost: 5
     loop: "{{ 
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('ospf_active','equalto',true) |
-      selectattr('physical','equalto',false) |
+      selectattr('ospf_active', 'equalto', true) |
+      selectattr('physical', 'equalto', false) |
       list }}"
     tags:
     - ospf_loopback_interface
@@ -467,7 +497,7 @@
 # --------------------------------------
 - name: Enable BGP Community New Format
   hosts: aln
-  tags: bgp
+  tags: bgp_route_policy
   gather_facts: no
   tasks:
   - name: Enable BGP Community New Format
@@ -488,12 +518,12 @@
 # ------------------------------------------------------------
 # Play - Configure Site Based BGP Community-Lists on WAN Layer
 # ------------------------------------------------------------
-- name: Configure Site Based BGP Community-Lists
+- name: Configure Site Based BGP Community-List
   hosts: aln_wan
-  tags: route_policy
+  tags: bgp_route_policy
   gather_facts: no
   tasks:
-  - name: Configure Site Based BGP Community-Lists
+  - name: Configure Site Based BGP Community-List
     cisco.ios.ios_config:
       lines: 
       - ip community-list expanded "{{ item }}" permit "{{ item }}"
@@ -516,52 +546,14 @@
     when: not ansible_check_mode
 
 # ------------------------------------------------------
-# Play - Configure iBGP Route Policy - WAN and WAN Layer
-# ------------------------------------------------------
-- name: Configure iBGP Route Policy - Between WAN and WAN Layer
-  hosts: aln_wan
-  tags: route_policy
-  gather_facts: no
-  tasks:
-  - name: Configure iBGP Route Policy - WAN To WAN Layer
-    cisco.ios.ios_route_maps:
-      config:
-      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
-        entries:
-        - sequence: 1000
-          action: permit
-      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
-        entries:
-        - sequence: 1000
-          action: permit
-      state: merged
-    loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp','equalto',true) |
-      list }}"
-    when:
-    - "'wan' in hostvars[item.description].group_names"
-    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
-    tags:
-    - ibgp_route_policy
-    notify: save_cfg
-
-  handlers:
-  - name: save_cfg
-    ios_command:
-      commands:
-      - write mem
-    when: not ansible_check_mode
-
-# ------------------------------------------------------
 # Play - Configure eBGP Route Policy - WAN and WAN Layer
 # ------------------------------------------------------
 - name: Configure eBGP Route Policy - Between WAN and WAN Layer
   hosts: aln_wan
-  tags: route_policy
+  tags: bgp_route_policy
   gather_facts: no
   tasks:
-  - name: Configure eBGP Route Policy - WAN To WAN Layer - Match Community
+  - name: Configure eBGP Route Policy - WAN To/From WAN Layer - Match Community
     cisco.ios.ios_route_maps:
       config:
       - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
@@ -573,7 +565,7 @@
               name: 
               - "{{ 
                 vrfs |
-                selectattr('name','equalto',item.vrf) |
+                selectattr('name', 'equalto', item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
       - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
@@ -585,13 +577,13 @@
               name: 
               - "{{ 
                 hostvars[item.description].vrfs |
-                selectattr('name','equalto',item.vrf) |
+                selectattr('name', 'equalto', item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"  
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp','equalto',true) |
+      selectattr('bgp', 'equalto', true) |
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
@@ -604,22 +596,22 @@
     cisco.ios.ios_config:
       lines:
       - "set as-path prepend last-as {{ ebgp_prepend_route_policy |
-                  selectattr('vrf','equalto',item.vrf) |
+                  selectattr('vrf', 'equalto', item.vrf) |
                   map(attribute='devices') | flatten |
-                  selectattr('name','equalto',inventory_hostname) |
+                  selectattr('name', 'equalto', inventory_hostname) |
                   map(attribute='as_path_prepend') | join('') }}"
       parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp','equalto',true) |
+      selectattr('bgp', 'equalto', true) |
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
     - hostvars[item.description].bgp.local_asn != item.bgp_local_as
     - ebgp_prepend_route_policy |
-        selectattr('vrf','equalto',item.vrf) |
+        selectattr('vrf', 'equalto', item.vrf) |
         map(attribute='devices') | flatten |
-        selectattr('name','equalto',inventory_hostname) |
+        selectattr('name', 'equalto', inventory_hostname) |
         map(attribute='as_path_prepend') | join('') in bgp_as_path_count_options
     tags:
     - ebgp_route_policy
@@ -632,15 +624,15 @@
       parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp','equalto',true) |
+      selectattr('bgp', 'equalto', true) |
       list }}"
     when:
     - "'wan' in hostvars[item.description].group_names"
     - hostvars[item.description].bgp.local_asn != item.bgp_local_as
     - ebgp_prepend_route_policy |
-        selectattr('vrf','equalto',item.vrf) |
+        selectattr('vrf', 'equalto', item.vrf) |
         map(attribute='devices') | flatten |
-        selectattr('name','equalto',inventory_hostname) |
+        selectattr('name', 'equalto', inventory_hostname) |
         map(attribute='as_path_prepend') | join('') not in bgp_as_path_count_options
     tags:
     - ebgp_route_policy
@@ -654,41 +646,255 @@
       - write mem
     when: not ansible_check_mode
 
-# ------------------------------------------------------
-# Play - Configure iBGP Route Policy - WAN to CORE Layer
-# ------------------------------------------------------
+# -------------------------------------------------
+# Play - Configure iBGP Route Policy - WAN Layer
+# -------------------------------------------------
+- name: Configure iBGP Route Policy - On WAN Layer
+  hosts: aln_wan
+  tags: bgp_route_policy
+  gather_facts: no
+  tasks:
+  - name: Configure iBGP Route Policy - WAN To/From WAN Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
 
+  - name: Configure iBGP Route Policy - WAN To/From CORE Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          match:
+            community:
+              name: 
+              - "{{ 
+                hostvars[item.description].vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}" 
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'core' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
 
-# ------------------------------------------------------
-# Play - Configure iBGP Route Policy - CORE to WAN Layer
-# ------------------------------------------------------
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
 
-# -------------------------------------------------------
-# Play - Configure iBGP Route Policy - CORE to CORE Layer
-# -------------------------------------------------------
+# -----------------------------------------------
+# Play - Configure iBGP Route Policy - CORE layer
+# -----------------------------------------------
+- name: Configure iBGP Route Policy - On CORE Layer
+  hosts: aln_core
+  tags: bgp_route_policy
+  gather_facts: no
+  tasks:
+  - name: Configure iBGP Route Policy - CORE To/From CORE Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'core' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
 
-# -------------------------------------------------------
-# Play - Configure iBGP Route Policy - CORE to FAB Layer
-# -------------------------------------------------------
+  - name: Configure iBGP Route Policy - CORE To/From WAN Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          match:
+            community:
+              name: 
+              - "{{ 
+                hostvars[item.description].vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}" 
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
 
-# -------------------------------------------------------
-# Play - Configure iBGP Route Policy - FAB to CORE Layer
-# -------------------------------------------------------
+  - name: Configure iBGP Route Policy - CORE To/From FABRIC Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          match:
+            community:
+              name: 
+              - "{{ 
+                hostvars[item.description].vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}" 
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'fab' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
 
-# -----------------------------------------------------
-# Play - Configure eBGP Route Policy - WAN to WAN Layer
-# -----------------------------------------------------
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
+# -------------------------------------------------
+# Play - Configure iBGP Route Policy - FABRIC Layer
+# -------------------------------------------------
+- name: Configure iBGP Route Policy - FABRIC Layer
+  hosts: aln_core
+  tags: bgp_route_policy
+  gather_facts: no
+  tasks:
+  - name: Configure iBGP Route Policy - FABRIC To/From FABRIC Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'fab' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
+
+  - name: Configure iBGP Route Policy - FABRIC To/From CORE Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          match:
+            community:
+              name: 
+              - "{{ 
+                hostvars[item.description].vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}" 
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'core' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
 
 
 # --------------------------------
 # Play - Build CONN_BGP Route-Maps
 # --------------------------------
-- name: Configure CONN_BGP Route-Maps
+- name: Configure CONN_BGP Route-Map
   hosts: aln_fab:aln_core:aln_wan
   tags: bgp
   gather_facts: no
   tasks:
-  - name: Configure CONN_BGP Route-Maps
+  - name: Configure CONN_BGP Route-Map
     cisco.ios.ios_route_maps:
       config:
       - route_map: "{{ item.name }}"
@@ -701,7 +907,7 @@
             community:
               number: "{{ 
                 vrfs |
-                selectattr('name','equalto',item.vrf) |
+                selectattr('name', 'equalto', item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
       state: merged
@@ -720,12 +926,12 @@
 # ----------------------------------
 # Play - Build STATIC_BGP Route-Maps
 # ----------------------------------
-- name: Configure STATIC_BGP Route-Maps
+- name: Configure STATIC_BGP Route-Map
   hosts: aln_core
   tags: bgp
   gather_facts: no
   tasks:
-  - name: Configure STATIC_BGP Route-Maps
+  - name: Configure STATIC_BGP Route-Map
     cisco.ios.ios_route_maps:
       config:
       - route_map: "{{ item.name }}"
@@ -739,7 +945,7 @@
             community:
               number: "{{ 
                 vrfs |
-                selectattr('name','equalto',item.vrf) |
+                selectattr('name', 'equalto', item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
       state: merged
@@ -803,15 +1009,15 @@
       lines:
       - "bgp router-id {{ 
             l3_transit_interfaces[inventory_hostname] |
-            selectattr('description','equalto','main_loopback') |
-            selectattr('vrf','equalto',item.name) |
+            selectattr('description', 'equalto', 'main_loopback') |
+            selectattr('vrf', 'equalto', item.name) |
             map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
       - router bgp {{ bgp.local_asn }}
       - address-family ipv4 vrf {{ item.name }}
     when: item.name in l3_transit_interfaces[inventory_hostname] |
-        selectattr('vrf','equalto',item.name ) |
-        selectattr('description','equalto','main_loopback') |
+        selectattr('vrf', 'equalto', item.name ) |
+        selectattr('description', 'equalto', 'main_loopback') |
         map(attribute='vrf') | list
     loop: "{{ vrfs }}"
     tags:
@@ -844,7 +1050,7 @@
     - conn_bgp_redistribution
     notify: save_cfg
 
-  - name: Configure iBGP & eBGP Neighbors
+  - name: Configure iBGP & eBGP Neighbor
     cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_asn }}"
@@ -875,7 +1081,7 @@
       state: merged
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp','equalto',true) |
+      selectattr('bgp', 'equalto', true) |
       list }}"
     tags:
     - bgp_neighbor
@@ -913,7 +1119,7 @@
     - static_route
     notify: save_cfg
 
-  - name: Add Default Static Routes
+  - name: Add Default Static Route
     cisco.ios.ios_static_routes:
       config:
       - vrf: "{{ item.vrf }}"
@@ -960,7 +1166,7 @@
     - static_route
     notify: save_cfg
 
-  - name: Add Default Static Routes
+  - name: Add Default Static Route
     cisco.ios.ios_static_routes:
       config:
       - vrf: "{{ item.vrf }}"
@@ -1123,12 +1329,12 @@
         - sequence: 1000
           action: permit
           match:
-            interfaces: "{{ tenant_networks | selectattr('vrf','equalto',item.vrf) | map(attribute='interface') | list }}"
+            interfaces: "{{ tenant_networks | selectattr('vrf', 'equalto', item.vrf) | map(attribute='interface') | list }}"
           set:
             community:
               number: "{{ 
                 vrfs |
-                selectattr('name','equalto',item.vrf) |
+                selectattr('name', 'equalto', item.vrf) |
                 map(attribute='bgp_community_number') |
                 join('') }}"
       state: merged
@@ -1154,15 +1360,3 @@
       - write mem
     when: not ansible_check_mode
 
-
-# -------------------------------------------------------
-# Play - Hostvars
-# -------------------------------------------------------
-- name: Configure Tenant Static Routes On Firewall Layer
-  hosts: localhost
-  tags: hostvars_output
-  gather_facts: no
-  tasks:
-  - name: Hostvars output
-    debug:
-      var: hostvars
