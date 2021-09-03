@@ -1362,3 +1362,16 @@
       - write mem
     when: not ansible_check_mode
 
+
+# -------------------------------------------------------
+# Play - Hostvars
+# -------------------------------------------------------
+- name: Configure Tenant Static Routes On Firewall Layer
+  hosts: localhost
+  tags: hostvars_output
+  gather_facts: no
+  tasks:
+  - name: Hostvars output
+    debug:
+      var: hostvars
+    tags: sweet
