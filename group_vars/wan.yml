@@ -18,9 +18,9 @@ ebgp_prepend_route_policy:
   vrf: CORE
   devices:
   - name: alnwan1
-    as_path_prepend: 5
+    as_path_prepend: 0
   - name: ashwan2
-    as_path_prepend: 5
+    as_path_prepend: 0
 
 - role: tertiary
   vrf: CORE
@@ -53,9 +53,9 @@ ebgp_prepend_route_policy:
   vrf: TRUSTED
   devices:
   - name: alnwan1
-    as_path_prepend: 1
+    as_path_prepend: 0
   - name: ashwan2
-    as_path_prepend: 1
+    as_path_prepend: 0
 
 
 l3_transit_interfaces:
