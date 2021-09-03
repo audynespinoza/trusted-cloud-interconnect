@@ -643,7 +643,7 @@
                   selectattr('vrf','equalto',item.vrf) |
                   map(attribute='devices') | flatten |
                   selectattr('name','equalto',inventory_hostname) |
-                  map(attribute='as_path_prepend') | join('') == false 
+                  map(attribute='as_path_prepend') | join('') == false
     tags:
     - ebgp_route_policy
     - sweet
