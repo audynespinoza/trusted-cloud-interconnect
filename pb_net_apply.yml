@@ -604,17 +604,16 @@
     cisco.ios.ios_config:
       lines:
       - no set as-path prepend last-as
-      - "set as-path prepend last-as {{ bgp_prepend_route_policy |
-                  selectattr('vrf','equalto',item.vrf) |
-                  map(attribute='devices') | flatten |
-                  selectattr('name','equalto',inventory_hostname) |
-                  map(attribute='as_path_prepend') | join('') }}"
+
       parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
       selectattr('bgp','equalto',true) |
       list }}"
-    when: bgp_prepend_route_policy |
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - bgp_prepend_route_policy |
         selectattr('vrf','equalto',item.vrf) |
         map(attribute='devices') | flatten |
         selectattr('name','equalto',inventory_hostname) |
