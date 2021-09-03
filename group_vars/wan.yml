@@ -1,4 +1,8 @@
-bgp_prepend_route_policy:
+
+# ----------------------------------------------------------------------------------------------
+# Policy that determines how many ASNs to Preprend when Advertising BGP routes to eBGP Neighbors
+# ----------------------------------------------------------------------------------------------
+ebgp_prepend_route_policy:
 # --------
 # VRF CORE
 # --------
