@@ -601,22 +601,15 @@
     notify: save_cfg
 
   - name: Configure eBGP Route Policy - WAN To WAN Layer [Set]
-    cisco.ios.ios_route_maps:
-      config:
-      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
-        entries:
-        - sequence: 1000
-          action: permit
-          set:
-            as_path:
-              prepend: 
-                last_as: "{{
-                  bgp_prepend_route_policy |
+    cisco.ios.ios_config:
+      lines:
+      - no set as-path prepend last-as
+      - "{{ bgp_prepend_route_policy |
                   selectattr('vrf','equalto',item.vrf) |
                   map(attribute='devices') | flatten |
                   selectattr('name','equalto',inventory_hostname) |
                   map(attribute='as_path_prepend') | join('') }}"
-      state: merged
+      parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
       selectattr('bgp','equalto',true) |
