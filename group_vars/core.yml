@@ -197,7 +197,7 @@ l3_transit_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet2/1
-    cidr: 10.224.21.10/31 
+    cidr: 10.224.21.10/31
     host_ip_index: 0
     vrf: TRUSTED
     description: alnfab1
