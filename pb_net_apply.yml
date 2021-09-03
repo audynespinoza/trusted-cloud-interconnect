@@ -620,7 +620,7 @@
         selectattr('vrf','equalto',item.vrf) |
         map(attribute='devices') | flatten |
         selectattr('name','equalto',inventory_hostname) |
-        map(attribute='as_path_prepend') | join('') in bgp_as_path_length_options
+        map(attribute='as_path_prepend') | join('') in bgp_as_path_count_options
     tags:
     - ebgp_route_polic
     notify: save_cfg
