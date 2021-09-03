@@ -1,4 +1,19 @@
 
+# -------------------------------------------------------
+# Play - Hostvars
+# -------------------------------------------------------
+- name: Configure Tenant Static Routes On Firewall Layer
+  hosts: localhost
+  tags: hostvars_output
+  gather_facts: no
+  tasks:
+  - name: Hostvars output
+    debug:
+      var: hostvars
+
+
+
+
 # ---------------------
 # +1 ip address on each ansible host
 # ---------------------
@@ -294,3 +309,96 @@ OSPF
     notify: save_cfg
 
 
+# --------------------------------------------------
+# Play - Build Device Name to AS-Path Prepend Policy
+# --------------------------------------------------
+- name: Configure Site Based BGP Community-Lists
+  hosts: aln_wan
+  tags: route_policy
+  gather_facts: no
+  tasks:
+  - name: Build Device Name to AS-Path Prepend Policy Map for Each Device
+    set_fact:
+      device_map: "{{ 
+        device_map | default({}) |
+        combine ({ inventory_hostname : item.bgp_local_as }) }}"
+    loop: "{{ 
+      bgp_prepend_route_policy|
+      selectattr('cidr', 'defined') |
+      list }}"
+    tags:
+    - build_ip_asn_map
+
+  - name: Display the Dictionary
+    debug: var=device_map
+    tags:
+    - build_ip_asn_map   
+
+  - name: Combine Each Device Interface-IP to BGP ASN mappings 
+    set_fact:
+      ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
+    loop: "{{
+          groups['all_devices'] |
+          map('extract', hostvars) |
+          selectattr('device_map', 'defined') |
+          map(attribute='device_map') |
+          list }}"
+    tags:
+    - build_ip_asn_map
+
+  - name: Display Interface-IP to BGP ASN mappings 
+    debug:
+      var: ip_asn_map
+    tags:
+    - build_ip_asn_map
+
+
+
+  - name: Configure eBGP Route Policy - WAN To WAN Layer - Set AS-Path Prepending
+    cisco.ios.ios_config:
+      lines:
+      - "set as-path prepend last-as {{ bgp_prepend_route_policy |
+                  selectattr('vrf','equalto',item.vrf) |
+                  map(attribute='devices') | flatten |
+                  selectattr('name','equalto',inventory_hostname) |
+                  map(attribute='as_path_prepend') | join('') }}"
+      parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp','equalto',true) |
+      list }}"
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - bgp_prepend_route_policy |
+        selectattr('vrf','equalto',item.vrf) |
+        map(attribute='devices') | flatten |
+        selectattr('name','equalto',inventory_hostname) |
+        map(attribute='as_path_prepend') | join('') in bgp_as_path_length_options
+    tags:
+    - ebgp_route_policy
+    - sweet
+    notify: save_cfg
+
+
+  - name: Configure eBGP Route Policy - WAN To WAN Layer - Remove AS-Path Prepending
+    cisco.ios.ios_config:
+      lines:
+      - no set as-path prepend last-as
+      parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp','equalto',true) |
+      list }}"
+    when:
+    - "'wan' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_asn != item.bgp_local_as
+    - bgp_prepend_route_policy |
+        selectattr('vrf','equalto',item.vrf) |
+        map(attribute='devices') | flatten |
+        selectattr('name','equalto',inventory_hostname) |
+        map(attribute='as_path_prepend') | join('') == 'no'
+    tags:
+    - ebgp_route_policy
+    - sweet
+    notify: save_cfg

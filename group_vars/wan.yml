@@ -190,6 +190,8 @@ l3_transit_interfaces:
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
+    tunnel_source: GigabitEthernet0/5
+    tunnel_destination: 10.224.253.1
     
   - name: Tunnel2
     cidr: 10.224.255.0/31 
@@ -206,6 +208,8 @@ l3_transit_interfaces:
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
+    tunnel_source: GigabitEthernet0/5
+    tunnel_destination: 10.224.253.1
 
   # -------
   # alnwan2
@@ -306,6 +310,9 @@ l3_transit_interfaces:
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
+    tunnel_source: GigabitEthernet0/3
+    tunnel_destination: 10.224.253.3
+
   # -------
   # ashwan2
   # -------
@@ -344,7 +351,7 @@ l3_transit_interfaces:
 
   - name: GigabitEthernet0/5
     cidr: 10.224.253.0/31
-    host_ip_index: 0
+    host_ip_index: 1
     vrf: EDGE
     description: alnwan1
     enabled: true
