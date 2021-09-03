@@ -504,6 +504,10 @@
     cisco.ios.ios_config:
       lines:
       - "ip bgp-community new-format"
+    when: true in l3_transit_interfaces[inventory_hostname] |
+       selectattr('bgp', 'equalto', true) |
+       map(attribute='bgp') |
+      list | unique
     tags:
     - bgp_comm_new_format
     notify: save_cfg
@@ -884,11 +888,9 @@
       - write mem
     when: not ansible_check_mode
 
-
-
-# --------------------------------
-# Play - Build CONN_BGP Route-Maps
-# --------------------------------
+# -------------------------------
+# Play - Build CONN_BGP Route-Map
+# -------------------------------
 - name: Configure CONN_BGP Route-Map
   hosts: aln_fab:aln_core:aln_wan
   tags: bgp
@@ -923,9 +925,9 @@
       - write mem
     when: not ansible_check_mode
 
-# ----------------------------------
-# Play - Build STATIC_BGP Route-Maps
-# ----------------------------------
+# ---------------------------------
+# Play - Build STATIC_BGP Route-Map
+# ---------------------------------
 - name: Configure STATIC_BGP Route-Map
   hosts: aln_core
   tags: bgp
