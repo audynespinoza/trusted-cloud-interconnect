@@ -2,10 +2,8 @@
 # Transit VLANs to add to DB
 # --------------------------
 transit_vlans:
-- name: INSIDE_TRANSIT_CORE
-  vlan: 15
-- name: INSIDE_TRANSIT_TRUSTED
-  vlan: 20
+- name: OUTSIDE_TRANSIT_CORE
+  vlan: 10
 
 # ---------------------
 # L2 Transit Interfaces
