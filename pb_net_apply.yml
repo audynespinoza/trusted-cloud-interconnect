@@ -323,7 +323,7 @@
   - name: Configure Tunnel Source & Destination
     cisco.ios.ios_config:
       lines:
-      - tunnel mode gre ipv4
+      - tunnel mode gre ip
       - tunnel source {{ item.tunnel_source }}
       - tunnel destination {{ item.tunnel_destination }}
       - keepalive 2 10
