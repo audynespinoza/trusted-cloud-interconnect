@@ -77,7 +77,7 @@
   - name: Create Transit Vlans in DB
     cisco.ios.ios_vlans:
       config:
-      - name: "{{ item.description }}"
+      - name: "{{ item.name }}"
         vlan_id: "{{ item.vlan }}"
         state: active
         shutdown: disabled
@@ -325,6 +325,7 @@
       - tunnel mode gre ipv4
       - tunnel source {{ item.tunnel_source }}
       - tunnel destination {{ item.tunnel_destination }}
+      - keepalive 2 10
       parents: interface {{ item.name }}
     tags:
     - tunnel
