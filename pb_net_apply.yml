@@ -315,7 +315,8 @@
     loop: "{{
       l3_transit_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', false) |
-      selectattr('underlay', 'equalto', false) |
+      selectattr('tunnel_source', 'defined') |
+      selectattr('tunnel_destination', 'defined') |
       list }}"
     notify: save_cfg
 
