@@ -526,7 +526,7 @@
 # Play - Configure Site Based BGP Community-Lists on WAN Layer
 # ------------------------------------------------------------
 - name: Configure Site Based BGP Community-List
-  hosts: aln_wan:aln_fab
+  hosts: aln_wan:aln_fab:aln_core
   tags: bgp_route_policy
   gather_facts: no
   tasks:
