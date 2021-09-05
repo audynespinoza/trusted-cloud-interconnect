@@ -211,7 +211,7 @@ l3_transit_interfaces:
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: true
-
+    
   alncore2:
   - name: Loopback1
     cidr: 10.224.111.4/32
