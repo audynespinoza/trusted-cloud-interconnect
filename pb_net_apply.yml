@@ -535,7 +535,7 @@
       lines: 
       - 'ip community-list expanded {{ item }} permit "{{ item }}"'
     loop: "{{
-      groups['wan'] |
+      groups['wan'] + groups['fab'] |
       map('extract', hostvars) |
       selectattr('vrfs', 'defined') |
       map(attribute='vrfs') | flatten |
