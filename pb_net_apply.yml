@@ -1096,6 +1096,27 @@
     - bgp_neighbor
     notify: save_cfg
 
+  - name: Configure BGP Route-Reflection
+    cisco.ios.ios_bgp_address_family:
+      config:
+        as_number: "{{ bgp.local_as }}"
+        address_family:
+        - afi: ipv4
+          safi: unicast
+          vrf: "{{ item.vrf }}"
+          neighbor:
+          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}"
+            route_reflector_client: "{{ item.bgp_route_reflect}}"
+      state: merged
+    loop: "{{
+      l3_transit_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      selectattr('bgp_route_reflect', 'equalto', true)
+      list }}"
+    tags:
+    - bgp_route_reflection
+    notify: save_cfg
+
   handlers:
   - name: save_cfg
     ios_command:
