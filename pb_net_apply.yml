@@ -1138,6 +1138,36 @@
     when: not ansible_check_mode
 
 
+# ------------------------------------------------------
+# Play - Add Outside Transit SVI into CONN_BGP Route-Map
+# ------------------------------------------------------
+- name: Add Outside Transit SVI into CONN_BGP Route-Map
+  hosts: aln_core
+  tags: outside_transit
+  gather_facts: no
+  tasks:
+  - name: Add Interface to CONN_BGP Route-Map
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "CONN_BGP_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          match:
+            interfaces:
+            - "{{ item.name }}"
+      state: merged
+    loop: "{{ 
+      l3_transit_loopback_interfaces | 
+      selectattr('name', 'search', 'Vlan') |
+      selectattr('bgp', 'equalto', true) |
+      selectattr('ospf_active', 'equalto', false) |
+      list
+      }}"
+    tags:
+    - conn_bgp_redistribution
+    notify: save_cfg    
+
 # -------------------------------------------------------------
 # Play - Configure Default and Summary Routes On Firewall Layer
 # -------------------------------------------------------------
