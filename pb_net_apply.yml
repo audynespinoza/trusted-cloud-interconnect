@@ -1159,7 +1159,8 @@
       state: merged
     loop: "{{ 
       l3_transit_loopback_interfaces | 
-      selectattr('bgp', 'equalto', true) |
+      selectattr('name', 'search', 'Vlan') |
+      selectattr('bgp', 'equalto', false) |
       selectattr('ospf_active', 'equalto', false) |
       list
       }}"
