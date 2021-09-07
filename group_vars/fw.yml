@@ -45,10 +45,10 @@ l2_transit_interfaces:
     vlan: 20
     enabled: true
 
-# ---------------------
-# L3 Transit Interfaces
-# ---------------------
-l3_transit_interfaces:
+# --------------------------------
+# L3 Transit & Loopback Interfaces
+# --------------------------------
+l3_transit_loopback_interfaces:
   # ------
   # alnfw1
   # ------

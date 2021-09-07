@@ -68,14 +68,30 @@ l2_tenant_interfaces:
     allowed_vlans: "{{ trunk_allowed_vlans }}"
     enabled: True
 
-# ---------------------
-# L3 Transit Interfaces
-# ---------------------
-l3_transit_interfaces:
+# --------------------------------
+# L3 Transit & Loopback Interfaces
+# --------------------------------
+l3_transit_loopback_interfaces:
   # -------
   # alnfab1
   # -------
   alnfab1:
+  - name: Loopback0
+    cidr: 10.224.1.5/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
   - name: Loopback1
     cidr: 10.224.111.5/32
     host_ip_index: 0
@@ -192,6 +208,22 @@ l3_transit_interfaces:
   # alnfab2
   # -------
   alnfab2:
+  - name: Loopback0
+    cidr: 10.224.1.6/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
   - name: Loopback1
     cidr: 10.224.111.6/32
     host_ip_index: 0

@@ -57,12 +57,30 @@ ebgp_prepend_route_policy:
   - name: ashwan2
     as_path_prepend: 0
 
-
-l3_transit_interfaces:
+# --------------------------------
+# L3 Transit & Loopback Interfaces
+# --------------------------------
+l3_transit_loopback_interfaces:
   # -------
   # alnwan1
   # -------
   alnwan1:
+  - name: Loopback0
+    cidr: 10.224.1.1/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
   - name: Loopback1
     cidr: 10.224.111.1/32
     host_ip_index: 0
@@ -213,8 +231,24 @@ l3_transit_interfaces:
 
   # -------
   # alnwan2
-  # -------   
+  # -------
   alnwan2:
+  - name: Loopback0
+    cidr: 10.224.1.2/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
   - name: Loopback1
     cidr: 10.224.111.2/32
     host_ip_index: 0
@@ -402,7 +436,7 @@ l3_transit_interfaces:
     tunnel_destination: 10.224.253.0
 
   # -------
-  # alnwan4
+  # ashwan4
   # -------
   ashwan4:
   - name: Loopback1

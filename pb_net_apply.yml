@@ -208,7 +208,7 @@
       - no switchport
       parents:
       - interface {{ item.name }}
-    loop: "{{ l3_transit_interfaces[inventory_hostname] | selectattr('physical', 'equalto', true) }}"
+    loop: "{{ l3_transit_loopback_interfaces[inventory_hostname] | selectattr('physical', 'equalto', true) }}"
     tags:
     - switchport
     notify: save_cfg
@@ -237,7 +237,7 @@
       route_both: "{{ item.route_both }}"
       state: present
     loop: "{{ vrfs }}"
-    when: item.name in l3_transit_interfaces[inventory_hostname] |
+    when: item.name in l3_transit_loopback_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         map(attribute='vrf') | list
     tags:
@@ -269,7 +269,7 @@
     tags:
     - underlay
     loop: "{{ 
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('underlay', 'equalto', true) |
       list }}"
     notify: save_cfg
@@ -285,7 +285,7 @@
     - interface
     - physical
     loop: "{{ 
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', true) |
       list }}"
     notify: save_cfg
@@ -299,7 +299,7 @@
     tags:
     - loopback
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', false) |
       list }}"
     notify: save_cfg
@@ -313,7 +313,7 @@
     tags:
     - tunnel
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', false) |
       selectattr('tunnel_source', 'defined') |
       selectattr('tunnel_destination', 'defined') |
@@ -331,7 +331,7 @@
     tags:
     - tunnel
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', false) |
       selectattr('tunnel_source', 'defined') |
       selectattr('tunnel_destination', 'defined') |
@@ -344,7 +344,7 @@
       - vrf forwarding {{ item.vrf }}
       parents:
       - interface {{ item.name }}
-    loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
+    loop: "{{ l3_transit_loopback_interfaces[inventory_hostname] }}"
     tags:
     - vrf_interface
     notify: save_cfg
@@ -355,7 +355,7 @@
       - name: "{{ item.name }}"
         ipv4:
         - address: "{{ item.cidr | ipv4(item.host_ip_index) }}" 
-    loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
+    loop: "{{ l3_transit_loopback_interfaces[inventory_hostname] }}"
     tags:
     - ip_address
     - interface
@@ -366,7 +366,7 @@
       config:
       - name: "{{ item.name }}"
         enabled: "{{ item.enabled }}"
-    loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
+    loop: "{{ l3_transit_loopback_interfaces[inventory_hostname] }}"
     tags:
     - admin_state
     notify: save_cfg
@@ -393,7 +393,7 @@
       - vrrp {{ item.name.split('Vlan')[1] }} ip {{ item.cidr | ipv4(1) | ipaddr('address') }}
       parents:
       - interface {{ item.name }}
-    loop: "{{ l3_transit_interfaces[inventory_hostname] }}"
+    loop: "{{ l3_transit_loopback_interfaces[inventory_hostname] }}"
     when: (item.cidr.split('/')[1] == '29') and (item.ospf_active == false)
     tags:
     - vrrp
@@ -421,7 +421,7 @@
         processes:
         - process_id: "{{ item.ospf_process }}"
           router_id: "{{ 
-            l3_transit_interfaces[inventory_hostname] |
+            l3_transit_loopback_interfaces[inventory_hostname] |
             selectattr('description', 'equalto', 'main_loopback') |
             selectattr('vrf', 'equalto', item.vrf) |
             map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
@@ -435,7 +435,7 @@
             default_cost: 5
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('ospf_active', 'equalto', true) |
       list }}"
     tags:
@@ -460,7 +460,7 @@
               network:
                 point_to_point: true
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('ospf_active', 'equalto', true) |
       selectattr('physical', 'equalto', true) |
       list }}"
@@ -480,7 +480,7 @@
               cost:
                 interface_cost: 5
     loop: "{{ 
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('ospf_active', 'equalto', true) |
       selectattr('physical', 'equalto', false) |
       list }}"
@@ -507,7 +507,7 @@
     cisco.ios.ios_config:
       lines:
       - "ip bgp-community new-format"
-    when: true in l3_transit_interfaces[inventory_hostname] |
+    when: true in l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       map(attribute='bgp') |
       list | unique
@@ -589,7 +589,7 @@
                 join('') }}"  
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -609,7 +609,7 @@
                   map(attribute='as_path_prepend') | join('') }}"
       parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -630,7 +630,7 @@
       - no set as-path prepend last-as
       parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -674,7 +674,7 @@
           action: permit
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -705,7 +705,7 @@
                 join('') }}" 
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -743,7 +743,7 @@
           action: permit
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -774,7 +774,7 @@
           action: permit
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -805,7 +805,7 @@
                 join('') }}" 
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -843,7 +843,7 @@
           action: permit
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -874,7 +874,7 @@
           action: permit
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     when:
@@ -978,20 +978,34 @@
     cisco.ios.ios_config:
       lines:
       - "bgp router-id {{ 
-            l3_transit_interfaces[inventory_hostname] |
+            l3_transit_loopback_interfaces[inventory_hostname] |
             selectattr('description', 'equalto', 'main_loopback') |
             selectattr('vrf', 'equalto', item.name) |
             map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
       - router bgp {{ bgp.local_as }}
       - address-family ipv4 vrf {{ item.name }}
-    when: item.name in l3_transit_interfaces[inventory_hostname] |
+    when: item.name in l3_transit_loopback_interfaces[inventory_hostname] |
         selectattr('vrf', 'equalto', item.name ) |
         selectattr('description', 'equalto', 'main_loopback') |
         map(attribute='vrf') | list
     loop: "{{ vrfs }}"
     tags:
     - bgp_router_id
+    notify: save_cfg
+
+  - name: Configure Cluster-ID on GLOBAL RT for BGP Route-Reflection
+    cisco.ios.ios_config:
+      lines:
+      - "bgp cluster-id {{ 
+            l3_transit_loopback_interfaces[inventory_hostname] |
+            selectattr('description', 'equalto', 'main_loopback') |
+            selectattr('vrf', 'equalto', 'GLOBAL') |
+            map(attribute='cidr') | ipaddr('address') | join('') }}"
+      parents:
+      - router bgp {{ bgp.local_as }}
+    tags:
+    - bgp_cluster_id
     notify: save_cfg
 
   - name: Configure Static Into BGP Redistribution
@@ -1026,7 +1040,7 @@
         device_map | default({}) |
         combine ({ (item.cidr | ipv4(item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ 
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('cidr', 'defined') |
       list }}"
     tags:
@@ -1088,7 +1102,7 @@
                 in: true
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
     tags:
@@ -1108,7 +1122,7 @@
             route_reflector_client: "{{ item.bgp_route_reflect}}"
       state: merged
     loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
+      l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       selectattr('bgp_route_reflect', 'equalto', true)
       list }}"
