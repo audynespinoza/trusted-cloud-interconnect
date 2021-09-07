@@ -1068,7 +1068,8 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           neighbor:
-          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
+          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}"
+            route_reflector_client: false
             activate: true
             remote_as: "{{ ip_asn_map[(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))] }}"
             nexthop_self:
