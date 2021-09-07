@@ -53,8 +53,10 @@ vrfs:
 # Global BGP Config Parameters
 # ----------------------------
 bgp_log_neighbor_changes: true
-bgp_keepalive_interval: 4
-bgp_holdtime: 12
 bgp_neighbor_pwd: cisco
+ibgp_keepalive_interval: 4
+ibgp_holdtime: 12
+ebgp_keepalive_interval: 4
+ebgp_holdtime: 12
 bgp_as_path_count_options: ['1','2','3','4','5','6','7','8','9','10']
 
