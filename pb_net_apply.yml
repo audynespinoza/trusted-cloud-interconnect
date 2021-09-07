@@ -1071,7 +1071,6 @@
           - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
             activate: true
             remote_as: "{{ ip_asn_map[(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))] }}"
-            route_reflector_client: false
             nexthop_self:
               all: false
               set: "{{ item.bgp_next_hop_self }}"
