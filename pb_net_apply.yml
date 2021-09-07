@@ -1158,7 +1158,11 @@
             - "{{ item.name }}"
       state: merged
     loop: "{{ 
-      l3_transit_loopback_interfaces 
+      l3_transit_loopback_interfaces[inventory_hostname] | 
+      selectattr('name', 'search', 'Vlan') |
+      selectattr('bgp', 'equalto', false) |
+      selectattr('ospf_active', 'equalto', false) |
+      list
       }}"
     tags:
     - conn_bgp_redistribution
