@@ -1059,7 +1059,7 @@
     - build_ip_asn_map
     - bgp_neighbor
 
-  - name: Configure iBGP Neighbor
+  - name: Configure iBGP & eBGP Neighbor
     cisco.ios.ios_bgp_address_family:
       config:
         as_number: "{{ bgp.local_as }}"
@@ -1071,13 +1071,13 @@
           - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
             activate: true
             remote_as: "{{ ip_asn_map[(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))] }}"
-            route_reflector_client: "{{ item.bgp_route_reflect }}"
+            route_reflector_client: false
             nexthop_self:
               all: false
               set: "{{ item.bgp_next_hop_self }}"
             timers:
-              holdtime: "{{ ibgp_holdtime }}"
-              interval: "{{ ibgp_keepalive_interval }}"
+              holdtime: "{{ bgp_holdtime }}"
+              interval: "{{ bgp_keepalive_interval }}"
             soft_reconfiguration: true
             send_community:
               both: true
@@ -1092,43 +1092,8 @@
       l3_transit_interfaces[inventory_hostname] |
       selectattr('bgp', 'equalto', true) |
       list }}"
-    when: ip_asn_map[(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))] == item.bgp_local_as
     tags:
-    - ibgp_neighbor
-    notify: save_cfg
-
-  - name: Configure eBGP Neighbor
-    cisco.ios.ios_bgp_address_family:
-      config:
-        as_number: "{{ bgp.local_as }}"
-        address_family:
-        - afi: ipv4
-          safi: unicast
-          vrf: "{{ item.vrf }}"
-          neighbor:
-          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}" 
-            activate: true
-            remote_as: "{{ ip_asn_map[(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))] }}"
-            timers:
-              holdtime: "{{ ebgp_holdtime }}"
-              interval: "{{ ebgp_keepalive_interval }}"
-            soft_reconfiguration: true
-            send_community:
-              both: true
-            password: "{{bgp_neighbor_pwd}}"
-            route_maps:
-              - name: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
-                out: true
-              - name: "{{ item.description|upper }}_IN_{{ item.vrf }}"
-                in: true
-      state: merged
-    loop: "{{
-      l3_transit_interfaces[inventory_hostname] |
-      selectattr('bgp', 'equalto', true) |
-      list }}"
-    when: ip_asn_map[(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))] != item.bgp_local_as
-    tags:
-    - ebgp_neighbor
+    - bgp_neighbor
     notify: save_cfg
 
   handlers:
