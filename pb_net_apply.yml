@@ -222,14 +222,14 @@
 
 
 # ---------------------------------
-# Play - Create VRFs On All Devices
+# Play - Create VRF
 # ---------------------------------
-- name: Create VRFs
+- name: Create VRF
   hosts: aln
   tags: vrf
   gather_facts: no
   tasks:
-  - name: Create VRFs
+  - name: Create VRF
     cisco.ios.ios_vrf:
       name: "{{ item.name }}"
       description: "{{ item.description }}"
@@ -301,22 +301,6 @@
     loop: "{{
       l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', false) |
-      list }}"
-    notify: save_cfg
-
-  - name: Configure Tunnel Interface
-    cisco.ios.ios_interfaces:
-      config:
-      - name: "{{ item.name }}"
-        description: "{{ item.description }}"
-      state: merged
-    tags:
-    - tunnel
-    loop: "{{
-      l3_transit_loopback_interfaces[inventory_hostname] |
-      selectattr('physical', 'equalto', false) |
-      selectattr('tunnel_source', 'defined') |
-      selectattr('tunnel_destination', 'defined') |
       list }}"
     notify: save_cfg
 

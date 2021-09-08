@@ -58,7 +58,7 @@ l2_transit_interfaces:
     mode: access
     vlan: 10
     enabled: True
-    
+
   # --------
   # ashcore2
   # --------
@@ -85,7 +85,7 @@ l3_transit_loopback_interfaces:
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
+    ospf_active: false
     ospf_process: 0
     bgp: false
     bgp_local_as: "{{ bgp.local_as }}"
@@ -281,7 +281,7 @@ l3_transit_loopback_interfaces:
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
+    ospf_active: false
     ospf_process: 0
     bgp: false
     bgp_local_as: "{{ bgp.local_as }}"
@@ -470,14 +470,14 @@ l3_transit_loopback_interfaces:
   # --------
   mckcore1:
   - name: Loopback0
-    cidr: 10.224.2.1/32
+    cidr: 10.224.2.3/32
     host_ip_index: 0
     vrf: GLOBAL
     description: main_loopback
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
+    ospf_active: false
     ospf_process: 0
     bgp: false
     bgp_local_as: "{{ bgp.local_as }}"
@@ -666,14 +666,14 @@ l3_transit_loopback_interfaces:
   # --------
   mckcore2:
   - name: Loopback0
-    cidr: 10.224.2.2/32
+    cidr: 10.224.2.4/32
     host_ip_index: 0
     vrf: GLOBAL
     description: main_loopback
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
+    ospf_active: false
     ospf_process: 0
     bgp: false
     bgp_local_as: "{{ bgp.local_as }}"

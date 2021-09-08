@@ -73,7 +73,7 @@ l3_transit_loopback_interfaces:
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
+    ospf_active: false
     ospf_process: 0
     bgp: false
     bgp_local_as: "{{ bgp.local_as }}"
@@ -241,7 +241,7 @@ l3_transit_loopback_interfaces:
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
+    ospf_active: false
     ospf_process: 0
     bgp: false
     bgp_local_as: "{{ bgp.local_as }}"
@@ -447,7 +447,7 @@ l3_transit_loopback_interfaces:
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
+    ospf_active: false
     ospf_process: 0
     bgp: false
     bgp_local_as: "{{ bgp.local_as }}"
@@ -615,7 +615,7 @@ l3_transit_loopback_interfaces:
     enabled: true
     underlay: false
     physical: false
-    ospf_active: true
+    ospf_active: false
     ospf_process: 0
     bgp: false
     bgp_local_as: "{{ bgp.local_as }}"
