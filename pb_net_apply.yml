@@ -1194,6 +1194,7 @@
             next_hops:
             - forward_router_address: "{{ item.fw_next_hop }}"
               name: "{{ item.description }}"
+              tag: 1000
     loop: "{{ transit_inside_networks | selectattr('fw_next_hop', 'defined') }}"
     tags:
     - static_route
@@ -1218,6 +1219,7 @@
             next_hops:
             - forward_router_address: "{{ item.sw_next_hop }}"
               name: "{{ item.description }}"
+              tag: 1000
     loop: "{{ transit_inside_networks | selectattr('sw_next_hop', 'defined') }}"
     tags:
     - static_route
