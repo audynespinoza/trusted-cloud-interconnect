@@ -1221,7 +1221,7 @@
               name: "{{ item.description }}"
     loop: "{{ transit_inside_networks | selectattr('sw_next_hop', 'defined') }}"
     tags:
-    - static_route
+    - static_route_fw
     notify: save_cfg
 
 # -------------------------------------------------------------
