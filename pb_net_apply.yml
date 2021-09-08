@@ -1041,7 +1041,7 @@
     set_fact:
       ip_asn_map: "{{ ip_asn_map | default({}) | combine(item) }}"
     loop: "{{
-          groups['all_devices'] |
+          groups['all'] |
           map('extract', hostvars) |
           selectattr('device_map', 'defined') |
           map(attribute='device_map') |
