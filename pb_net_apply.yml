@@ -945,7 +945,7 @@
           action: "{{ item.action }}"
           match:
             tag:
-              tag_list: "{{ item.match_tags }}"
+              value: "{{ item.match_tags }}"
           set:
             community:
               number: "{{ 
@@ -1167,6 +1167,61 @@
     tags:
     - conn_bgp_redistribution
     notify: save_cfg    
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+
+# --------------------------------------------------------------------------------------
+# Play - Configure Static Routes on CORE Layer to Inside Transit VLANs and FAB Loopbacks
+# --------------------------------------------------------------------------------------
+- name: Configure Static Routes on CORE Layer to Inside Transit VLANs and FAB Loopbacks
+  hosts: aln_core
+  tags: inside_transit
+  gather_facts: no
+  tasks:
+  - name: Add Inside Transit Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.fw_next_hop }}"
+              name: "{{ item.name }}"
+    loop: "{{ transit_inside_networks | selectattr('fw_next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
+
+# -----------------------------------------------------------
+# Play - Configure Static Routes on FW Layer to FAB Loopbacks
+# -----------------------------------------------------------
+- name: Configure Static Routes on FW Layer to FAB Loopbacks
+  hosts: aln_fw
+  tags: inside_transit
+  gather_facts: no
+  tasks:
+  - name: Add Inside Transit Static Routes
+    cisco.ios.ios_static_routes:
+      config:
+      - vrf: "{{ item.vrf }}"
+        address_families:
+        - afi: ipv4
+          routes:
+          - dest: "{{ item.cidr }}"
+            next_hops:
+            - forward_router_address: "{{ item.sw_next_hop }}"
+              name: "{{ item.name }}"
+    loop: "{{ transit_inside_networks | selectattr('sw_next_hop', 'defined') }}"
+    tags:
+    - static_route
+    notify: save_cfg
 
 # -------------------------------------------------------------
 # Play - Configure Default and Summary Routes On Firewall Layer
