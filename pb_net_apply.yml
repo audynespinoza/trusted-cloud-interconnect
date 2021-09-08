@@ -1193,7 +1193,7 @@
           - dest: "{{ item.cidr }}"
             next_hops:
             - forward_router_address: "{{ item.fw_next_hop }}"
-              name: "{{ item.name }}"
+              name: "{{ item.description }}"
     loop: "{{ transit_inside_networks | selectattr('fw_next_hop', 'defined') }}"
     tags:
     - static_route
@@ -1217,7 +1217,7 @@
           - dest: "{{ item.cidr }}"
             next_hops:
             - forward_router_address: "{{ item.sw_next_hop }}"
-              name: "{{ item.name }}"
+              name: "{{ item.description }}"
     loop: "{{ transit_inside_networks | selectattr('sw_next_hop', 'defined') }}"
     tags:
     - static_route
