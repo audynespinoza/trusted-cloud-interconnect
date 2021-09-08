@@ -16,6 +16,9 @@ transit_vlans:
 # L2 Transit Interfaces
 # ---------------------
 l2_transit_interfaces:
+  # -------
+  # alnfab1
+  # -------
   alnfab1:
   - name: GigabitEthernet3/0
     description: alnfw1
@@ -28,6 +31,9 @@ l2_transit_interfaces:
     vlan: 20
     enabled: True
 
+  # -------
+  # alnfab2
+  # -------
   alnfab2:
   - name: GigabitEthernet3/0
     description: alnfw1
@@ -40,10 +46,43 @@ l2_transit_interfaces:
     vlan: 20
     enabled: True
 
+  # -------
+  # mckfab1
+  # -------
+  mckfab1:
+  - name: GigabitEthernet3/0
+    description: mckfw1
+    mode: access
+    vlan: 15
+    enabled: True
+  - name: GigabitEthernet3/1
+    description: mckfw1
+    mode: access
+    vlan: 20
+    enabled: True
+
+  # -------
+  # mckfab2
+  # -------
+  mckfab2:
+  - name: GigabitEthernet3/0
+    description: mckfw1
+    mode: access
+    vlan: 15
+    enabled: True
+  - name: GigabitEthernet3/1
+    description: mckfw1
+    mode: access
+    vlan: 20
+    enabled: True
+
 # ---------------------
 # L2 Transit Interfaces
 # ---------------------
 l2_tenant_interfaces:
+  # -------
+  # alnfab1
+  # -------
   alnfab1:
   - name: GigabitEthernet3/2
     description: l2-1
@@ -56,7 +95,40 @@ l2_tenant_interfaces:
     allowed_vlans: "{{ trunk_allowed_vlans }}"
     enabled: True
 
+  # -------
+  # alnfab2
+  # -------
   alnfab2:
+  - name: GigabitEthernet3/2
+    description: l2-1
+    mode: trunk
+    allowed_vlans: "{{ trunk_allowed_vlans }}"
+    enabled: True
+  - name: GigabitEthernet3/3
+    description: l2-2
+    mode: trunk
+    allowed_vlans: "{{ trunk_allowed_vlans }}"
+    enabled: True
+
+  # -------
+  # mckfab1
+  # -------
+  mckfab1:
+  - name: GigabitEthernet3/2
+    description: l2-1
+    mode: trunk
+    allowed_vlans: "{{ trunk_allowed_vlans }}"
+    enabled: True
+  - name: GigabitEthernet3/3
+    description: l2-2
+    mode: trunk
+    allowed_vlans: "{{ trunk_allowed_vlans }}"
+    enabled: True
+    
+  # -------
+  # mckfab2
+  # -------
+  mckfab2:
   - name: GigabitEthernet3/2
     description: l2-1
     mode: trunk
@@ -336,16 +408,297 @@ l3_transit_loopback_interfaces:
     bgp_next_hop_self: true
     bgp_route_reflect: true
 
+  # -------
+  # mckfab1
+  # -------
+  mckfab1:
+  - name: Loopback0
+    cidr: 10.224.2.5/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
+  - name: Loopback1
+    cidr: 10.224.112.5/32
+    host_ip_index: 0
+    vrf: CORE
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '1'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Loopback2
+    cidr: 10.224.122.5/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '2'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet2/1
+    cidr: 10.224.22.10/31
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: mckcore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: Vlan15
+    cidr: 10.224.12.32/29
+    host_ip_index: 2
+    vrf: CORE
+    description: mckfw1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Vlan20
+    cidr: 10.224.22.32/29
+    host_ip_index: 2
+    vrf: TRUSTED
+    description: mckfw1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false 
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet1/0
+    cidr: 10.224.12.18/31
+    host_ip_index: 0
+    vrf: CORE
+    description: mckfab2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet2/0
+    cidr: 10.224.22.18/31 
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: mckfab2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  # -------
+  # mckfab2
+  # -------
+  mckfab2:
+  - name: Loopback0
+    cidr: 10.224.2.6/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
+  - name: Loopback1
+    cidr: 10.224.112.6/32
+    host_ip_index: 0
+    vrf: CORE
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '1'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Loopback2
+    cidr: 10.224.122.6/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '2'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet2/2
+    cidr: 10.224.22.12/31
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: mckcore2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: Vlan15
+    cidr: 10.224.12.32/29
+    host_ip_index: 3
+    vrf: CORE
+    description: mckfw1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Vlan20
+    cidr: 10.224.22.32/29
+    host_ip_index: 3
+    vrf: TRUSTED
+    description: mckfw1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet1/0
+    cidr: 10.224.12.18/31
+    host_ip_index: 1
+    vrf: CORE
+    description: mckfab1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet2/0
+    cidr: 10.224.22.18/31
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: mckfab1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
 # ----
 # VRRP
 # ----
 vrrp:
+  # ---
+  # aln
+  # ---
   alnfab1:
     priority: 200
-    host_ip_index: 2 
+    host_ip_index: 2
+    preempt: true
   alnfab2:
     priority: 100
     host_ip_index: 3
+    preempt: true
+
+  # ---
+  # mck
+  # ---
+  mckfab1:
+    priority: 200
+    host_ip_index: 2
+    preempt: true
+  mckfab2:
+    priority: 100
+    host_ip_index: 3
+    preempt: true
 
 # -----------------------------
 # Route Redistribution Into BGP

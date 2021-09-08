@@ -18,6 +18,7 @@ l2_transit_interfaces:
     mode: access
     vlan: 10
     enabled: True
+
   # --------
   # alncore2
   # --------
@@ -37,6 +38,7 @@ l2_transit_interfaces:
     mode: access
     vlan: 10
     enabled: True
+
   # --------
   # mckcore2
   # --------
@@ -56,6 +58,7 @@ l2_transit_interfaces:
     mode: access
     vlan: 10
     enabled: True
+    
   # --------
   # ashcore2
   # --------

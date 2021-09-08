@@ -42,7 +42,7 @@ transit_inside_networks:
   - cidr: 10.224.11.32/29
     vrf: CORE
     description: inside-transit-trusted
-    fw_next_hop: 10.224.21.28
+    fw_next_hop: 10.224.11.28
 
   - cidr: 10.224.111.5/32
     vrf: CORE

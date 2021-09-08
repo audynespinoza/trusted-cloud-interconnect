@@ -13,6 +13,9 @@ transit_vlans:
 # L2 Transit Interfaces
 # ---------------------
 l2_transit_interfaces:
+  # ------
+  # alnfw1
+  # ------
   alnfw1:
   - name: GigabitEthernet0/1
     description: alncore1
@@ -41,6 +44,76 @@ l2_transit_interfaces:
     enabled: true
   - name: GigabitEthernet2/2
     description: alnfab2
+    mode: access
+    vlan: 20
+    enabled: true
+
+  # ------
+  # mckfw1
+  # ------
+  mckfw1:
+  - name: GigabitEthernet0/1
+    description: mckcore1
+    mode: access
+    vlan: 10
+    enabled: true
+  - name: GigabitEthernet0/2
+    description: mckcore2
+    mode: access
+    vlan: 10
+    enabled: true
+  - name: GigabitEthernet1/1
+    description: mckfab1
+    mode: access
+    vlan: 15
+    enabled: true
+  - name: GigabitEthernet1/2
+    description: mckfab2
+    mode: access
+    vlan: 15
+    enabled: true
+  - name: GigabitEthernet2/1
+    description: mckfab1
+    mode: access
+    vlan: 20
+    enabled: true
+  - name: GigabitEthernet2/2
+    description: mckfab2
+    mode: access
+    vlan: 20
+    enabled: true
+
+  # ------
+  # ashfw1
+  # ------
+  ashfw1:
+  - name: GigabitEthernet0/1
+    description: ashcore1
+    mode: access
+    vlan: 10
+    enabled: true
+  - name: GigabitEthernet0/2
+    description: ashcore2
+    mode: access
+    vlan: 10
+    enabled: true
+  - name: GigabitEthernet1/1
+    description: ashfab1
+    mode: access
+    vlan: 15
+    enabled: true
+  - name: GigabitEthernet1/2
+    description: ashfab2
+    mode: access
+    vlan: 15
+    enabled: true
+  - name: GigabitEthernet2/1
+    description: ashfab1
+    mode: access
+    vlan: 20
+    enabled: true
+  - name: GigabitEthernet2/2
+    description: ashfab2
     mode: access
     vlan: 20
     enabled: true
@@ -90,6 +163,58 @@ l3_transit_loopback_interfaces:
     host_ip_index: 4
     vrf: CORE
     description: alnfab
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+    
+  # ------
+  # mckfw1
+  # ------
+  mckfw1:
+  - name: Vlan10
+    cidr: 10.224.12.24/29
+    host_ip_index: 4
+    vrf: CORE
+    description: mckcore
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Vlan15
+    cidr: 10.224.12.32/29
+    host_ip_index: 4
+    vrf: CORE
+    description: mckfab
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Vlan20
+    cidr: 10.224.22.32/29
+    host_ip_index: 4
+    vrf: CORE
+    description: mckfab
     enabled: true
     underlay: false
     physical: false
