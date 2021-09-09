@@ -1026,8 +1026,6 @@
     loop: "{{
       groups['aln'] |
       map('extract', hostvars) |
-      map(attribute='l3_transit_loopback_interfaces') | flatten |
-      selectattr('cidr', 'defined') |
       list }}"
     tags:
     - build_ip_asn_map
