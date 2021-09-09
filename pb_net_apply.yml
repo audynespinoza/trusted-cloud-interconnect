@@ -3,7 +3,7 @@
 # Play - Basic Config such as Hostname, Domain, SNMP, logging, NTP info
 # ---------------------------------------------------------------------
 - name: Configure Device Basic Information
-  hosts: aln
+  hosts: aln:mck
   tags: basic_config
   gather_facts: no
   tasks:
@@ -70,7 +70,7 @@
 # Play - Configure L2 Transit Links
 # ---------------------------------
 - name: Configure L2 Transit Link
-  hosts: aln_fab:aln_core:aln_fw
+  hosts: aln_fab:aln_core:aln_fw:mck_fab:mck_core:mck_fw
   tags: l2_switchport
   gather_facts: no
   tasks:
@@ -134,7 +134,7 @@
 # Play - Configure L2 Tenant Network Links
 # ----------------------------------------
 - name: Configure L2 Tenant Network L2 Link
-  hosts: aln_fab
+  hosts: aln_fab:mck_fab
   tags: l2_switchport
   gather_facts: no
   tasks:
@@ -198,7 +198,7 @@
 # Play - Change Switchports to Routed Ports Before Configuring L3 Transit Interfaces
 # ----------------------------------------------------------------------------------
 - name: Change Switchport to Routed Port Before Configuring L3 Interface
-  hosts: aln_fab:aln_core
+  hosts: aln_fab:aln_core:mck_fab:mck_core
   tags: routed_switchport
   gather_facts: no
   tasks:
@@ -221,11 +221,11 @@
     when: not ansible_check_mode
 
 
-# ---------------------------------
+# -----------------
 # Play - Create VRF
-# ---------------------------------
+# -----------------
 - name: Create VRF
-  hosts: aln
+  hosts: aln:mck
   tags: vrf
   gather_facts: no
   tasks:
@@ -255,7 +255,7 @@
 # Play - Configure Physical, SVI, Tunnel & Loopback Interface
 # -----------------------------------------------------------
 - name: Configure Device Interface
-  hosts: aln
+  hosts: aln:mck
   tags: l3_interface
   gather_facts: no
   tasks:
@@ -366,7 +366,7 @@
 # Play - Configure VRRP on Switch Interface
 # -----------------------------------------
 - name: Configure VRRP on Switch Interface
-  hosts: aln_core:aln_fab
+  hosts: aln_core:aln_fab:mck_core:mck_fab
   tags: transit_vrrp
   gather_facts: no
   tasks:
@@ -395,7 +395,7 @@
 # Play - Global and Interface OSPF Configuration for BGP Next-Hop Reachability
 # ----------------------------------------------------------------------------
 - name: Configure OSPF
-  hosts: aln_wan:aln_core:aln_fab
+  hosts: aln_wan:aln_core:aln_fab:mck_wan:mck_core:mck_fab
   tags: ospf
   gather_facts: no
   tasks:
@@ -483,7 +483,7 @@
 # Play - Enable BGP Community New Format
 # --------------------------------------
 - name: Enable BGP Community New Format
-  hosts: aln
+  hosts: aln:mck
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -510,7 +510,7 @@
 # Play - Configure Site Based BGP Community-Lists on WAN Layer
 # ------------------------------------------------------------
 - name: Configure Site Based BGP Community-List
-  hosts: aln_wan:aln_fab:aln_core
+  hosts: aln_wan:aln_fab:aln_core:mck_wan:mck_fab:mck_core
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -540,7 +540,7 @@
 # Play - Configure eBGP Route Policy - WAN Layer
 # ----------------------------------------------
 - name: Configure eBGP Route Policy - WAN Layer
-  hosts: aln_wan
+  hosts: aln_wan:mck_wan
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -640,7 +640,7 @@
 # Play - Configure iBGP Route Policy - WAN Layer
 # ----------------------------------------------
 - name: Configure iBGP Route Policy - On WAN Layer
-  hosts: aln_wan
+  hosts: aln_wan:mck_wan
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -709,7 +709,7 @@
 # Play - Configure iBGP Route Policy - CORE layer
 # -----------------------------------------------
 - name: Configure iBGP Route Policy - CORE layer
-  hosts: aln_core
+  hosts: aln_core:mck_core
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -809,7 +809,7 @@
 # Play - Configure iBGP Route Policy - FABRIC Layer
 # -------------------------------------------------
 - name: Configure iBGP Route Policy - FABRIC Layer
-  hosts: aln_fab
+  hosts: aln_fab:mck_fab
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -878,7 +878,7 @@
 # Play - Build CONN_BGP Route-Map
 # -------------------------------
 - name: Configure CONN_BGP Route-Map
-  hosts: aln_fab:aln_core:aln_wan
+  hosts: aln_fab:aln_core:aln_wan:mck_fab:mck_core:mck_wan
   tags: bgp
   gather_facts: no
   tasks:
@@ -915,7 +915,7 @@
 # Play - Build STATIC_BGP Route-Map
 # ---------------------------------
 - name: Configure STATIC_BGP Route-Map
-  hosts: aln_core
+  hosts: aln_core:mck_core
   tags: bgp
   gather_facts: no
   tasks:
@@ -1125,7 +1125,7 @@
 # Play - Add Outside Transit SVI into CONN_BGP Route-Map
 # ------------------------------------------------------
 - name: Add Outside Transit SVI into CONN_BGP Route-Map
-  hosts: aln_core
+  hosts: aln_core:mck_core
   tags: outside_transit
   gather_facts: no
   tasks:
@@ -1162,7 +1162,7 @@
 # Play - Configure Static Routes on CORE Layer to Inside Transit VLANs and FAB Loopbacks
 # --------------------------------------------------------------------------------------
 - name: Configure Static Routes on CORE Layer to Inside Transit VLANs and FAB Loopbacks
-  hosts: aln_core
+  hosts: aln_core:mck_core
   tags: inside_transit
   gather_facts: no
   tasks:
@@ -1187,7 +1187,7 @@
 # Play - Configure Static Routes on FW Layer to FAB Loopbacks
 # -----------------------------------------------------------
 - name: Configure Static Routes on FW Layer to FAB Loopbacks
-  hosts: aln_fw
+  hosts: aln_fw:mck_fw
   tags: inside_transit
   gather_facts: no
   tasks:
@@ -1211,7 +1211,7 @@
 # Play - Configure Default and Summary Routes On Firewall Layer
 # -------------------------------------------------------------
 - name: Configure Default and Summary Routes On Firewall Layer
-  hosts: aln_fw
+  hosts: aln_fw:mck_fw
   tags: outbound_static
   gather_facts: no
   tasks:
@@ -1258,7 +1258,7 @@
 # Play - Default and Summary To Firewall Inside Interface
 # -------------------------------------------------------
 - name: Configure Default and Summary Routes To Firewall Inside Interface
-  hosts: aln_fab
+  hosts: aln_fab:mck_fab
   tags: outbound_static
   gather_facts: no
   tasks:
@@ -1305,7 +1305,7 @@
 # Play - Configure Tenant Static Routes On Core Switch Layer
 # ----------------------------------------------------------
 - name: Configure Tenant Static Routes On Core Switch Layer
-  hosts: aln_core
+  hosts: aln_core:mck_core
   tags: tenant_static
   gather_facts: no
   tasks:
@@ -1337,7 +1337,7 @@
 # Play - Configure Tenant Static Routes On Firewall Layer
 # -------------------------------------------------------
 - name: Configure Tenant Static Routes On Firewall Layer
-  hosts: aln_fw
+  hosts: aln_fw:mck_fw
   tags: tenant_static
   gather_facts: no
   tasks:
@@ -1368,7 +1368,7 @@
 # Play - Configure Tenant Network 
 # -------------------------------
 - name: Configure Tenant Network 
-  hosts: aln_fab
+  hosts: aln_fab:mck_fab
   tags: tenant_network_interface
   gather_facts: no
   tasks:
