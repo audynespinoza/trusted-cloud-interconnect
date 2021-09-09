@@ -519,7 +519,7 @@
       lines: 
       - 'ip community-list expanded {{ item }} permit {{ item }}'
     loop: "{{
-      groups['all_devices'] |
+      groups['all'] |
       map('extract', hostvars) |
       selectattr('vrfs', 'defined') |
       map(attribute='vrfs') | flatten |
@@ -627,7 +627,6 @@
         map(attribute='as_path_prepend') | join('') not in bgp_as_path_count_options
     tags:
     - ebgp_route_policy
-    - sweet
     notify: save_cfg
 
   handlers:
