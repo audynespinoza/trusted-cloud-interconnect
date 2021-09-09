@@ -1028,7 +1028,7 @@
       - router bgp {{ bgp.local_as }}
     when: true in l3_transit_loopback_interfaces[inventory_hostname] |
         selectattr('bgp', 'equalto', true ) |
-        map(attribute='bgp') | list | unique
+        map(attribute='bgp') | list
     tags:
     - bgp_cluster_id
     notify: save_cfg
