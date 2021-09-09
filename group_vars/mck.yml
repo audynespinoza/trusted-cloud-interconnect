@@ -33,6 +33,44 @@ tenant_networks:
     fw_next_hop: 10.224.12.28
     sw_next_hop: 10.224.22.33
 
+transit_inside_networks:
+  # --------
+  # VRF CORE
+  # --------
+  - cidr: 10.224.22.32/29
+    vrf: CORE
+    description: inside-transit-core
+    fw_next_hop: 10.224.12.28
+
+  - cidr: 10.224.12.32/29
+    vrf: CORE
+    description: inside-transit-trusted
+    fw_next_hop: 10.224.12.28
+
+  - cidr: 10.224.112.5/32
+    vrf: CORE
+    description: mckfabsw1-loopback-core
+    fw_next_hop: 10.224.12.28
+    sw_next_hop: 10.224.12.34
+
+  - cidr: 10.224.112.6/32
+    vrf: CORE
+    description: mckfabsw2-loopback-core
+    fw_next_hop: 10.224.12.28
+    sw_next_hop: 10.224.12.35
+
+  - cidr: 10.224.121.5/32
+    vrf: CORE
+    description: mckfabsw1-loopback-trusted
+    fw_next_hop: 10.224.12.28
+    sw_next_hop: 10.224.22.34
+
+  - cidr: 10.224.121.6/32
+    vrf: CORE
+    description: mckfabsw1-loopback-trusted
+    fw_next_hop: 10.224.12.28
+    sw_next_hop: 10.224.22.35
+
 # -----------------------------------------------------------------------------
 # Private Summary Static Routes for Northbound Traffic Fwding Through Firewalls
 # -----------------------------------------------------------------------------
