@@ -1027,7 +1027,7 @@
       groups['aln'] |
       map('extract', hostvars) |
       map(attribute='l3_transit_loopback_interfaces') | flatten |
-      map('extract', l3_transit_loopback_interfaces) | flatten |
+      map('extract', l3_transit_loopback_interfaces) | 
       selectattr('cidr', 'defined') |
       list }}"
     tags:
