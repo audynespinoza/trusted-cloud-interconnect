@@ -8,6 +8,7 @@ ansible_password: cisco
 ansible_become: yes
 ansible_become_password: cisco
 ansible_become_method: enable
+ansible_command_timeout: 60
 interpreter_python: root/git/trusted-cloud-interconnect/venv/bin/python
 
 # ------------------------
