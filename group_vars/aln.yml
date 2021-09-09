@@ -22,13 +22,16 @@ tenant_networks:
     fw_next_hop: 10.224.11.28
     sw_next_hop: 10.224.11.33
 
-  - interface: Vlan25
-    cidr: 10.224.11.40/29
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  - interface: Vlan30
+    cidr: 10.224.21.40/29
     vrf: CORE
     description: tenant-nontrusted
     enabled: true
     fw_next_hop: 10.224.11.28
-    sw_next_hop: 10.224.11.33
+    sw_next_hop: 10.224.21.33
 
 transit_inside_networks:
   # --------
