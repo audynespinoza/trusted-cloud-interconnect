@@ -98,8 +98,3 @@ ash_cld
 ash_fw
 ash_trust
 ash_nontrust
-
-[all_devices:children]
-aln
-mck
-ash
