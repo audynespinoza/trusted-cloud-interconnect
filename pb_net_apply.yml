@@ -1026,9 +1026,9 @@
             map(attribute='cidr') | ipaddr('address') | join('') }}"
       parents:
       - router bgp {{ bgp.local_as }}
-    when: true in l3_transit_loopback_interfaces[inventory_hostname] |
-        selectattr('bgp', 'equalto', true ) |
-        map(attribute='bgp') | list
+    when: l3_transit_loopback_interfaces[inventory_hostname] |
+            selectattr('description', 'equalto', 'main_loopback') |
+            selectattr('vrf', 'equalto', 'GLOBAL')
     tags:
     - bgp_cluster_id
     notify: save_cfg
