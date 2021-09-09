@@ -8,7 +8,7 @@ ansible_password: cisco
 ansible_become: yes
 ansible_become_password: cisco
 ansible_become_method: enable
-ansible_command_timeout: 60
+ansible_command_timeout: 240
 interpreter_python: root/git/trusted-cloud-interconnect/venv/bin/python
 
 # ------------------------
@@ -16,7 +16,6 @@ interpreter_python: root/git/trusted-cloud-interconnect/venv/bin/python
 # ------------------------
 underlay_mtu: 1460
 phys_intf_mtu: 1500
-
 
 # ------------------------
 # Global Config Parameters
