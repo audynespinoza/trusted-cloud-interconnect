@@ -1232,6 +1232,13 @@
     notify: save_cfg
     ignore_errors: yes
 
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+    
 # -----------------------------------------------------------
 # Play - Configure Static Routes on FW Layer to FAB Loopbacks
 # -----------------------------------------------------------
