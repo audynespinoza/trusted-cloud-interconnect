@@ -1,0 +1,60 @@
+# -------------------------------
+# Cisco IOS Connection Parameters
+# -------------------------------
+ansible_network_os: ios
+ansible_connection: network_cli
+ansible_user: lab
+ansible_password: cisco
+ansible_become: yes
+ansible_become_password: cisco
+ansible_become_method: enable
+interpreter_python: root/git/trusted-cloud-interconnect/venv/bin/python
+
+# ------------------------
+# Interface MTU Parameters
+# ------------------------
+underlay_mtu: 1460
+phys_intf_mtu: 1500
+
+
+# ------------------------
+# Global Config Parameters
+# ------------------------
+domain_name: devnet.io
+ntp_server: 172.20.1.18
+dns_servers:
+- 172.20.1.250
+- 172.20.1.251
+
+# ----------------------------
+# Global VRF Config Parameters
+# ----------------------------
+vrfs:
+- name: CORE
+  description: "Internal Routing via Firewalls"
+  rd: 1:100
+  route_both:
+  - 1:100
+  bgp_community_number: "{{ bgp.local_as }}:1000"
+- name: TRUSTED
+  description: "Internal Routing Bypassing Firewalls"
+  rd: 2:100
+  route_both:
+  - 2:100
+  bgp_community_number: "{{ bgp.local_as }}:2000"
+- name: EDGE
+  description: "Tunnel Underlay"
+  rd: 3:100
+  route_both:
+  - 3:100
+  bgp_community_number: "{{ bgp.local_as }}:3000"
+
+# ----------------------------
+# Global BGP Config Parameters
+# ----------------------------
+bgp_log_neighbor_changes: true
+bgp_neighbor_pwd: cisco
+bgp_keepalive_interval: 4
+bgp_holdtime: 12
+bgp_as_path_count_options: ['1','2','3','4','5','6','7','8','9','10']
+
