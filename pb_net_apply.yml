@@ -17,6 +17,7 @@
     - basic
     - dns
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure NTP
     cisco.ios.ios_ntp:
@@ -30,6 +31,7 @@
     - basic
     - ntp
     notify: save_cfg
+    ignore_errors: yes
   
   - name: Get Running Config
     cisco.ios.ios_command:
@@ -58,6 +60,7 @@
     - basic
     - ntp
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -86,6 +89,7 @@
     - vlan_db
     loop: "{{ transit_vlans }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure L2 Transit Interface Description and MTU
     cisco.ios.ios_interfaces:
@@ -99,6 +103,7 @@
     loop: "{{ 
       l2_transit_interfaces[inventory_hostname] }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure L2 Transit Interface With Mode Access
     cisco.ios.ios_l2_interfaces:
@@ -112,6 +117,7 @@
     - access_port
     loop: "{{ l2_transit_interfaces[inventory_hostname] }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Interface Admin State
     cisco.ios.ios_interfaces:
@@ -122,6 +128,7 @@
     tags:
     - admin_state
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -149,6 +156,7 @@
     - l2_switchport
     loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Trunk Port Encapsulation
     cisco.ios.ios_l2_interfaces:
@@ -164,6 +172,7 @@
     loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
     when: item.mode == 'trunk'
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Switchport to Mode Trunk
     cisco.ios.ios_config:
@@ -176,6 +185,7 @@
     loop: "{{ l2_tenant_interfaces[inventory_hostname] }}"
     when: item.mode == 'trunk'
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Interface Admin State
     cisco.ios.ios_interfaces:
@@ -186,6 +196,7 @@
     tags:
     - admin_state
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -212,6 +223,7 @@
     tags:
     - switchport
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -243,6 +255,7 @@
     tags:
     - vrf
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -273,6 +286,7 @@
       selectattr('underlay', 'equalto', true) |
       list }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Physical Interface
     cisco.ios.ios_interfaces:
@@ -289,6 +303,7 @@
       selectattr('physical', 'equalto', true) |
       list }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Loopback, SVI, and Tunnel Interface
     cisco.ios.ios_interfaces:
@@ -303,6 +318,7 @@
       selectattr('physical', 'equalto', false) |
       list }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Tunnel Source & Destination
     cisco.ios.ios_config:
@@ -321,6 +337,7 @@
       selectattr('tunnel_destination', 'defined') |
       list }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Associate Interface to VRF
     cisco.ios.ios_config:
@@ -332,6 +349,7 @@
     tags:
     - vrf_interface
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Assign IPv4 Address to Interface
     cisco.ios.ios_l3_interfaces:
@@ -344,6 +362,7 @@
     - ip_address
     - interface
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Transit Interface Admin State
     cisco.ios.ios_interfaces:
@@ -354,6 +373,7 @@
     tags:
     - admin_state
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -383,6 +403,7 @@
     - vrrp
     - interface
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -425,6 +446,7 @@
     tags:
     - ospf_global
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Interface OSPF Configuration on Transit Network
     cisco.ios.ios_ospf_interfaces:
@@ -451,6 +473,7 @@
     tags:
     - ospf_phys_interface
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Interface OSPF Configuration on Loopback
     cisco.ios.ios_ospf_interfaces:
@@ -471,6 +494,7 @@
     tags:
     - ospf_loopback_interface
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -498,6 +522,7 @@
     tags:
     - bgp_comm_new_format
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -528,6 +553,7 @@
     tags:
     - bgp_community_list
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -582,6 +608,7 @@
     tags:
     - ebgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure eBGP Route Policy - WAN To WAN Layer - Set AS-Path Prepending
     cisco.ios.ios_config:
@@ -607,6 +634,7 @@
     tags:
     - ebgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure eBGP Route Policy - WAN To WAN Layer - Remove AS-Path Prepending
     cisco.ios.ios_config:
@@ -628,6 +656,7 @@
     tags:
     - ebgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -666,6 +695,7 @@
     tags:
     - ibgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure iBGP Route Policy - WAN To/From CORE Layer
     cisco.ios.ios_route_maps:
@@ -697,6 +727,7 @@
     tags:
     - ibgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -735,6 +766,7 @@
     tags:
     - ibgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure iBGP Route Policy - CORE To/From WAN Layer
     cisco.ios.ios_route_maps:
@@ -766,6 +798,7 @@
     tags:
     - ibgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure iBGP Route Policy - CORE To/From FABRIC Layer
     cisco.ios.ios_route_maps:
@@ -797,6 +830,7 @@
     tags:
     - ibgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -835,6 +869,7 @@
     tags:
     - ibgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure iBGP Route Policy - FABRIC To/From CORE Layer
     cisco.ios.ios_route_maps:
@@ -866,6 +901,7 @@
     tags:
     - ibgp_route_policy
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -903,6 +939,7 @@
     tags:
     - bgp_redist_route_map
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -941,6 +978,7 @@
     tags:
     - bgp_redist_route_map
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -976,6 +1014,7 @@
     tags:
     - bgp_router_id
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Cluster-ID on GLOBAL RT for BGP Route-Reflection
     cisco.ios.ios_config:
@@ -990,6 +1029,7 @@
     tags:
     - bgp_cluster_id
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Static Into BGP Redistribution
     cisco.ios.ios_config:
@@ -1003,6 +1043,7 @@
     tags:
     - static_bgp_redistribution
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Connected Into BGP Redistribution
     cisco.ios.ios_config:
@@ -1016,6 +1057,7 @@
     tags:
     - conn_bgp_redistribution
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Build Interface-IP to BGP ASN mappings For Each Device
     set_fact:
@@ -1091,6 +1133,7 @@
     tags:
     - bgp_neighbor
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure BGP Route-Reflection
     cisco.ios.ios_bgp_address_family:
@@ -1112,6 +1155,7 @@
     tags:
     - bgp_route_reflection
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -1149,7 +1193,8 @@
       }}"
     tags:
     - conn_bgp_redistribution
-    notify: save_cfg    
+    notify: save_cfg
+    ignore_errors: yes    
 
   handlers:
   - name: save_cfg
@@ -1182,6 +1227,7 @@
     tags:
     - static_route
     notify: save_cfg
+    ignore_errors: yes
 
 # -----------------------------------------------------------
 # Play - Configure Static Routes on FW Layer to FAB Loopbacks
@@ -1206,6 +1252,7 @@
     tags:
     - static_route_fw
     notify: save_cfg
+    ignore_errors: yes
 
 # -------------------------------------------------------------
 # Play - Configure Default and Summary Routes On Firewall Layer
@@ -1230,6 +1277,7 @@
     tags:
     - static_route
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Add Default Static Route
     cisco.ios.ios_static_routes:
@@ -1246,6 +1294,7 @@
     tags:
     - static_route
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -1277,6 +1326,7 @@
     tags:
     - static_route
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Add Default Static Route
     cisco.ios.ios_static_routes:
@@ -1293,6 +1343,7 @@
     tags:
     - static_route
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -1325,6 +1376,7 @@
     tags:
     - static_route
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -1356,6 +1408,7 @@
     tags:
     - static_route
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
@@ -1384,6 +1437,7 @@
     - vlan_db
     loop: "{{ tenant_networks }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure Tenant Network Interface
     cisco.ios.ios_interfaces:
@@ -1396,6 +1450,7 @@
     - physical
     loop: "{{ tenant_networks }}"
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Associate Interface to VRF
     cisco.ios.ios_config:
@@ -1407,6 +1462,7 @@
     tags:
     - vrf_interface
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Assign IPv4 Address to Interface Interface
     cisco.ios.ios_l3_interfaces:
@@ -1419,6 +1475,7 @@
     - ip_address
     - interface
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Configure VRRP on Tenant Interface
     cisco.ios.ios_config:
@@ -1432,6 +1489,7 @@
     - vrrp
     - interface
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Add Interface to CONN_BGP Route-Map
     cisco.ios.ios_route_maps:
@@ -1454,6 +1512,7 @@
     tags:
     - bgp_redist_route_map
     notify: save_cfg
+    ignore_errors: yes
 
   - name: Interface Admin State
     cisco.ios.ios_interfaces:
@@ -1464,6 +1523,7 @@
     tags:
     - admin_state
     notify: save_cfg
+    ignore_errors: yes
 
   handlers:
   - name: save_cfg
