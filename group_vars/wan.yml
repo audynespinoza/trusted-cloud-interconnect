@@ -10,17 +10,17 @@ ebgp_prepend_route_policy:
   vrf: CORE
   devices:
   - name: mckwan1
-    as_path_prepend: 5
+    as_path_prepend: 0
   - name: ashwan1
-    as_path_prepend: 5
+    as_path_prepend: 0
 
 - role: secondary
   vrf: CORE
   devices:
   - name: alnwan1
-    as_path_prepend: 5
+    as_path_prepend: 1
   - name: ashwan2
-    as_path_prepend: 0
+    as_path_prepend: 1
 
 - role: tertiary
   vrf: CORE
@@ -53,9 +53,9 @@ ebgp_prepend_route_policy:
   vrf: TRUSTED
   devices:
   - name: alnwan1
-    as_path_prepend: 5
+    as_path_prepend: 1
   - name: ashwan2
-    as_path_prepend: 0
+    as_path_prepend: 1
 
 # --------------------------------
 # L3 Transit & Loopback Interfaces
@@ -348,94 +348,6 @@ l3_transit_loopback_interfaces:
     tunnel_destination: 10.224.253.3
 
   # -------
-  # ashwan2
-  # -------
-  ashwan2:
-  - name: Loopback1
-    cidr: 10.224.113.2/32
-    host_ip_index: 0
-    vrf: CORE
-    description: main_loopback
-    enabled: true
-    underlay: false
-    physical: false
-    ospf_active: true
-    ospf_process: '1'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: no
-    
-  - name: Loopback2
-    cidr: 10.224.123.2/32
-    host_ip_index: 0
-    vrf: TRUSTED
-    description: main_loopback
-    enabled: true
-    underlay: false
-    physical: false
-    ospf_active: true
-    ospf_process: '2'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: no
-
-  - name: GigabitEthernet0/5
-    cidr: 10.224.253.0/31
-    host_ip_index: 1
-    vrf: EDGE
-    description: alnwan1
-    enabled: true
-    underlay: true
-    physical: true
-    ospf_active: false
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: no
-    
-  - name: Tunnel1
-    cidr: 10.224.254.0/31
-    host_ip_index: 1
-    vrf: CORE
-    description: alnwan1
-    enabled: true
-    underlay: false
-    physical: false
-    ospf_active: false
-    ospf_process: '0'
-    bgp: true
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: true
-    bgp_next_hop_self: false
-    bgp_route_reflect: no
-    tunnel_source: GigabitEthernet0/5
-    tunnel_destination: 10.224.253.0
-    
-  - name: Tunnel2
-    cidr: 10.224.255.0/31 
-    host_ip_index: 1
-    vrf: TRUSTED
-    description: alnwan4
-    enabled: true
-    underlay: false
-    physical: false
-    ospf_active: false
-    ospf_process: '0'
-    bgp: true
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: true
-    bgp_next_hop_self: false
-    bgp_route_reflect: no
-    tunnel_source: GigabitEthernet0/5
-    tunnel_destination: 10.224.253.0
-
-  # -------
   # mckwan1
   # -------
   mckwan1:
@@ -722,9 +634,497 @@ l3_transit_loopback_interfaces:
     tunnel_destination: 10.224.253.7
 
   # -------
+  # ashwan1
+  # -------
+  ashwan1:
+  - name: Loopback0
+    cidr: 10.224.3.1/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
+  - name: Loopback1
+    cidr: 10.224.113.1/32
+    host_ip_index: 0
+    vrf: CORE
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '1'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: Loopback2
+    cidr: 10.224.123.1/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '2'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: GigabitEthernet0/1
+    cidr: 10.224.13.0/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+    
+  - name: GigabitEthernet0/3
+    cidr: 10.224.23.0/31
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: ashcore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+    
+  - name: GigabitEthernet0/2
+    cidr: 10.224.13.2/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcore2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+    
+  - name: GigabitEthernet0/4
+    cidr: 10.224.23.2/31
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: ashcore2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+    
+  - name: GigabitEthernet0/5
+    cidr: 10.224.253.0/31
+    host_ip_index: 1
+    vrf: EDGE
+    description: ashwan2
+    enabled: true
+    underlay: true
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: Tunnel1
+    cidr: 10.224.254.0/31
+    host_ip_index: 1
+    vrf: CORE
+    description: mckwan1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    tunnel_source: GigabitEthernet0/5
+    tunnel_destination: 10.224.253.0
+    
+  - name: Tunnel2
+    cidr: 10.224.255.0/31 
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: mckwan1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    tunnel_source: GigabitEthernet0/5
+    tunnel_destination: 10.224.253.0
+
+  # -------
+  # ashwan2
+  # -------
+  ashwan2:
+  - name: Loopback0
+    cidr: 10.224.3.2/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
+  - name: Loopback1
+    cidr: 10.224.113.2/32
+    host_ip_index: 0
+    vrf: CORE
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '1'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: Loopback2
+    cidr: 10.224.123.2/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '2'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: GigabitEthernet0/1
+    cidr: 10.224.13.4/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+
+  - name: GigabitEthernet0/3
+    cidr: 10.224.23.4/31
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: ashcore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+
+  - name: GigabitEthernet0/2
+    cidr: 10.224.13.6/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcore2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+
+  - name: GigabitEthernet0/4
+    cidr: 10.224.23.6/31
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: ashcore2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+
+  - name: GigabitEthernet0/3
+    cidr: 10.224.253.2/31
+    host_ip_index: 1
+    vrf: EDGE
+    description: alnwan1
+    enabled: true
+    underlay: true
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: Tunnel1
+    cidr: 10.224.254.2/31
+    host_ip_index: 1
+    vrf: CORE
+    description: alnwan1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    tunnel_source: GigabitEthernet0/3
+    tunnel_destination: 10.224.253.2
+
+  - name: Tunnel2
+    cidr: 10.224.255.2/31 
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: alnwan1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    tunnel_source: GigabitEthernet0/3
+    tunnel_destination: 10.224.253.2
+
+  # -------
+  # ashwan3
+  # -------
+  ashwan3:
+  - name: Loopback0
+    cidr: 10.224.3.3/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
+  - name: Loopback1
+    cidr: 10.224.113.3/32
+    host_ip_index: 0
+    vrf: CORE
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '1'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: Loopback2
+    cidr: 10.224.123.3/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '2'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: GigabitEthernet0/1
+    cidr: 10.224.13.20/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+
+  - name: GigabitEthernet0/2
+    cidr: 10.224.13.22/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcore2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+
+  - name: GigabitEthernet0/3
+    cidr: 10.224.253.4/31
+    host_ip_index: 1
+    vrf: EDGE
+    description: mckwan2
+    enabled: true
+    underlay: true
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    
+  - name: Tunnel1
+    cidr: 10.224.254.4/31
+    host_ip_index: 1
+    vrf: CORE
+    description: mckwan2
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    tunnel_source: GigabitEthernet0/3
+    tunnel_destination: 10.224.253.4
+
+  - name: Tunnel2
+    cidr: 10.224.255.4/31 
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: mckwan2
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+    tunnel_source: GigabitEthernet0/3
+    tunnel_destination: 10.224.253.4
+    
+  # -------
   # ashwan4
   # -------
   ashwan4:
+  - name: Loopback0
+    cidr: 10.224.3.4/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
   - name: Loopback1
     cidr: 10.224.113.4/32
     host_ip_index: 0
@@ -756,9 +1156,41 @@ l3_transit_loopback_interfaces:
     bgp_enabled: false
     bgp_next_hop_self: false
     bgp_route_reflect: no
-
+    
+  - name: GigabitEthernet0/1
+    cidr: 10.224.13.24/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+    
+  - name: GigabitEthernet0/2
+    cidr: 10.224.13.2/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcore2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: no
+    
   - name: GigabitEthernet0/3
-    cidr: 10.224.253.2/31
+    cidr: 10.224.253.6/31
     host_ip_index: 1
     vrf: EDGE
     description: alnwan2
@@ -774,7 +1206,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: no
     
   - name: Tunnel1
-    cidr: 10.224.254.2/31
+    cidr: 10.224.254.6/31
     host_ip_index: 1
     vrf: CORE
     description: alnwan2
@@ -788,8 +1220,27 @@ l3_transit_loopback_interfaces:
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: no
+    tunnel_source: GigabitEthernet0/5
+    tunnel_destination: 10.224.253.6
+    
+  - name: Tunnel2
+    cidr: 10.224.255.6/31 
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: alnwan2
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
     tunnel_source: GigabitEthernet0/3
-    tunnel_destination: 10.224.253.3
+    tunnel_destination: 10.224.253.6
+
 
 # -----------------------------
 # Route Redistribution Into BGP

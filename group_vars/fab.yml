@@ -77,7 +77,7 @@ l2_transit_interfaces:
     enabled: True
 
 # ---------------------
-# L2 Transit Interfaces
+# L2 Tenant Interfaces
 # ---------------------
 l2_tenant_interfaces:
   # -------
