@@ -13,57 +13,22 @@ transit_vlans:
 # L2 Transit Interfaces
 # ---------------------
 l2_transit_interfaces:
-  # ------
-  # alnfw1
-  # ------
-  alnfw1:
+  # ---------
+  # alnmckfw1
+  # ---------
+  alnmckfw1:
   - name: GigabitEthernet0/1
     description: alncore1
     mode: access
     vlan: 10
     enabled: true
   - name: GigabitEthernet0/2
-    description: alncore2
-    mode: access
-    vlan: 10
-    enabled: true
-  - name: GigabitEthernet1/1
-    description: alnfab1
-    mode: access
-    vlan: 15
-    enabled: true
-  - name: GigabitEthernet1/2
-    description: alnfab2
-    mode: access
-    vlan: 15
-    enabled: true
-  - name: GigabitEthernet2/1
-    description: alnfab1
-    mode: access
-    vlan: 20
-    enabled: true
-  - name: GigabitEthernet2/2
-    description: alnfab2
-    mode: access
-    vlan: 20
-    enabled: true
-
-  # ------
-  # mckfw1
-  # ------
-  mckfw1:
-  - name: GigabitEthernet0/1
     description: mckcore1
     mode: access
     vlan: 10
     enabled: true
-  - name: GigabitEthernet0/2
-    description: mckcore2
-    mode: access
-    vlan: 10
-    enabled: true
   - name: GigabitEthernet1/1
-    description: mckfab1
+    description: alnfab1
     mode: access
     vlan: 15
     enabled: true
@@ -73,7 +38,7 @@ l2_transit_interfaces:
     vlan: 15
     enabled: true
   - name: GigabitEthernet2/1
-    description: mckfab1
+    description: alnfab1
     mode: access
     vlan: 20
     enabled: true
