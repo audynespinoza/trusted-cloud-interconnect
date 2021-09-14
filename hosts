@@ -85,7 +85,6 @@ aln_fab
 mck_wan
 mck_core
 mck_fab
-mck_fw
 
 [ash:children]
 ash_wan
