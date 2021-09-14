@@ -103,6 +103,7 @@
     - l2_switchport
     loop: "{{ 
       l2_transit_interfaces[inventory_hostname] }}"
+    when: l2_transit_interfaces[inventory_hostname] is defined
     notify: save_cfg
     ignore_errors: yes
 
