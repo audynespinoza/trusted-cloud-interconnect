@@ -74,7 +74,6 @@
 # ---------------------------------
 - name: Configure L2 Transit Link
   hosts: fab:core:fw
-  # hosts: aln_fab:aln_core:aln_fw:mck_fab:mck_core:mck_fw
   tags: l2_switchport
   gather_facts: no
   tasks:
@@ -212,7 +211,6 @@
 # ----------------------------------------------------------------------------------
 - name: Change Switchport to Routed Port Before Configuring L3 Interface
   hosts: fab:core
-  # hosts: aln_fab:aln_core:mck_fab:mck_core
   tags: routed_switchport
   gather_facts: no
   tasks:
@@ -390,7 +388,6 @@
 # -----------------------------------------
 - name: Configure VRRP on Switch Interface
   hosts: core:fab
-  # hosts: aln_core:aln_fab:mck_core:mck_fab
   tags: transit_vrrp
   gather_facts: no
   tasks:
@@ -421,7 +418,6 @@
 # ----------------------------------------------------------------------------
 - name: Configure OSPF
   hosts: wan:core:fab:cld
-  # hosts: aln_wan:aln_core:aln_fab:mck_wan:mck_core:mck_fab
   tags: ospf
   gather_facts: no
   tasks:
@@ -541,7 +537,6 @@
 # ------------------------------------------------------------
 - name: Configure Site Based BGP Community-List
   hosts: wan:fab:core
-  # hosts: aln_wan:aln_fab:aln_core:mck_wan:mck_fab:mck_core
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -573,7 +568,6 @@
 # ----------------------------------------------
 - name: Configure eBGP Route Policy - WAN Layer
   hosts: wan
-  # hosts: aln_wan:mck_wan
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -677,7 +671,6 @@
 # ----------------------------------------------
 - name: Configure iBGP Route Policy - On WAN Layer
   hosts: wan
-  # hosts: aln_wan:mck_wan
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -749,7 +742,6 @@
 # -----------------------------------------------
 - name: Configure iBGP Route Policy - CORE layer
   hosts: core
-  # hosts: aln_core:mck_core
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -853,7 +845,6 @@
 # -------------------------------------------------
 - name: Configure iBGP Route Policy - FABRIC Layer
   hosts: fab
-  # hosts: aln_fab:mck_fab
   tags: bgp_route_policy
   gather_facts: no
   tasks:
@@ -925,7 +916,6 @@
 # -------------------------------
 - name: Configure CONN_BGP Route-Map
   hosts: wan:core:fab
-  # hosts: aln_fab:aln_core:aln_wan:mck_fab:mck_core:mck_wan
   tags: bgp
   gather_facts: no
   tasks:
@@ -964,7 +954,6 @@
 # ---------------------------------
 - name: Configure STATIC_BGP Route-Map
   hosts: core
-  # hosts: aln_core:mck_core
   tags: bgp
   gather_facts: no
   tasks:
@@ -1185,7 +1174,6 @@
 # ------------------------------------------------------
 - name: Add Outside Transit SVI into CONN_BGP Route-Map
   hosts: core
-  # hosts: aln_core:mck_core
   tags: outside_transit
   gather_facts: no
   tasks:
@@ -1224,7 +1212,6 @@
 # --------------------------------------------------------------------------------------
 - name: Configure Static Routes on CORE Layer to Inside Transit VLANs and FAB Loopbacks
   hosts: core
-  # hosts: aln_core:mck_core
   tags: inside_transit
   gather_facts: no
   tasks:
@@ -1258,7 +1245,6 @@
 # -----------------------------------------------------------
 - name: Configure Static Routes on FW Layer to FAB Loopbacks
   hosts: fw
-  # hosts: aln_fw:mck_fw
   tags: inside_transit
   gather_facts: no
   tasks:
@@ -1291,7 +1277,6 @@
 # -------------------------------------------------------------
 - name: Configure Default and Summary Routes On Firewall Layer
   hosts: fw
-  # hosts: aln_fw:mck_fw
   tags: outbound_static
   gather_facts: no
   tasks:
@@ -1341,7 +1326,6 @@
 # -------------------------------------------------------
 - name: Configure Default and Summary Routes To Firewall Inside Interface
   hosts: fab
-  # hosts: aln_fab:mck_fab
   tags: outbound_static
   gather_facts: no
   tasks:
@@ -1391,7 +1375,6 @@
 # ----------------------------------------------------------
 - name: Configure Tenant Static Routes On Core Switch Layer
   hosts: core
-  # hosts: aln_core:mck_core
   tags: tenant_static
   gather_facts: no
   tasks:
@@ -1425,7 +1408,6 @@
 # -------------------------------------------------------
 - name: Configure Tenant Static Routes On Firewall Layer
   hosts: fw
-  # hosts: aln_fw:mck_fw
   tags: tenant_static
   gather_facts: no
   tasks:
@@ -1458,7 +1440,6 @@
 # -------------------------------
 - name: Configure Tenant Network 
   hosts: fab
-  # hosts: aln_fab:mck_fab
   tags: tenant_network_interface
   gather_facts: no
   tasks:
