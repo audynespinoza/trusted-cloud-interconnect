@@ -45,6 +45,7 @@ no sh
 ip route vrf MGT 0.0.0.0 0.0.0.0 {default_gw}
 
 cry key gen rsa
+yes
 2048
 
 do wr
