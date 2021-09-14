@@ -117,6 +117,7 @@
     tags:
     - access_port
     loop: "{{ l2_transit_interfaces[inventory_hostname] }}"
+    when: l2_transit_interfaces[inventory_hostname] is defined
     notify: save_cfg
     ignore_errors: yes
 
@@ -126,6 +127,7 @@
       - name: "{{ item.name }}"
         enabled: "{{ item.enabled }}"
     loop: "{{ l2_transit_interfaces[inventory_hostname] }}"
+    when: l2_transit_interfaces[inventory_hostname] is defined
     tags:
     - admin_state
     notify: save_cfg

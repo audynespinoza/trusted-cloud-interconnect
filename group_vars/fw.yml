@@ -87,10 +87,10 @@ l2_transit_interfaces:
 # L3 Transit & Loopback Interfaces
 # --------------------------------
 l3_transit_loopback_interfaces:
-  # ------
-  # alnfw1
-  # ------
-  alnfw1:
+  # ---------
+  # alnmckfw1
+  # ---------
+  alnmckfw1:
   - name: Vlan10
     cidr: 10.224.11.24/29
     host_ip_index: 4
@@ -128,58 +128,6 @@ l3_transit_loopback_interfaces:
     host_ip_index: 4
     vrf: CORE
     description: alnfab
-    enabled: true
-    underlay: false
-    physical: false
-    ospf_active: false
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-    
-  # ------
-  # mckfw1
-  # ------
-  mckfw1:
-  - name: Vlan10
-    cidr: 10.224.12.24/29
-    host_ip_index: 4
-    vrf: CORE
-    description: mckcore
-    enabled: true
-    underlay: false
-    physical: false
-    ospf_active: false
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-
-  - name: Vlan15
-    cidr: 10.224.12.32/29
-    host_ip_index: 4
-    vrf: CORE
-    description: mckfab
-    enabled: true
-    underlay: false
-    physical: false
-    ospf_active: false
-    ospf_process: '0'
-    bgp: false
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: false
-    bgp_next_hop_self: false
-    bgp_route_reflect: false
-
-  - name: Vlan20
-    cidr: 10.224.22.32/29
-    host_ip_index: 4
-    vrf: CORE
-    description: mckfab
     enabled: true
     underlay: false
     physical: false
