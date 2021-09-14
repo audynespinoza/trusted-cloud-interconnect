@@ -3,7 +3,7 @@
 # Play - Basic Config such as Hostname, Domain, SNMP, logging, NTP info
 # ---------------------------------------------------------------------
 - name: Configure Device Basic Information
-  hosts: aln:mck:ash
+  hosts: aln:mck:ash:aln_mck
   tags: basic_config
   gather_facts: no
   tasks:
@@ -239,7 +239,7 @@
 # Play - Create VRF
 # -----------------
 - name: Create VRF
-  hosts: aln:mck:ash
+  hosts: aln:mck:ash:aln_mck
   tags: vrf
   gather_facts: no
   tasks:
@@ -270,7 +270,7 @@
 # Play - Configure Physical, SVI, Tunnel & Loopback Interface
 # -----------------------------------------------------------
 - name: Configure Device Interface
-  hosts: aln:mck:ash
+  hosts: aln:mck:ash:aln_mck
   tags: l3_interface
   gather_facts: no
   tasks:

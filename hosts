@@ -26,10 +26,8 @@ ashcore2 ansible_host=192.168.122.24
 
 [aln_fab]
 alnfab1 ansible_host=192.168.122.25
-alnfab2 ansible_host=192.168.122.26
 
 [mck_fab]
-mckfab1 ansible_host=192.168.122.27
 mckfab2 ansible_host=192.168.122.28
 
 [ash_cld]
