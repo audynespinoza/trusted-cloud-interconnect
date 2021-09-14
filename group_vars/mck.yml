@@ -15,62 +15,65 @@ tenant_networks:
   # VRF CORE
   # --------
   - interface: Vlan25
-    cidr: 10.224.12.40/29
+    cidr: 10.224.11.40/29
     vrf: CORE
     description: tenant-nontrusted
     enabled: true
-    fw_next_hop: 10.224.12.28
-    sw_next_hop: 10.224.12.33
+    fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.11.33
 
   # -----------
   # VRF TRUSTED
   # -----------
   - interface: Vlan30
-    cidr: 10.224.22.40/29
+    cidr: 10.224.21.40/29
     vrf: TRUSTED
     description: tenant-trusted
     enabled: true
-    fw_next_hop: 10.224.12.28
-    sw_next_hop: 10.224.22.33
+    fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.21.33
 
+# -----------------------
+# Transit Inside Networks
+# -----------------------
 transit_inside_networks:
   # --------
   # VRF CORE
   # --------
-  - cidr: 10.224.22.32/29
+  - cidr: 10.224.21.32/29
     vrf: CORE
     description: inside-transit-core
-    fw_next_hop: 10.224.12.28
+    fw_next_hop: 10.224.11.28
 
-  - cidr: 10.224.12.32/29
+  - cidr: 10.224.11.32/29
     vrf: CORE
     description: inside-transit-trusted
-    fw_next_hop: 10.224.12.28
+    fw_next_hop: 10.224.11.28
 
-  - cidr: 10.224.112.5/32
+  - cidr: 10.224.111.5/32
     vrf: CORE
-    description: mckfabsw1-loopback-core
-    fw_next_hop: 10.224.12.28
-    sw_next_hop: 10.224.12.34
+    description: alnfab1-loopback-core
+    fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.11.34
 
-  - cidr: 10.224.112.6/32
+  - cidr: 10.224.111.6/32
     vrf: CORE
-    description: mckfabsw2-loopback-core
-    fw_next_hop: 10.224.12.28
-    sw_next_hop: 10.224.12.35
+    description: mckfab2-loopback-core
+    fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.11.35
 
   - cidr: 10.224.121.5/32
     vrf: CORE
-    description: mckfabsw1-loopback-trusted
-    fw_next_hop: 10.224.12.28
-    sw_next_hop: 10.224.22.34
+    description: alnfab1-loopback-trusted
+    fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.21.34
 
   - cidr: 10.224.121.6/32
     vrf: CORE
-    description: mckfabsw1-loopback-trusted
-    fw_next_hop: 10.224.12.28
-    sw_next_hop: 10.224.22.35
-
+    description: mckfab2-loopback-trusted
+    fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.21.35
+    
 # -----------------------------------------------------------------------------
 # Private Summary Static Routes for Northbound Traffic Fwding Through Firewalls
 # -----------------------------------------------------------------------------

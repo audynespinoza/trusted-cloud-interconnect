@@ -36,11 +36,8 @@ mckfab2 ansible_host=192.168.122.28
 ashcld1 ansible_host=192.168.122.29
 ashcld2 ansible_host=192.168.122.30
 
-[aln_fw]
-alnfw1 ansible_host=192.168.122.31
-
-[mck_fw]
-mckfw1 ansible_host=192.168.122.32
+[aln_mck_fw]
+alnmckfw1 ansible_host=192.168.122.31
 
 [ash_fw]
 ashfw1 ansible_host=192.168.122.33
@@ -69,8 +66,7 @@ mck_fab
 ash_cld
 
 [fw:children]
-aln_fw
-mck_fw
+aln_mck_fw
 ash_fw
 
 [trust:children]
@@ -79,11 +75,13 @@ ash_trust
 [nontrust:children]
 ash_nontrust
 
+[aln_mck:children]
+aln_mck_fw
+
 [aln:children]
 aln_wan
 aln_core
 aln_fab
-aln_fw
 
 [mck:children]
 mck_wan

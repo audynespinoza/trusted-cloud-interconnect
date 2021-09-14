@@ -27,12 +27,15 @@ tenant_networks:
   # -----------
   - interface: Vlan30
     cidr: 10.224.21.40/29
-    vrf: CORE
-    description: tenant-nontrusted
+    vrf: TRUSTED
+    description: tenant-trusted
     enabled: true
     fw_next_hop: 10.224.11.28
     sw_next_hop: 10.224.21.33
 
+# -----------------------
+# Transit Inside Networks
+# -----------------------
 transit_inside_networks:
   # --------
   # VRF CORE
@@ -49,25 +52,25 @@ transit_inside_networks:
 
   - cidr: 10.224.111.5/32
     vrf: CORE
-    description: alnfabsw1-loopback-core
+    description: alnfab1-loopback-core
     fw_next_hop: 10.224.11.28
     sw_next_hop: 10.224.11.34
 
   - cidr: 10.224.111.6/32
     vrf: CORE
-    description: alnfabsw2-loopback-core
+    description: mckfab2-loopback-core
     fw_next_hop: 10.224.11.28
     sw_next_hop: 10.224.11.35
 
   - cidr: 10.224.121.5/32
     vrf: CORE
-    description: alnfabsw1-loopback-trusted
+    description: alnfab1-loopback-trusted
     fw_next_hop: 10.224.11.28
     sw_next_hop: 10.224.21.34
 
   - cidr: 10.224.121.6/32
     vrf: CORE
-    description: alnfabsw1-loopback-trusted
+    description: mckfab2-loopback-trusted
     fw_next_hop: 10.224.11.28
     sw_next_hop: 10.224.21.35
 
