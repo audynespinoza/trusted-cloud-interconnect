@@ -1,0 +1,397 @@
+# ---------------------------------
+# Allowed VLANs on Trunk Interfaces
+# ---------------------------------
+trunk_allowed_vlans: 1-999
+
+# --------------------------
+# Transit VLANs to add to DB
+# --------------------------
+transit_vlans:
+- name: INSIDE_TRANSIT_CORE
+  vlan: 15
+- name: INSIDE_TRANSIT_TRUSTED
+  vlan: 20
+
+# ---------------------
+# L2 Transit Interfaces
+# ---------------------
+l2_transit_interfaces:
+  # -------
+  # ashcld1
+  # -------
+  ashcld1:
+  - name: GigabitEthernet3/0
+    description: ashfw1
+    mode: access
+    vlan: 15
+    enabled: True
+  - name: GigabitEthernet3/1
+    description: ashfw1
+    mode: access
+    vlan: 20
+    enabled: True
+
+  # -------
+  # ashcld2
+  # -------
+  ashcld2:
+  - name: GigabitEthernet3/0
+    description: ashfw1
+    mode: access
+    vlan: 15
+    enabled: True
+  - name: GigabitEthernet3/1
+    description: ashfw1
+    mode: access
+    vlan: 20
+    enabled: True
+
+# --------------------------------
+# L3 Transit & Loopback Interfaces
+# --------------------------------
+l3_transit_loopback_interfaces:
+  # -------
+  # ashcld1
+  # -------
+  ashcld1:
+  - name: Loopback0
+    cidr: 10.224.1.5/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
+  - name: Loopback1
+    cidr: 10.224.111.5/32
+    host_ip_index: 0
+    vrf: CORE
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '1'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Loopback2
+    cidr: 10.224.121.5/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '2'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet2/1
+    cidr: 10.224.21.10/31
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: ashcore1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: Vlan15
+    cidr: 10.224.11.32/29
+    host_ip_index: 2
+    vrf: CORE
+    description: ashfw1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Vlan20
+    cidr: 10.224.21.32/29
+    host_ip_index: 2
+    vrf: TRUSTED
+    description: ashfw1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false 
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet1/0
+    cidr: 10.224.11.18/31
+    host_ip_index: 0
+    vrf: CORE
+    description: ashcld2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet2/0
+    cidr: 10.224.21.18/31 
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: ashcld2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet3/2
+    cidr: 10.224.11.30/31
+    host_ip_index: 0
+    vrf: CORE
+    description: non-trusted-tenant
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet3/3
+    cidr: 10.224.21.32/31 
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: trusted-tenant
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  # -------
+  # ashcld2
+  # -------
+  ashcld2:
+  - name: Loopback0
+    cidr: 10.224.1.6/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
+  - name: Loopback1
+    cidr: 10.224.111.6/32
+    host_ip_index: 0
+    vrf: CORE
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '1'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Loopback2
+    cidr: 10.224.121.6/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '2'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet2/2
+    cidr: 10.224.21.12/31
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: ashcore2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: Vlan15
+    cidr: 10.224.11.32/29
+    host_ip_index: 3
+    vrf: CORE
+    description: ashfw1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: Vlan20
+    cidr: 10.224.21.32/29
+    host_ip_index: 3
+    vrf: TRUSTED
+    description: ashfw1
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet1/0
+    cidr: 10.224.11.18/31
+    host_ip_index: 1
+    vrf: CORE
+    description: ashcld1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet2/0
+    cidr: 10.224.21.18/31
+    host_ip_index: 1
+    vrf: TRUSTED
+    description: ashcld1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: true
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet3/2
+    cidr: 10.224.11.34/31
+    host_ip_index: 0
+    vrf: CORE
+    description: non-trusted-tenant
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet3/3
+    cidr: 10.224.21.36/31 
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: trusted-tenant
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+# ----
+# VRRP
+# ----
+vrrp:
+  # ---
+  # ash
+  # ---
+  ashcld1:
+    priority: 200
+    host_ip_index: 2
+    preempt: true
+  ashcld2:
+    priority: 100
+    host_ip_index: 3
+    preempt: true
+
+
