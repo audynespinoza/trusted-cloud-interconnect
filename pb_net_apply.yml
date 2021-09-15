@@ -994,7 +994,6 @@
 # ------------------------
 - name: Configure BGP
   hosts: aln:ash:mck
-  meta: clear_host_errors
   tags: bgp
   gather_facts: no
   tasks:
