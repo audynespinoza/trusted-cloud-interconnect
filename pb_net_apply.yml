@@ -271,7 +271,7 @@
 # Play - Configure Physical, SVI, Tunnel & Loopback Interface
 # -----------------------------------------------------------
 - name: Configure Device Interface
-  hosts: aln:mck:ash:aln_mck
+  hosts: aln:mck:aln_mck
   tags: l3_interface
   gather_facts: no
   tasks:
@@ -1439,7 +1439,7 @@
 # Play - Configure Tenant Network 
 # -------------------------------
 - name: Configure Tenant Network 
-  hosts: aln_fab
+  hosts: fab
   tags: tenant_network_interface
   gather_facts: no
   tasks:
