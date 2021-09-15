@@ -1439,7 +1439,7 @@
 # Play - Configure Tenant Network 
 # -------------------------------
 - name: Configure Tenant Network 
-  hosts: aln_fab:mck_fab
+  hosts: aln_fab
   tags: tenant_network_interface
   gather_facts: no
   tasks:
