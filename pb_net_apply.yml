@@ -364,6 +364,7 @@
     - interface
     notify: save_cfg
     ignore_errors: yes
+    
 
   - name: Transit Interface Admin State
     cisco.ios.ios_interfaces:
@@ -987,7 +988,13 @@
       commands:
       - write mem
     when: not ansible_check_mode
-  
+
+# --------------------------------------------------------------------------
+# Clearing Host Unreachable to Ensure IP to ASN map includes all device info
+# --------------------------------------------------------------------------
+- meta: clear_host_errors
+  tags: bgp
+
 # ------------------------
 # Play - BGP Configuration
 # ------------------------
