@@ -271,7 +271,7 @@
 # Play - Configure Physical, SVI, Tunnel & Loopback Interface
 # -----------------------------------------------------------
 - name: Configure Device Interface
-  hosts: aln:mck:aln_mck
+  hosts: aln:mck:ash:aln_mck
   tags: l3_interface
   gather_facts: no
   tasks:
@@ -357,7 +357,7 @@
       config: 
       - name: "{{ item.name }}"
         ipv4:
-        - address: "{{ item.cidr | ipv4(item.host_ip_index) }}" 
+        - address: "{{ item.cidr | ipv4(item.host_ip_index|string) }}" 
     loop: "{{ l3_transit_loopback_interfaces[inventory_hostname] }}"
     tags:
     - ip_address
@@ -430,7 +430,7 @@
             l3_transit_loopback_interfaces[inventory_hostname] |
             selectattr('description', 'equalto', 'main_loopback') |
             selectattr('vrf', 'equalto', item.vrf) |
-            map(attribute='cidr') | ipv4(item.host_ip_index) | ipaddr('address') | join('') }}"
+            map(attribute='cidr') | ipv4(item.host_ip_index|string) | ipaddr('address') | join('') }}"
           vrf: "{{ item.vrf }}"
           max_metric:
             router_lsa: true
@@ -1067,7 +1067,7 @@
     set_fact:
       device_map: "{{ 
         device_map | default({}) |
-        combine ({ (item.cidr | ipv4(item.host_ip_index) | ipaddr('address')) : item.bgp_local_as }) }}"
+        combine ({ (item.cidr | ipv4(item.host_ip_index|string) | ipaddr('address')) : item.bgp_local_as }) }}"
     loop: "{{ 
       l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('cidr', 'defined') |
@@ -1111,9 +1111,9 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           neighbor:
-          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}"
+          - address: "{{ item.cidr | ipv4((not item.host_ip_index)|string) | ipaddr('address') }}"
             activate: true
-            remote_as: "{{ ip_asn_map[(item.cidr | ipv4(not item.host_ip_index) | ipaddr('address'))] }}"
+            remote_as: "{{ ip_asn_map[(item.cidr | ipv4((not item.host_ip_index)|string) | ipaddr('address'))] }}"
             nexthop_self:
               all: false
               set: "{{ item.bgp_next_hop_self }}"
@@ -1148,7 +1148,7 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           neighbor:
-          - address: "{{ item.cidr | ipv4((not item.host_ip_index|string)) | ipaddr('address') }}"
+          - address: "{{ item.cidr | ipv4((not item.host_ip_index)|string) | ipaddr('address') }}"
             route_reflector_client: "{{ item.bgp_route_reflect}}"
       state: merged
     loop: "{{
