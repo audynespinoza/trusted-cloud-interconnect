@@ -989,17 +989,12 @@
       - write mem
     when: not ansible_check_mode
 
-# --------------------------------------------------------------------------
-# Clearing Host Unreachable to Ensure IP to ASN map includes all device info
-# --------------------------------------------------------------------------
-- meta: clear_host_errors
-  tags: bgp
-
 # ------------------------
 # Play - BGP Configuration
 # ------------------------
 - name: Configure BGP
   hosts: aln:ash:mck
+  meta: clear_host_errors
   tags: bgp
   gather_facts: no
   tasks:
