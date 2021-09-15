@@ -301,7 +301,7 @@
     tags:
     - interface
     - physical
-    loop: "{{ 
+    loop: "{{
       l3_transit_loopback_interfaces[inventory_hostname] |
       selectattr('physical', 'equalto', true) }}"
     notify: save_cfg
@@ -1148,7 +1148,7 @@
           safi: unicast
           vrf: "{{ item.vrf }}"
           neighbor:
-          - address: "{{ item.cidr | ipv4(not item.host_ip_index) | ipaddr('address') }}"
+          - address: "{{ item.cidr | ipv4((not item.host_ip_index|string)) | ipaddr('address') }}"
             route_reflector_client: "{{ item.bgp_route_reflect}}"
       state: merged
     loop: "{{

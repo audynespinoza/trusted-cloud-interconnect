@@ -381,22 +381,6 @@ l3_transit_loopback_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: true
 
-  - name: GigabitEthernet2/2
-    cidr: 10.224.21.12/31
-    host_ip_index: 0
-    vrf: TRUSTED
-    description: alnfab2
-    enabled: true
-    underlay: false
-    physical: true
-    ospf_active: true
-    ospf_process: '2'
-    bgp: true
-    bgp_local_as: "{{ bgp.local_as }}"
-    bgp_enabled: true
-    bgp_next_hop_self: false
-    bgp_route_reflect: true
-
   - name: GigabitEthernet3/2
     cidr: 10.224.100.2/31
     host_ip_index: 0
@@ -561,11 +545,11 @@ l3_transit_loopback_interfaces:
     bgp_next_hop_self: false
     bgp_route_reflect: true
 
-  - name: GigabitEthernet2/1
-    cidr: 10.224.22.10/31
+  - name: GigabitEthernet2/2
+    cidr: 10.224.21.12/31
     host_ip_index: 0
     vrf: TRUSTED
-    description: mckfab1
+    description: mckfab2
     enabled: true
     underlay: false
     physical: true
