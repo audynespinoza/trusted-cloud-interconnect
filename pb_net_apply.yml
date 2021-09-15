@@ -317,8 +317,7 @@
     - loopback
     loop: "{{
       l3_transit_loopback_interfaces[inventory_hostname] |
-      selectattr('physical', 'equalto', false) |
-      list }}"
+      selectattr('physical', 'equalto', false) }}"
     notify: save_cfg
     ignore_errors: yes
 
