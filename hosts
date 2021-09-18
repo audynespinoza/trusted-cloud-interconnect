@@ -1,50 +1,50 @@
 [aln_wan]
-alnwan1 ansible_host=192.168.122.11
-alnwan2 ansible_host=192.168.122.12
+alnwan1 ansible_host=192.168.86.11
+alnwan2 ansible_host=192.168.86.12
 
 [mck_wan]
-mckwan1 ansible_host=192.168.122.13
-mckwan2 ansible_host=192.168.122.14
+mckwan1 ansible_host=192.168.86.13
+mckwan2 ansible_host=192.168.86.14
 
 [ash_wan]
-ashwan1 ansible_host=192.168.122.15
-ashwan2 ansible_host=192.168.122.16
-ashwan3 ansible_host=192.168.122.17
-ashwan4 ansible_host=192.168.122.18
+ashwan1 ansible_host=192.168.86.15
+ashwan2 ansible_host=192.168.86.16
+ashwan3 ansible_host=192.168.86.17
+ashwan4 ansible_host=192.168.86.18
 
 [aln_core]
-alncore1 ansible_host=192.168.122.19
-alncore2 ansible_host=192.168.122.20
+alncore1 ansible_host=192.168.86.19
+alncore2 ansible_host=192.168.86.20
 
 [mck_core]
-mckcore1 ansible_host=192.168.122.21
-mckcore2 ansible_host=192.168.122.22
+mckcore1 ansible_host=192.168.86.21
+mckcore2 ansible_host=192.168.86.22
 
 [ash_core]
-ashcore1 ansible_host=192.168.122.23
-ashcore2 ansible_host=192.168.122.24
+ashcore1 ansible_host=192.168.86.23
+ashcore2 ansible_host=192.168.86.24
 
 [aln_fab]
-alnfab1 ansible_host=192.168.122.25
+alnfab1 ansible_host=192.168.86.25
 
 [mck_fab]
-mckfab2 ansible_host=192.168.122.28
+mckfab2 ansible_host=192.168.86.28
 
 [ash_cld]
-ashcld1 ansible_host=192.168.122.29
-ashcld2 ansible_host=192.168.122.30
+ashcld1 ansible_host=192.168.86.29
+ashcld2 ansible_host=192.168.86.30
 
 [aln_mck_fw]
-alnmckfw1 ansible_host=192.168.122.31
+alnmckfw1 ansible_host=192.168.86.31
 
 [ash_fw]
-ashfw1 ansible_host=192.168.122.33
+ashfw1 ansible_host=192.168.86.33
 
 [ash_trust]
-ashtrust1 ansible_host=192.168.122.36
+ashtrust1 ansible_host=192.168.86.36
 
 [ash_nontrust]
-ashnontrust1 ansible_host=192.168.122.39
+ashnontrust1 ansible_host=192.168.86.39
 
 [wan:children]
 aln_wan

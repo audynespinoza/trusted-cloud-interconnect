@@ -3,11 +3,10 @@ from pprint import pprint
 with open('hosts') as f:
     host_info = f.readlines()
 
-acl_wildcard = '192.168.122.0 0.0.0.255'
-default_gw = '192.168.122.1'
+acl_wildcard = '192.168.86.0 0.0.0.255'
+default_gw = '192.168.86.1'
 
 device_cfgs = ''
-
 
 for i in host_info:
     if 'ansible_host=' in i:
@@ -51,6 +50,7 @@ yes
 do wr
 
 '''
+
         device_cfgs += device_cfg
 
 print(device_cfgs)
