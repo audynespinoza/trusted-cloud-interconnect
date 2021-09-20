@@ -162,6 +162,38 @@
     bgp_next_hop_self: false
     bgp_route_reflect: true
 
+  - name: GigabitEthernet3/2
+    cidr: 10.224.13.20/31
+    host_ip_index: 1
+    vrf: CORE
+    description: ashwan3
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet3/3
+    cidr: 10.224.13.24/31
+    host_ip_index: 1
+    vrf: CORE
+    description: ashwan4
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: true
+
   - name: Vlan10
     cidr: 10.224.13.24/29
     host_ip_index: 2
@@ -336,6 +368,38 @@
     physical: true
     ospf_active: true
     ospf_process: '2'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet3/2
+    cidr: 10.224.13.22/31
+    host_ip_index: 1
+    vrf: CORE
+    description: ashwan3
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: true
+
+  - name: GigabitEthernet3/3
+    cidr: 10.224.13.26/31
+    host_ip_index: 1
+    vrf: CORE
+    description: ashwan4
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: true
+    ospf_process: '1'
     bgp: true
     bgp_local_as: "{{ bgp.local_as }}"
     bgp_enabled: true

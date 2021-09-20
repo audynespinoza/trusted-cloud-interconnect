@@ -1,4 +1,71 @@
-l3_interfaces:
+# --------------------------------
+# L3 Transit & Loopback Interfaces
+# --------------------------------
+l3_transit_loopback_interfaces:
   # -------------------------------------------------------
-  # alnnontrust1
+  # alntrust1
   # -------------------------------------------------------
+  ashnontrust1:
+  - name: Loopback0
+    cidr: 10.224.3.7/32
+    host_ip_index: 0
+    vrf: GLOBAL
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: false
+    ospf_process: 0
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: no
+
+  - name: Loopback1
+    cidr: 10.224.113.7/32
+    host_ip_index: 0
+    vrf: CORE
+    description: main_loopback
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '1'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet0/1
+    cidr: 10.224.13.30/31
+    host_ip_index: 1
+    vrf: CORE
+    description: ashcld1
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+  - name: GigabitEthernet0/2
+    cidr: 10.224.13.34/31
+    host_ip_index: 1
+    vrf: CORE
+    description: ashcld2
+    enabled: true
+    underlay: false
+    physical: true
+    ospf_active: false
+    ospf_process: '0'
+    bgp: true
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: true
+    bgp_next_hop_self: false
+    bgp_route_reflect: false

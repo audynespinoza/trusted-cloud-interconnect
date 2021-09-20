@@ -55,7 +55,7 @@ l3_transit_loopback_interfaces:
   # -------
   ashcld1:
   - name: Loopback0
-    cidr: 10.224.1.5/32
+    cidr: 10.224.3.5/32
     host_ip_index: 0
     vrf: GLOBAL
     description: main_loopback
@@ -71,7 +71,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: no
 
   - name: Loopback1
-    cidr: 10.224.111.5/32
+    cidr: 10.224.113.5/32
     host_ip_index: 0
     vrf: CORE
     description: main_loopback
@@ -87,7 +87,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: Loopback2
-    cidr: 10.224.121.5/32
+    cidr: 10.224.123.5/32
     host_ip_index: 0
     vrf: TRUSTED
     description: main_loopback
@@ -103,7 +103,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet2/1
-    cidr: 10.224.21.10/31
+    cidr: 10.224.23.10/31
     host_ip_index: 1
     vrf: TRUSTED
     description: ashcore1
@@ -119,7 +119,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: true
 
   - name: Vlan15
-    cidr: 10.224.11.32/29
+    cidr: 10.224.13.32/29
     host_ip_index: 2
     vrf: CORE
     description: ashfw1
@@ -135,7 +135,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: Vlan20
-    cidr: 10.224.21.32/29
+    cidr: 10.224.23.32/29
     host_ip_index: 2
     vrf: TRUSTED
     description: ashfw1
@@ -151,7 +151,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet1/0
-    cidr: 10.224.11.18/31
+    cidr: 10.224.13.18/31
     host_ip_index: 0
     vrf: CORE
     description: ashcld2
@@ -167,7 +167,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: true
 
   - name: GigabitEthernet2/0
-    cidr: 10.224.21.18/31 
+    cidr: 10.224.23.18/31 
     host_ip_index: 0
     vrf: TRUSTED
     description: ashcld2
@@ -183,10 +183,10 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: true
 
   - name: GigabitEthernet3/2
-    cidr: 10.224.11.30/31
+    cidr: 10.224.13.30/31
     host_ip_index: 0
     vrf: CORE
-    description: non-trusted-tenant
+    description: ashnontrust1
     enabled: true
     underlay: false
     physical: true
@@ -199,10 +199,10 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet3/3
-    cidr: 10.224.21.32/31 
+    cidr: 10.224.23.32/31 
     host_ip_index: 0
     vrf: TRUSTED
-    description: trusted-tenant
+    description: ashtrust1
     enabled: true
     underlay: false
     physical: true
@@ -219,7 +219,7 @@ l3_transit_loopback_interfaces:
   # -------
   ashcld2:
   - name: Loopback0
-    cidr: 10.224.1.6/32
+    cidr: 10.224.3.6/32
     host_ip_index: 0
     vrf: GLOBAL
     description: main_loopback
@@ -235,7 +235,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: no
 
   - name: Loopback1
-    cidr: 10.224.111.6/32
+    cidr: 10.224.113.6/32
     host_ip_index: 0
     vrf: CORE
     description: main_loopback
@@ -251,7 +251,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: Loopback2
-    cidr: 10.224.121.6/32
+    cidr: 10.224.123.6/32
     host_ip_index: 0
     vrf: TRUSTED
     description: main_loopback
@@ -267,7 +267,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet2/2
-    cidr: 10.224.21.12/31
+    cidr: 10.224.23.12/31
     host_ip_index: 1
     vrf: TRUSTED
     description: ashcore2
@@ -283,7 +283,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: true
 
   - name: Vlan15
-    cidr: 10.224.11.32/29
+    cidr: 10.224.13.32/29
     host_ip_index: 3
     vrf: CORE
     description: ashfw1
@@ -299,7 +299,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: Vlan20
-    cidr: 10.224.21.32/29
+    cidr: 10.224.23.32/29
     host_ip_index: 3
     vrf: TRUSTED
     description: ashfw1
@@ -315,7 +315,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet1/0
-    cidr: 10.224.11.18/31
+    cidr: 10.224.13.18/31
     host_ip_index: 1
     vrf: CORE
     description: ashcld1
@@ -331,7 +331,7 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: true
 
   - name: GigabitEthernet2/0
-    cidr: 10.224.21.18/31
+    cidr: 10.224.23.18/31
     host_ip_index: 1
     vrf: TRUSTED
     description: ashcld1
@@ -347,10 +347,10 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: true
 
   - name: GigabitEthernet3/2
-    cidr: 10.224.11.34/31
+    cidr: 10.224.13.34/31
     host_ip_index: 0
     vrf: CORE
-    description: non-trusted-tenant
+    description: ashnontrust1
     enabled: true
     underlay: false
     physical: true
@@ -363,10 +363,10 @@ l3_transit_loopback_interfaces:
     bgp_route_reflect: false
 
   - name: GigabitEthernet3/3
-    cidr: 10.224.21.36/31 
+    cidr: 10.224.23.36/31
     host_ip_index: 0
     vrf: TRUSTED
-    description: trusted-tenant
+    description: ashtrust1
     enabled: true
     underlay: false
     physical: true

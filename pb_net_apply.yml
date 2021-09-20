@@ -247,7 +247,6 @@
       - write mem
     when: not ansible_check_mode
 
-
 # -----------------
 # Play - Create VRF
 # -----------------
