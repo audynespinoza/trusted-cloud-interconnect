@@ -867,6 +867,39 @@
     ignore_errors: true
     ignore_unreachable: true
 
+  - name: Configure iBGP Route Policy - CORE To/From CLD Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          match:
+            community:
+              name: 
+              - "{{ 
+                hostvars[item.description].vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}" 
+      state: merged
+    loop: "{{
+      l3_transit_loopback_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'cld' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
+    ignore_errors: true
+    ignore_unreachable: true
+
   handlers:
   - name: save_cfg
     ios_command:
