@@ -43,6 +43,13 @@
     - build_ip_asn_map
     - bgp_neighbor
 
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
+    
 # ---------------------------------------------------------------------
 # Play - Basic Config such as Hostname, Domain, SNMP, logging, NTP info
 # ---------------------------------------------------------------------
@@ -426,7 +433,6 @@
     notify: save_cfg
     ignore_errors: true
     ignore_unreachable: true
-    
 
   - name: Transit Interface Admin State
     cisco.ios.ios_interfaces:
