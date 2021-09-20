@@ -4,6 +4,35 @@
 bgp:
   local_as: '64551'
 
+# -------------------------------------------------------------------------------------------------------------------------------
+# Tenant Network Parameters
+# The Interface indicates the Tenant Network Directly Connected Egress Interface that is later Redistributed Into BGP
+# The FW Next Hop is the Outside Interface of the Firwall that the Core Switch Layer will Forward Traffic to reach Tenant network
+# The SW Next Hop is the Inside Interface of the Firwall that the Core Switch Layer will Forward Traffic to reach other networks
+# --------------------------------------------------------------------------------------------------------------------------------
+tenant_networks:
+  # --------
+  # VRF CORE
+  # --------
+  - interface: Vlan25
+    cidr: 10.224.11.40/29
+    vrf: CORE
+    description: tenant-nontrusted
+    enabled: true
+    fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.11.33
+
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  - interface: Vlan30
+    cidr: 10.224.21.40/29
+    vrf: TRUSTED
+    description: tenant-trusted
+    enabled: true
+    fw_next_hop: 10.224.11.28
+    sw_next_hop: 10.224.21.33
+
 # -----------------------
 # Transit Inside Networks
 # -----------------------
@@ -44,3 +73,64 @@ transit_inside_networks:
     description: mckfab2-loopback-trusted
     fw_next_hop: 10.224.11.28
     sw_next_hop: 10.224.21.35
+
+
+# -----------------------------------------------------------------------------
+# Private Summary Static Routes for Northbound Traffic Fwding Through Firewalls
+# -----------------------------------------------------------------------------
+private_summary_routes:
+  # --------
+  # VRF CORE
+  # --------
+  - name: rfc1918_summary_10/8
+    cidr: 10.0.0.0/8
+    fw_next_hop: 10.224.11.36
+    sw_next_hop: 10.224.11.25
+    vrf: CORE
+  - name: rfc1918_summary_172.16/12
+    cidr: 172.16.0.0/12
+    fw_next_hop: 10.224.11.36
+    sw_next_hop: 10.224.11.25
+    vrf: CORE
+  - name: rfc1918_summary_192.168/16
+    cidr: 192.168.0.0/16
+    fw_next_hop: 10.224.11.36
+    sw_next_hop: 10.224.11.25
+    vrf: CORE
+
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  - name: rfc1918_summary_10/8
+    cidr: 10.0.0.0/8
+    fw_next_hop: 10.224.21.36
+    vrf: TRUSTED
+  - name: rfc1918_summary_172.16/12
+    cidr: 172.16.0.0/12
+    fw_next_hop: 10.224.21.36
+    vrf: TRUSTED
+  - name: rfc1918_summary_192.168/16
+    cidr: 192.168.0.0/16
+    fw_next_hop: 10.224.21.36
+    vrf: TRUSTED
+
+# --------------------------------------------------------------------
+# Default Static Route for Northbound Traffic Fwding Through Firewalls
+# --------------------------------------------------------------------
+default_route:
+  # --------
+  # VRF CORE
+  # --------
+  - name: default
+    cidr: 0.0.0.0/0
+    fw_next_hop: 10.224.11.36
+    sw_next_hop: 10.224.11.25
+    vrf: CORE
+
+  # -----------
+  # VRF TRUSTED
+  # -----------
+  - name: default
+    cidr: 0.0.0.0/0
+    fw_next_hop: 10.224.21.36
+    vrf: TRUSTED

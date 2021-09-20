@@ -4,51 +4,6 @@
 bgp:
   local_as: '64556'
 
-# -------------------------------------------------------------------------------------------------------------------------------
-# Tenant Network Parameters
-# The Interface indicates the Tenant Network Directly Connected Egress Interface that is later Redistributed Into BGP
-# The FW Next Hop is the Outside Interface of the Firwall that the Core Switch Layer will Forward Traffic to reach Tenant network
-# The SW Next Hop is the Inside Interface of the Firwall that the Core Switch Layer will Forward Traffic to reach other networks
-# --------------------------------------------------------------------------------------------------------------------------------
-tenant_networks:
-  # --------
-  # VRF CORE
-  # --------
-  - interface: Vlan101
-    cidr: 10.10.13.1/32
-    vrf: CORE
-    description: tenant-nontrusted
-    enabled: true
-    fw_next_hop: 10.224.13.28
-    sw_next_hop: 10.224.13.33
-
-  - interface: Vlan102
-    cidr: 10.10.13.2/32
-    vrf: CORE
-    description: tenant-nontrusted
-    enabled: true
-    fw_next_hop: 10.224.13.28
-    sw_next_hop: 10.224.13.33
-
-  # -----------
-  # VRF TRUSTED
-  # -----------
-  - interface: Vlan201
-    cidr: 10.10.23.1/32
-    vrf: CORE
-    description: tenant-nontrusted
-    enabled: true
-    fw_next_hop: 10.224.23.28
-    sw_next_hop: 10.224.23.33
-
-  - interface: Vlan202
-    cidr: 10.10.23.2/32
-    vrf: CORE
-    description: tenant-nontrusted
-    enabled: true
-    fw_next_hop: 10.224.23.28
-    sw_next_hop: 10.224.23.33
-
 # -----------------------------------------------------------------------------
 # Private Summary Static Routes for Northbound Traffic Fwding Through Firewalls
 # -----------------------------------------------------------------------------

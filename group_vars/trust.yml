@@ -75,3 +75,52 @@ l3_transit_loopback_interfaces:
     bgp_enabled: true
     bgp_next_hop_self: false
     bgp_route_reflect: false
+
+  - interface: Loopback201
+    cidr: 10.10.23.1/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: tenant1-trusted
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+
+  - interface: Loopback202
+    cidr: 10.10.23.2/32
+    host_ip_index: 0
+    vrf: TRUSTED
+    description: tenant2-trusted
+    enabled: true
+    underlay: false
+    physical: false
+    ospf_active: true
+    ospf_process: '0'
+    bgp: false
+    bgp_local_as: "{{ bgp.local_as }}"
+    bgp_enabled: false
+    bgp_next_hop_self: false
+    bgp_route_reflect: false
+
+# -----------------------------
+# Route Redistribution Into BGP
+# -----------------------------
+redistribution:
+  into_bgp:
+    from_connected:
+      route_map_entries:
+      - vrf: TRUSTED
+        name: CONN_BGP_TRUSTED
+        sequence: 1000
+        action: permit
+        match_interfaces: 
+        - Loopback2
+        - Loopback201
+        - Loopback202

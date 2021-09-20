@@ -49,7 +49,7 @@
       commands:
       - write mem
     when: not ansible_check_mode
-    
+
 # ---------------------------------------------------------------------
 # Play - Basic Config such as Hostname, Domain, SNMP, logging, NTP info
 # ---------------------------------------------------------------------
@@ -1034,7 +1034,7 @@
 # Play - Build CONN_BGP Route-Map
 # -------------------------------
 - name: Configure CONN_BGP Route-Map
-  hosts: wan:core:fab
+  hosts: wan:core:fab:trust:nontrust
   tags: bgp
   gather_facts: no
   tasks:
