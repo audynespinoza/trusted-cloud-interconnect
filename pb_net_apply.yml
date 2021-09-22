@@ -692,10 +692,10 @@
     cisco.ios.ios_config:
       lines:
       - "set as-path prepend last-as {{ ebgp_prepend_route_policy |
-                  selectattr('vrf', 'equalto', item.vrf) |
-                  map(attribute='devices') | flatten |
-                  selectattr('name', 'equalto', inventory_hostname) |
-                  map(attribute='as_path_prepend') | join('') }}"
+          selectattr('vrf', 'equalto', item.vrf) |
+          map(attribute='devices') | flatten |
+          selectattr('name', 'equalto', inventory_hostname) |
+          map(attribute='as_path_prepend') | join('') }}"
       parents: route-map "{{ item.description|upper }}_OUT_{{ item.vrf }}" permit 1000
     loop: "{{
       l3_transit_loopback_interfaces[inventory_hostname] |
@@ -1030,6 +1030,72 @@
       - write mem
     when: not ansible_check_mode
 
+# ----------------------------------------------
+# Play - Configure iBGP Route Policy - CLD Layer
+# ----------------------------------------------
+- name: Configure iBGP Route Policy - CLD Layer
+  hosts: cld
+  tags: bgp_route_policy
+  gather_facts: no
+  tasks:
+  - name: Configure iBGP Route Policy - CLD To/From CLD Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_loopback_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'cld' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
+    ignore_errors: true
+    ignore_unreachable: true
+
+  - name: Configure iBGP Route Policy - CLD To/From CORE Layer
+    cisco.ios.ios_route_maps:
+      config:
+      - route_map: "{{ item.description|upper }}_OUT_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+          match:
+            community:
+              name: 
+              - "{{ 
+                hostvars[item.description].vrfs |
+                selectattr('name', 'equalto', item.vrf) |
+                map(attribute='bgp_community_number') |
+                join('') }}" 
+      - route_map: "{{ item.description|upper }}_IN_{{ item.vrf }}"
+        entries:
+        - sequence: 1000
+          action: permit
+      state: merged
+    loop: "{{
+      l3_transit_loopback_interfaces[inventory_hostname] |
+      selectattr('bgp', 'equalto', true) |
+      list }}"
+    when:
+    - "'core' in hostvars[item.description].group_names"
+    - hostvars[item.description].bgp.local_as == item.bgp_local_as
+    tags:
+    - ibgp_route_policy
+    notify: save_cfg
+    ignore_errors: true
+    ignore_unreachable: true
+
 # -------------------------------
 # Play - Build CONN_BGP Route-Map
 # -------------------------------
@@ -1331,9 +1397,9 @@
     when: not ansible_check_mode
 
 # -----------------------------------------------------------
-# Play - Configure Static Routes on FW Layer to FAB Loopbacks
+# Play - Configure Static Routes on FW Layer to FAB/CLD Loopbacks
 # -----------------------------------------------------------
-- name: Configure Static Routes on FW Layer to FAB Loopbacks
+- name: Configure Static Routes on FW Layer to FAB/CLD Loopbacks
   hosts: fw
   tags: inside_transit
   gather_facts: no
@@ -1418,7 +1484,7 @@
 # Play - Default and Summary To Firewall Inside Interface
 # -------------------------------------------------------
 - name: Configure Default and Summary Routes To Firewall Inside Interface
-  hosts: fab
+  hosts: fab:cld
   tags: outbound_static
   gather_facts: no
   tasks:
@@ -1582,7 +1648,7 @@
     ignore_errors: true
     ignore_unreachable: true
 
-  - name: Assign IPv4 Address to Interface Interface
+  - name: Assign IPv4 Address to Interface
     cisco.ios.ios_l3_interfaces:
       config: 
       - name: "{{ item.interface }}"
@@ -1654,6 +1720,37 @@
       - write mem
     when: not ansible_check_mode
 
+# --------------------------------------------------------------
+# Play - Configure DEFAULT prefix-list to match on Default Route
+# --------------------------------------------------------------
+- name: Configure DEFAULT prefix-list to match on Default Route
+  hosts: cld
+  tags: bgp_route_policy
+  gather_facts: no
+  tasks:
+  - name: Configure Prefix-List
+    cisco.ios.ios_prefix_lists:
+      config:
+        - afi: ipv4
+          prefix_lists:
+            - name: DEFAULT
+              entries:
+              - action: permit
+                prefix: 0.0.0.0/0
+                sequence: 1000
+      state: merged
+    tags:
+    - ebgp_route_policy
+    notify: save_cfg
+    ignore_errors: true
+    ignore_unreachable: true
+
+  handlers:
+  - name: save_cfg
+    ios_command:
+      commands:
+      - write mem
+    when: not ansible_check_mode
 
 # -------------------------------------------------------
 # Play - Hostvars

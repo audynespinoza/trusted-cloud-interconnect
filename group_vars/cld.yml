@@ -1,3 +1,38 @@
+
+# ----------------------------------------------------------------------------------------------
+# Policy that determines how many ASNs to Preprend when Advertising BGP routes to eBGP Neighbors
+# ----------------------------------------------------------------------------------------------
+ebgp_prepend_route_policy:
+# --------
+# VRF CORE
+# --------
+- role: primary
+  vrf: CORE
+  devices:
+  - name: ashcld1
+    as_path_prepend: 0
+
+- role: secondary
+  vrf: CORE
+  devices:
+  - name: ashcld2
+    as_path_prepend: 1
+
+# -----------
+# VRF TRUSTED
+# -----------
+- role: primary
+  vrf: TRUSTED
+  devices:
+  - name: ashcld1
+    as_path_prepend: 0
+
+- role: secondary
+  vrf: TRUSTED
+  devices:
+  - name: ashcld2
+    as_path_prepend: 1
+
 # ---------------------------------
 # Allowed VLANs on Trunk Interfaces
 # ---------------------------------
